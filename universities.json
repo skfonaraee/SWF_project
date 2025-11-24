@@ -1,0 +1,332 @@
+{
+  "Венгрия": {
+    "BGE - Budapest Business University": {
+      "card": "🏫 BGE — Budapest Business University\n🌍 Страна: Венгрия\n🎓 Направления: Бизнес, Финансы, Менеджмент, Туризм\n📝 Язык обучения: Английский / Венгерский\n⌛ Срок обучения: 3 года (бакалавр), 1 год (foundation)\n💵 Стоимость: 2500–3500 EUR/год\n🔗 Сайт: https://www.uni-bge.hu/",
+      "documents": "📄 **Документы для поступления в BGE**\n\n1. Паспорт\n2. Аттестат о среднем образовании + перевод на английский\n3. Табель / выписка оценок\n4. Сертификат английского языка: IELTS 5.5 / TOEFL 65 (или тест BGE)\n5. Мотивационное письмо (1 страница)\n6. CV / резюме\n7. Фото (паспортного формата)\n8. Подтверждение оплаты регистрационного взноса\n9. Финансовые документы (на визу)\n\nДополнительно:\n- Для некоторых программ — онлайн-собеседование\n- Для foundation сертификат английского не обязателен",
+      "scholarships": "💰 **Стипендии и гранты BGE**\n\n1. **Stipendium Hungaricum** (полное покрытие)\n— обучение бесплатно\n— ежемесячная стипендия ~ 120 EUR\n— общежитие или компенсация\n\n2. **BGE Academic Scholarship**\n— для студентов с высокими оценками\n— 500–1000 EUR/год\n\n3. **Hungarian Diaspora Scholarship**\n— частичная или полная скидка на обучение\n\n4. **Visegrad Fund**\n— магистратура / исследовательские программы\n\nУниверситет также предоставляет: скидки, гранты для лучших студентов, разовые финансовые поддержки.",
+      "deadlines": "🕒 **Сроки подачи**\n\n🔹 **Осенний семестр (сентябрь)**\n— Подача: 1 февраля – 30 июня\n— Интервью: март–июль\n— Ответ: 2–4 недели\n\n🔹 **Весенний семестр (февраль)**\n— Подача: сентябрь – 30 ноября\n\n🔹 Stipendium Hungaricum\n— Ноябрь – январь\n— Результаты: июль",
+      "process": "🧭 **Процесс поступления в BGE — по шагам**\n\n1. Выбор программы на сайте BGE\n2. Регистрация в системе DreamApply\n3. Загрузка всех документов (PDF)\n4. Оплата регистрационного взноса ~150 EUR\n5. Ожидание приглашения на интервью\n6. Прохождение онлайн-интервью (если требуется)\n7. Получение Conditional Acceptance Letter\n8. Оплата депозита\n9. Получение Final Acceptance Letter\n10. Подача документов на визу в Визовый Центр\n11. Переезд и регистрация в университете",
+      "programs": "📚 **Программы BGE**\n\n⭐ Бакалавриат:\n- Business Administration\n- Finance and Accounting\n- International Business\n- Tourism and Hospitality\n- Commerce and Marketing\n\n⭐ Foundation:\n- Business Foundation Year\n- English Foundation Year\n\nВсе программы доступны на английском.",
+      "links": {
+        "website": "https://www.uni-bge.hu/",
+        "admissions": "https://apply.uni-bge.hu/",
+        "scholarships": "https://stipendiumhungaricum.hu/"
+      }
+    },
+
+    "ELTE - Eötvös Loránd University": {
+      "card": "🏫 ELTE — Eötvös Loránd University\n🌍 Страна: Венгрия\n🎓 Направления: IT, Инженерия, Математика, Гуманитарные науки\n📝 Язык: Английский / Венгерский\n⌛ Срок: 3 года бакалавр, 2 года магистр\n💵 Стоимость: 3000–4500 EUR/год\n🔗 https://www.elte.hu/en",
+      "documents": "📄 Документы для ELTE:\n1. Паспорт\n2. Аттестат + перевод\n3. Табель оценок\n4. Языковой сертификат (IELTS 5.5+)\n5. Мотивационное письмо\n6. CV\n7. 2 рекомендации (для некоторых факультетов)\n8. Портфолио (для искусств)\n9. Оплата application fee (120 EUR)",
+      "scholarships": "💰 Стипендии ELTE:\n- Stipendium Hungaricum\n- Diaspora Scholarship\n- ELTE Institutional Scholarship\n- Visegrad Fund\n\nБольшинство стипендий покрывают:\n✔ обучение\n✔ общежитие или компенсацию\n✔ ежемесячную выплату",
+      "deadlines": "🕒 Дедлайны:\n— Осенний intake: до 30 июня\n— Весенний intake: до 30 ноября\n— Stipendium Hungaricum: ноябрь–январь",
+      "process": "🧭 Шаги:\n1. Выбор программы\n2. Подача через DreamApply\n3. Оплата application fee\n4. Онлайн-тест или интервью\n5. Conditional offer\n6. Оплата депозита\n7. Final offer\n8. Оформление визы",
+      "programs": "📚 Основные направления:\n- Computer Science\n- Software Engineering\n- Mathematics\n- Psychology\n- Linguistics\n- Education Studies",
+      "links": {
+        "website": "https://www.elte.hu/en",
+        "admissions": "https://apply.elte.hu/",
+        "scholarships": "https://stipendiumhungaricum.hu/"
+      }
+    },
+
+    "BME - Budapest University of Technology and Economics": {
+      "card": "🏫 BME — Budapest University of Technology & Economics\n🌍 Венгрия\n🎓 Топ-направления: Инженерия, IT, Электроника, Механика\n💵 Стоимость: 3200–6000 EUR\n🔗 https://www.bme.hu/?language=en",
+      "documents": "📄 Документы BME:\n- Паспорт\n- Аттестат + перевод\n- Оценки\n- IELTS 6.0 / TOEFL 70\n- CV\n- Мотивационное письмо\n- Рекомендации\n- Портфолио (для архитектуры)\n- Application fee",
+      "scholarships": "💰 Стипендии:\n- Stipendium Hungaricum\n- Diaspora Scholarship\n- BME Excellence Scholarship\n- Visegrad Fund",
+      "deadlines": "🕒 Дедлайны:\n— Осенний прием: до 31 мая\n— Весенний прием: до 30 ноября",
+      "process": "🧭 Процесс поступления:\n1. Подача онлайн\n2. Приёмный экзамен по математике/физике\n3. Интервью\n4. Получение письма о зачислении\n5. Виза",
+      "programs": "📚 Программы:\n- Electrical Engineering\n- Mechanical Engineering\n- Architecture\n- Computer Science\n- Chemical Engineering",
+      "links": {
+        "website": "https://www.bme.hu/?language=en",
+        "admissions": "https://felveteli.bme.hu/",
+        "scholarships": "https://stipendiumhungaricum.hu/"
+      }
+    },
+
+    "University of Pécs": {
+      "card": "🏫 University of Pécs\n🌍 Венгрия\n🎓 Направления: Медицина, Бизнес, Экономика, Искусство\n💵 Стоимость: 4000–7500 EUR/год\n🔗 https://www.pte.hu/",
+      "documents": "📄 Документы:\n- Паспорт\n- Аттестат + перевод\n- Сертификат английского (IELTS 5.5+)\n- Мотивационное письмо\n- CV\n- Медицинская форма (для медицины)",
+      "scholarships": "💰 Стипендии:\n- Stipendium Hungaricum\n- Diaspora Scholarship\n- PTE Talent Scholarship",
+      "deadlines": "🕒 Дедлайны:\n— Осенний прием: до 31 мая\n— Stipendium Hungaricum: январь",
+      "process": "🧭 Шаги:\n1. Подача через сайт\n2. Онлайн экзамен (медицина)\n3. Интервью\n4. Оплата депозита\n5. Виза",
+      "programs": "📚 Программы:\n- General Medicine\n- Business Administration\n- Economics\n- Arts\n- Psychology",
+      "links": {
+        "website": "https://www.pte.hu/",
+        "admissions": "https://international.pte.hu/apply",
+        "scholarships": "https://stipendiumhungaricum.hu/"
+      }
+    },
+
+    "University of Debrecen": {
+      "card": "🏫 University of Debrecen\n🌍 Венгрия\n🎓 Известен программами: Бизнес, Медицина, IT, Науки\n💵 Стоимость: 5500–8000 EUR медицины, остальное 3000–4500 EUR\n🔗 https://unideb.hu/",
+      "documents": "📄 Документы:\n- Паспорт\n- Аттестат + перевод\n- Оценки\n- IELTS 5.5–6.0\n- CV\n- Мотивационное письмо\n- Медицинская справка (медицина)",
+      "scholarships": "💰 Стипендии:\n- Stipendium Hungaricum\n- UD International Scholarship\n- Diaspora Scholarship",
+      "deadlines": "🕒 Дедлайны:\n— Осенний прием: 1 февраля – 15 июня\n— Весенний прием: 1 сент – 15 нояб\n— SH: ноябрь–январь",
+      "process": "🧭 Шаги поступления:\n1. Подать заявку онлайн\n2. Оплатить application fee\n3. Интервью или экзамен\n4. Acceptance Letter\n5. Виза",
+      "programs": "📚 Программы:\n- Medicine\n- Business Administration\n- Computer Science\n- Pharmacy\n- Agricultural Sciences",
+      "links": {
+        "website": "https://unideb.hu/",
+        "admissions": "https://apply.unideb.hu/",
+        "scholarships": "https://stipendiumhungaricum.hu/"
+      }
+    }
+  },
+    "Германия": {
+    "RWTH Aachen University": {
+      "card": "🏫 RWTH Aachen University\n🌍 Страна: Германия\n🎓 Направления: Инженерия, IT, Науки\n📝 Язык обучения: Английский / Немецкий\n⌛ Срок: 3 года бакалавр, 2 года магистр\n💵 Стоимость: 0–250 EUR/семестр (семестровый взнос)\n🔗 https://www.rwth-aachen.de/cms/~a/root/?lidx=1",
+      "documents": "📄 **Документы для поступления RWTH Aachen**\n\n1. Паспорт\n2. Аттестат о среднем образовании + перевод на немецкий или английский\n3. Табель / выписка оценок\n4. Сертификат языка: IELTS 6.0+ / TOEFL 80+ / TestDaF / DSH\n5. Мотивационное письмо\n6. CV / резюме\n7. Рекомендательные письма (2)\n8. Подтверждение финансовых средств (для визы)\n9. Оплата application fee (если требуется)\n\nДополнительно:\n- Для некоторых программ: портфолио или вступительный тест",
+      "scholarships": "💰 **Стипендии и гранты RWTH Aachen**\n\n1. **DAAD Scholarships** — частично или полностью покрывают обучение\n2. **Deutschlandstipendium** — 300 EUR/мес для талантливых студентов\n3. Университетские стипендии RWTH Aachen — академические награды, социальные стипендии\n4. Erasmus+ (для обменных студентов)",
+      "deadlines": "🕒 **Дедлайны подачи**\n\n- Осенний семестр (сентябрь): 15 мая (бакалавр), 31 мая (магистратура)\n- Весенний семестр (февраль): 15 ноября\n- DAAD: октябрь – январь\n- Deutschlandstipendium: до 15 мая",
+      "process": "🧭 **Процесс поступления**\n\n1. Выбор программы на сайте RWTH Aachen\n2. Проверка требований (Sprach- и Fachliche Voraussetzungen)\n3. Регистрация через uni-assist (для международных студентов)\n4. Загрузка всех документов в систему\n5. Ожидание подтверждения / Conditional Acceptance\n6. Оплата семестрового взноса\n7. Получение Final Acceptance Letter\n8. Подача документов на студенческую визу\n9. Прибытие и регистрация в университете",
+      "programs": "📚 **Программы RWTH Aachen**\n\n⭐ Бакалавриат:\n- Mechanical Engineering\n- Electrical Engineering\n- Computer Science\n- Civil Engineering\n- Natural Sciences\n\n⭐ Магистратура:\n- Data Science\n- Aerospace Engineering\n- Sustainable Energy\n- Biomedical Engineering",
+      "links": {
+        "website": "https://www.rwth-aachen.de/cms/~a/root/?lidx=1",
+        "admissions": "https://www.rwth-aachen.de/go/id/a/",
+        "scholarships": "https://www.daad.de/en/studying-in-germany/scholarships/"
+      }
+    },
+
+    "Technical University of Munich (TUM)": {
+      "card": "🏫 TUM — Technical University of Munich\n🌍 Германия\n🎓 Направления: Инженерия, IT, Natural Sciences, Life Sciences\n📝 Язык: Английский / Немецкий\n💵 Стоимость: 0–150 EUR/семестр\n🔗 https://www.tum.de/en/",
+      "documents": "📄 Документы:\n- Паспорт\n- Аттестат + перевод\n- Табель / оценки\n- Сертификат языка: IELTS 6.5+ / TOEFL 85+ / TestDaF / DSH\n- Мотивационное письмо\n- CV\n- 2 рекомендации\n- Финансовые документы",
+      "scholarships": "💰 Стипендии:\n- DAAD Scholarship\n- Deutschlandstipendium\n- TUM Academic Excellence Scholarship\n- Erasmus+",
+      "deadlines": "🕒 Дедлайны:\n- Осенний семестр: 15 июля (бакалавр) / 31 июля (магистр)\n- Весенний семестр: 15 января\n- Deutschlandstipendium: до 15 мая",
+      "process": "🧭 Процесс:\n1. Выбор программы\n2. Проверка требований\n3. Подача через TUMonline / uni-assist\n4. Оплата сборов (если есть)\n5. Conditional Acceptance\n6. Финальная зачисление\n7. Виза и регистрация",
+      "programs": "📚 Программы:\n- Mechanical Engineering\n- Electrical Engineering\n- Computer Science\n- Civil Engineering\n- Life Sciences\n- Physics\n- Mathematics",
+      "links": {
+        "website": "https://www.tum.de/en/",
+        "admissions": "https://www.tum.de/en/studies/application/",
+        "scholarships": "https://www.tum.de/en/studies/fees-and-financial-aid/scholarships/"
+      }
+    },
+
+    "KIT - Karlsruhe Institute of Technology": {
+      "card": "🏫 KIT — Karlsruhe Institute of Technology\n🌍 Германия\n🎓 Направления: Engineering, IT, Natural Sciences\n💵 Стоимость: 0–150 EUR/семестр\n🔗 https://www.kit.edu/english/",
+      "documents": "📄 Документы KIT:\n- Паспорт\n- Аттестат + перевод\n- Табель\n- Языковой сертификат\n- CV и мотивационное письмо\n- Рекомендации\n- Финансовые документы",
+      "scholarships": "💰 Стипендии:\n- DAAD Scholarships\n- Deutschlandstipendium\n- KIT Excellence Scholarships",
+      "deadlines": "🕒 Дедлайны:\n- Осенний семестр: 15 июля (бакалавр) / 31 июля (магистр)\n- Весенний семестр: 15 января",
+      "process": "🧭 Процесс:\n1. Выбор программы\n2. Проверка требований\n3. Подача через KITonline / uni-assist\n4. Conditional / Final Acceptance\n5. Виза и регистрация",
+      "programs": "📚 Программы:\n- Electrical Engineering\n- Mechanical Engineering\n- Computer Science\n- Physics\n- Chemistry",
+      "links": {
+        "website": "https://www.kit.edu/english/",
+        "admissions": "https://www.kit.edu/english/studies.php",
+        "scholarships": "https://www.kit.edu/english/studies.php#scholarships"
+      }
+    },
+
+    "University of Stuttgart": {
+      "card": "🏫 University of Stuttgart\n🌍 Германия\n🎓 Направления: Engineering, Computer Science, Architecture\n💵 Стоимость: 0–150 EUR/семестр\n🔗 https://www.uni-stuttgart.de/en/",
+      "documents": "📄 Документы:\n- Паспорт\n- Аттестат + перевод\n- Сертификат языка\n- Мотивационное письмо\n- CV\n- Финансовые документы",
+      "scholarships": "💰 DAAD, Deutschlandstipendium, университетские гранты",
+      "deadlines": "🕒 Осенний семестр: до 15 июля\nВесенний семестр: до 15 января",
+      "process": "🧭 Подача через uni-assist, Conditional Acceptance, Final Acceptance, Виза",
+      "programs": "📚 Mechanical Engineering, Electrical Engineering, Computer Science, Architecture, Civil Engineering",
+      "links": {
+        "website": "https://www.uni-stuttgart.de/en/",
+        "admissions": "https://www.uni-stuttgart.de/en/study/application/",
+        "scholarships": "https://www.uni-stuttgart.de/en/study/finances/"
+      }
+    },
+
+    "Darmstadt University of Technology": {
+      "card": "🏫 TU Darmstadt\n🌍 Германия\n🎓 Направления: Engineering, IT, Computer Science\n💵 Стоимость: 0–150 EUR/семестр\n🔗 https://www.tu-darmstadt.de/index.en.jsp",
+      "documents": "📄 Паспорт, аттестат + перевод, CV, мотивационное письмо, сертификат языка, финансовые документы",
+      "scholarships": "💰 DAAD, Deutschlandstipendium, TU Darmstadt Scholarships",
+      "deadlines": "🕒 Осенний семестр: 15 июля\nВесенний: 15 января",
+      "process": "🧭 Подача через uni-assist, Conditional / Final Acceptance, Виза",
+      "programs": "📚 Mechanical Engineering, Electrical Engineering, Computer Science, Civil Engineering",
+      "links": {
+        "website": "https://www.tu-darmstadt.de/index.en.jsp",
+        "admissions": "https://www.tu-darmstadt.de/studieren/bewerbung/index.en.jsp",
+        "scholarships": "https://www.daad.de/en/studying-in-germany/scholarships/"
+      }
+    }
+  },
+
+  "Южная Корея": {
+    "KAIST - Korea Advanced Institute of Science and Technology": {
+      "card": "🏫 KAIST — Korea Advanced Institute of Science and Technology\n🌍 Страна: Южная Корея\n🎓 Направления: IT, Engineering, Robotics, Natural Sciences\n📝 Язык обучения: Английский / Корейский\n⌛ Срок: 4 года бакалавр, 2 года магистр\n💵 Стоимость: 5000–7000 USD/год\n🔗 https://www.kaist.ac.kr/en/",
+      "documents": "📄 **Документы для поступления в KAIST**\n\n1. Паспорт\n2. Аттестат о среднем образовании + перевод на английский\n3. Табель / выписка оценок\n4. Сертификат английского языка: IELTS 6.5 / TOEFL 90+ (для англоязычных программ)\n5. Мотивационное письмо (Statement of Purpose)\n6. CV / резюме\n7. 2 рекомендации (учителя / наставники)\n8. Портфолио (для инженерных и дизайнерских проектов)\n9. Подтверждение финансовых средств\n\nДополнительно:\n- Интервью (по Zoom)\n- Для некоторых программ — тест по математике или логике",
+      "scholarships": "💰 **Стипендии и гранты KAIST**\n\n1. **KGSP (Korean Government Scholarship Program)** — полное покрытие обучения + проживание\n2. KAIST Global Scholarship — полное или частичное покрытие обучения\n3. Merit-based Scholarships — для отличников\n4. Research Assistantships — частичная оплата за работу в лаборатории",
+      "deadlines": "🕒 **Сроки подачи**\n\n- Осенний семестр (март): подача до 15 сентября предыдущего года\n- Весенний семестр (сентябрь): подача до 15 марта\n- KGSP: подача до 15 апреля/октября (в зависимости от семестра)",
+      "process": "🧭 **Процесс поступления в KAIST**\n\n1. Выбор программы на сайте KAIST\n2. Регистрация через онлайн систему KAIST Application\n3. Загрузка всех документов\n4. Оплата application fee (50–100 USD)\n5. Интервью (онлайн или офлайн)\n6. Conditional Acceptance Letter\n7. Оплата депозита (если требуется)\n8. Final Acceptance Letter\n9. Подача на визу (D-2 Student Visa)\n10. Переезд и регистрация в университете",
+      "programs": "📚 **Программы KAIST**\n\n⭐ Бакалавриат:\n- Computer Science\n- Electrical Engineering\n- Mechanical Engineering\n- Physics\n- Bio & Brain Engineering\n\n⭐ Магистратура:\n- Robotics\n- Artificial Intelligence\n- Materials Science\n- Nanotechnology",
+      "links": {
+        "website": "https://www.kaist.ac.kr/en/",
+        "admissions": "https://admission.kaist.ac.kr/undergraduate/intro.do",
+        "scholarships": "https://www.studyinkorea.go.kr/en/sub/gks/allnew_invite.do"
+      }
+    },
+
+    "POSTECH - Pohang University of Science and Technology": {
+      "card": "🏫 POSTECH — Pohang University of Science and Technology\n🌍 Южная Корея\n🎓 Направления: Engineering, IT, Natural Sciences\n📝 Язык: Английский / Корейский\n💵 Стоимость: 5000–7000 USD/год\n🔗 https://www.postech.ac.kr/eng/",
+      "documents": "📄 Документы:\n- Паспорт\n- Аттестат + перевод\n- Табель оценок\n- Сертификат английского языка (IELTS 6.5 / TOEFL 90+)\n- Мотивационное письмо\n- CV\n- 2 рекомендации\n- Подтверждение финансовых средств\n- Портфолио (если требуется)",
+      "scholarships": "💰 Стипендии:\n- KGSP\n- POSTECH Global Scholarship (100% tuition + dormitory)\n- Academic Merit Scholarship",
+      "deadlines": "🕒 Дедлайны:\n- Осенний семестр: подача до 15 сентября предыдущего года\n- Весенний семестр: до 15 марта\n- KGSP: зависит от семестра (апрель / октябрь)",
+      "process": "🧭 Подача через онлайн систему, интервью, Conditional / Final Acceptance, виза D-2",
+      "programs": "📚 Программы:\n- Mechanical Engineering\n- Electrical Engineering\n- Computer Science\n- Physics\n- Life Sciences",
+      "links": {
+        "website": "https://www.postech.ac.kr/eng/",
+        "admissions": "https://www.postech.ac.kr/eng/admission/undergraduate.do",
+        "scholarships": "https://www.studyinkorea.go.kr/en/sub/gks/allnew_invite.do"
+      }
+    },
+
+    "Seoul National University (SNU)": {
+      "card": "🏫 SNU — Seoul National University\n🌍 Южная Корея\n🎓 Направления: IT, Engineering, Humanities, Social Sciences, Medicine\n📝 Язык: Английский / Корейский\n💵 Стоимость: 4000–8000 USD/год\n🔗 https://en.snu.ac.kr/",
+      "documents": "📄 Паспорт, аттестат + перевод, табель, сертификат английского, мотивационное письмо, CV, рекомендации, финансовые документы",
+      "scholarships": "💰 KGSP, SNU Global Scholarship, Merit-based Scholarships, Research Assistantships",
+      "deadlines": "🕒 Осенний семестр: подача до 15 сентября\nВесенний: до 15 марта",
+      "process": "🧭 Онлайн-заявка, Conditional Acceptance, интервью, Final Acceptance, виза, регистрация",
+      "programs": "📚 Computer Science, Engineering, Business, Law, Medicine, Social Sciences",
+      "links": {
+        "website": "https://en.snu.ac.kr/",
+        "admissions": "https://en.snu.ac.kr/admission/undergraduate",
+        "scholarships": "https://www.studyinkorea.go.kr/en/sub/gks/allnew_invite.do"
+      }
+    },
+
+    "Yonsei University": {
+      "card": "🏫 Yonsei University\n🌍 Южная Корея\n🎓 Направления: IT, Business, Humanities, Medicine\n💵 Стоимость: 5000–7000 USD/год\n🔗 https://www.yonsei.ac.kr/en_sc/",
+      "documents": "📄 Паспорт, аттестат, переводы, сертификат английского, CV, мотивационное письмо, рекомендации, финансовые документы",
+      "scholarships": "💰 KGSP, Yonsei International Scholarship, Merit-based Scholarships",
+      "deadlines": "🕒 Осенний семестр: до 15 сентября\nВесенний: до 15 марта",
+      "process": "🧭 Онлайн-заявка, Conditional / Final Acceptance, D-2 виза, регистрация",
+      "programs": "📚 Computer Science, Business Administration, Medicine, Humanities, Engineering",
+      "links": {
+        "website": "https://www.yonsei.ac.kr/en_sc/",
+        "admissions": "https://oia.yonsei.ac.kr/admission/undergraduate/",
+        "scholarships": "https://www.studyinkorea.go.kr/en/sub/gks/allnew_invite.do"
+      }
+    },
+
+    "Korea University": {
+      "card": "🏫 Korea University\n🌍 Южная Корея\n🎓 Направления: IT, Business, Law, Humanities\n💵 Стоимость: 5000–7000 USD/год\n🔗 https://www.korea.edu/",
+      "documents": "📄 Паспорт, аттестат + перевод, сертификат английского, мотивационное письмо, CV, рекомендации, финансовые документы",
+      "scholarships": "💰 KGSP, Korea University International Scholarship, Merit-based Scholarships",
+      "deadlines": "🕒 Осенний семестр: до 15 сентября\nВесенний: до 15 марта",
+      "process": "🧭 Онлайн-заявка, Conditional / Final Acceptance, D-2 виза, регистрация",
+      "programs": "📚 Computer Science, Business, Law, Economics, Humanities",
+      "links": {
+        "website": "https://www.korea.edu/",
+        "admissions": "https://admission.korea.ac.kr/undergraduate",
+        "scholarships": "https://www.studyinkorea.go.kr/en/sub/gks/allnew_invite.do"
+      }
+    }
+  },
+
+  "Япония": {
+    "University of Tokyo": {
+      "card": "🏫 University of Tokyo\n🌍 Страна: Япония\n🎓 Направления: Engineering, IT, Sciences, Humanities, Social Sciences\n📝 Язык обучения: Японский / Английский\n⌛ Срок: 4 года бакалавр, 2 года магистр\n💵 Стоимость: 535,800 JPY/год (бакалавр) + сборы за вход 282,000 JPY\n🔗 https://www.u-tokyo.ac.jp/en/",
+      "documents": "📄 **Документы для поступления**\n\n1. Паспорт\n2. Аттестат о среднем образовании + перевод на английский или японский\n3. Табель / выписка оценок\n4. Сертификат английского языка (IELTS 6.5 / TOEFL 90+)\n5. Мотивационное письмо (Statement of Purpose)\n6. CV / резюме\n7. Рекомендации (2 письма)\n8. Подтверждение финансовых средств\n9. Application Form",
+      "scholarships": "💰 **Стипендии и гранты**\n\n1. **MEXT Scholarship** — полное покрытие обучения + проживание\n2. University of Tokyo Fellowship — частичное покрытие (100,000–200,000 JPY/мес)\n3. JASSO Scholarship — 48,000 JPY/мес для иностранных студентов\n4. Faculty-specific scholarships — по факультетам",
+      "deadlines": "🕒 **Сроки подачи**\n\n- Осенний семестр (апрель intake): подача с августа по октябрь предыдущего года\n- Весенний семестр (сентябрь intake): подача с февраля по апрель\n- MEXT: подача до конца апреля",
+      "process": "🧭 **Процесс поступления**\n\n1. Выбор программы на сайте университета\n2. Подача онлайн / через консульство (для MEXT)\n3. Загрузка всех документов\n4. Тест/экзамен (Entrance Exam или EJU)\n5. Интервью (онлайн или офлайн)\n6. Conditional Acceptance\n7. Оплата сборов (если требуется)\n8. Final Acceptance Letter\n9. Подача на визу студента\n10. Переезд и регистрация",
+      "programs": "📚 **Программы**\n\n⭐ Бакалавриат:\n- Computer Science\n- Electrical Engineering\n- Mechanical Engineering\n- Law\n- Economics\n- Literature\n\n⭐ Магистратура:\n- Data Science\n- Bioengineering\n- Physics\n- Social Sciences",
+      "links": {
+        "website": "https://www.u-tokyo.ac.jp/en/",
+        "admissions": "https://www.u-tokyo.ac.jp/en/prospective-students.html",
+        "scholarships": "https://www.studyinjapan.go.jp/en/smap-stopj-applications-mext.html"
+      }
+    },
+
+    "Hitotsubashi University": {
+      "card": "🏫 Hitotsubashi University\n🌍 Япония\n🎓 Направления: Business, Economics, Law, Social Sciences\n📝 Язык обучения: Английский / Японский\n💵 Стоимость: 535,800 JPY/год + входной сбор 282,000 JPY\n🔗 https://www.hit-u.ac.jp/eng/",
+      "documents": "📄 Паспорт, аттестат + перевод, табель, сертификат английского, мотивационное письмо, CV, рекомендации, финансовые документы",
+      "scholarships": "💰 MEXT, Hitotsubashi University International Scholarship, JASSO, Faculty-based grants",
+      "deadlines": "🕒 Осенний семестр: август–октябрь предыдущего года\nВесенний семестр: февраль–апрель\nMEXT: до конца апреля",
+      "process": "🧭 Онлайн-заявка, Entrance Exam / EJU, Conditional / Final Acceptance, студенческая виза, регистрация",
+      "programs": "📚 Economics, Business Administration, Law, Social Sciences, International Relations",
+      "links": {
+        "website": "https://www.hit-u.ac.jp/eng/",
+        "admissions": "https://www.hit-u.ac.jp/eng/admissions/",
+        "scholarships": "https://www.studyinjapan.go.jp/en/smap-stopj-applications-mext.html"
+      }
+    },
+
+    "Ritsumeikan University": {
+      "card": "🏫 Ritsumeikan University\n🌍 Япония\n🎓 Направления: IT, Business, International Relations, Humanities\n💵 Стоимость: 800,000–1,200,000 JPY/год\n🔗 https://en.ritsumei.ac.jp/",
+      "documents": "📄 Паспорт, аттестат + перевод, табель, английский сертификат, мотивационное письмо, CV, рекомендации, финансовые документы",
+      "scholarships": "💰 MEXT, Ritsumeikan International Scholarship, Merit-based Scholarships",
+      "deadlines": "🕒 Осенний: август–октябрь\nВесенний: февраль–апрель\nMEXT: до конца апреля",
+      "process": "🧭 Онлайн-заявка, Conditional / Final Acceptance, студенческая виза, регистрация",
+      "programs": "📚 Computer Science, Business Administration, International Relations, Humanities",
+      "links": {
+        "website": "https://en.ritsumei.ac.jp/",
+        "admissions": "https://en.ritsumei.ac.jp/admissions/",
+        "scholarships": "https://www.studyinjapan.go.jp/en/smap-stopj-applications-mext.html"
+      }
+    },
+
+    "Waseda University": {
+      "card": "🏫 Waseda University\n🌍 Япония\n🎓 Направления: Business, IT, Law, Humanities, Social Sciences\n💵 Стоимость: 900,000–1,300,000 JPY/год\n🔗 https://www.waseda.jp/top/en",
+      "documents": "📄 Паспорт, аттестат + перевод, табель, сертификат английского, мотивационное письмо, CV, рекомендации, финансовые документы",
+      "scholarships": "💰 MEXT, Waseda University Global Scholarship, JASSO, Faculty-specific grants",
+      "deadlines": "🕒 Осенний: август–октябрь\nВесенний: февраль–апрель\nMEXT: до конца апреля",
+      "process": "🧭 Онлайн-заявка, Entrance Exam / EJU, Conditional / Final Acceptance, виза студента, регистрация",
+      "programs": "📚 Business Administration, Computer Science, Law, International Relations, Social Sciences",
+      "links": {
+        "website": "https://www.waseda.jp/top/en",
+        "admissions": "https://www.waseda.jp/top/en/admissions",
+        "scholarships": "https://www.studyinjapan.go.jp/en/smap-stopj-applications-mext.html"
+      }
+    }
+  },
+
+  "Нидерланды": {
+    "University of Amsterdam (UvA)": {
+      "card": "🏫 University of Amsterdam\n🌍 Страна: Нидерланды\n🎓 Направления: Social Sciences, Business, IT, Humanities, Law\n📝 Язык обучения: Английский / Голландский\n⌛ Срок: 3 года бакалавр, 1–2 года магистр\n💵 Стоимость: 2,209–15,000 EUR/год\n🔗 https://www.uva.nl/en",
+      "documents": "📄 **Документы для поступления**\n\n1. Паспорт\n2. Аттестат о среднем образовании + перевод на английский\n3. Табель / выписка оценок\n4. Сертификат английского языка: IELTS 6.5 / TOEFL 90+\n5. Мотивационное письмо (Statement of Purpose)\n6. CV / резюме\n7. Рекомендации (по желанию)\n8. Подтверждение финансовых средств (для визы)",
+      "scholarships": "💰 **Стипендии и гранты**\n\n1. Holland Scholarship — 5,000 EUR на год\n2. Orange Tulip Scholarship — частичное покрытие обучения\n3. University-specific scholarships (UvA Excellence Scholarship)\n4. Erasmus+ (для обменных студентов)",
+      "deadlines": "🕒 **Сроки подачи**\n\n- Осенний семестр (сентябрь): до 1 мая\n- Магистратура: зависит от факультета, чаще март–май\n- Стипендии: Holland Scholarship — до 1 мая",
+      "process": "🧭 **Процесс поступления**\n\n1. Выбор программы на сайте UvA\n2. Регистрация через Studielink (для бакалавра) / онлайн форму магистратуры\n3. Загрузка всех документов\n4. Оплата application fee (если требуется)\n5. Conditional Acceptance / Final Acceptance\n6. Подача на визу (MVV / Residence Permit)\n7. Прибытие и регистрация в университете",
+      "programs": "📚 **Программы**\n\n⭐ Бакалавриат:\n- Business Administration\n- Computer Science\n- Psychology\n- Economics\n- Political Science\n\n⭐ Магистратура:\n- Data Science\n- Artificial Intelligence\n- International Law\n- Communication Science",
+      "links": {
+        "website": "https://www.uva.nl/en",
+        "admissions": "https://www.uva.nl/en/education/admission-and-application/admission-and-application.html",
+        "scholarships": "https://www.studyinholland.nl/scholarships/holland-scholarship"
+      }
+    },
+
+    "Delft University of Technology (TU Delft)": {
+      "card": "🏫 TU Delft — Delft University of Technology\n🌍 Нидерланды\n🎓 Направления: Engineering, IT, Architecture, Natural Sciences\n📝 Язык: Английский / Голландский\n💵 Стоимость: 2,209–18,000 EUR/год\n🔗 https://www.tudelft.nl/en/",
+      "documents": "📄 Паспорт, аттестат + перевод, табель, сертификат английского (IELTS 6.5 / TOEFL 90+), мотивационное письмо, CV, рекомендации, портфолио (для архитектуры), финансовые документы",
+      "scholarships": "💰 Holland Scholarship, TU Delft Excellence Scholarships, Orange Tulip Scholarship, Erasmus+",
+      "deadlines": "🕒 Осенний семестр: до 1 мая (бакалавр)\nМагистратура: март–май\nСтипендии: до 1 мая",
+      "process": "🧭 Регистрация через Studielink / онлайн форму, загрузка документов, Conditional Acceptance, Final Acceptance, виза, регистрация",
+      "programs": "📚 Mechanical Engineering, Civil Engineering, Computer Science, Aerospace Engineering, Architecture",
+      "links": {
+        "website": "https://www.tudelft.nl/en/",
+        "admissions": "https://www.tudelft.nl/en/education/admission-and-application/",
+        "scholarships": "https://www.studyinholland.nl/scholarships/holland-scholarship"
+      }
+    },
+
+    "Erasmus University Rotterdam (EUR)": {
+      "card": "🏫 Erasmus University Rotterdam\n🌍 Нидерланды\n🎓 Направления: Business, Economics, Social Sciences, Health\n📝 Язык: Английский / Голландский\n💵 Стоимость: 2,209–15,000 EUR/год\n🔗 https://www.eur.nl/en",
+      "documents": "📄 Паспорт, аттестат + перевод, табель, сертификат английского, мотивационное письмо, CV, рекомендации, финансовые документы",
+      "scholarships": "💰 Holland Scholarship, Orange Tulip Scholarship, Erasmus University Scholarships",
+      "deadlines": "🕒 Осенний семестр: до 1 мая\nМагистратура: март–май",
+      "process": "🧭 Studielink / онлайн регистрация, загрузка документов, Conditional / Final Acceptance, виза, регистрация",
+      "programs": "📚 Business Administration, Economics, International Business, Law, Health Sciences",
+      "links": {
+        "website": "https://www.eur.nl/en",
+        "admissions": "https://www.eur.nl/en/education/admissions",
+        "scholarships": "https://www.studyinholland.nl/scholarships/orange-tulip-scholarship"
+      }
+    },
+
+    "University of Twente (UT)": {
+      "card": "🏫 University of Twente\n🌍 Нидерланды\n🎓 Направления: Engineering, IT, Behavioural Sciences, Health Technology\n📝 Язык: Английский / Голландский\n💵 Стоимость: 2,209–15,000 EUR/год\n🔗 https://www.utwente.nl/en/",
+      "documents": "📄 Паспорт, аттестат + перевод, табель, сертификат английского, мотивационное письмо, CV, рекомендации, финансовые документы",
+      "scholarships": "💰 Holland Scholarship, Orange Tulip Scholarship, UT Excellence Scholarship, Erasmus+",
+      "deadlines": "🕒 Осенний семестр: до 1 мая\nМагистратура: март–май",
+      "process": "🧭 Studielink / онлайн форма, Conditional Acceptance, Final Acceptance, MVV / Residence Permit, регистрация",
+      "programs": "📚 Electrical Engineering, Mechanical Engineering, Computer Science, Health Technology, Behavioural Sciences",
+      "links": {
+        "website": "https://www.utwente.nl/en/",
+        "admissions": "https://www.utwente.nl/en/education/admission",
+        "scholarships": "https://www.studyinholland.nl/scholarships/orange-tulip-scholarship"
+      }
+    }
+  }
+}
