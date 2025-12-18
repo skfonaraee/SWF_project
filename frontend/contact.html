@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты - Study Without Fear</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-error {
+            border-color: #ef4444 !important;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .success-message {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Стили для чекбоксов стран */
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+        
+        .country-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .country-checkbox:hover {
+            background-color: #f9fafb;
+        }
+        
+        .country-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background-color: #0F4C81;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        
+        .country-tag button:hover {
+            background-color: #0d3f6b;
+            border-radius: 9999px;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Навигация -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Лого -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                </div>
+                
+                <!-- Основные ссылки -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Главная</a>
+                    <a href="programs.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Программы</a>
+                    <a href="universities.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Университеты</a>
+                    <a href="documents.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Документы</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Портфолио</a>
+                    <a href="contact.html" class="text-[#0F4C81] font-medium border-b-2 border-[#0F4C81]">Контакты</a>
+                </div>
+                
+                <!-- Правая часть (язык и вход) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Язык -->
+                    <div class="flex items-center space-x-2">
+                        <button id="lang-ru" class="px-2 py-1 bg-[#0F4C81] text-white rounded text-sm font-medium">РУС</button>
+                        <button id="lang-en" class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-sm font-medium">ENG</button>
+                    </div>
+                    
+                    <!-- Кнопки входа/регистрации -->
+                    <div id="auth-buttons">
+                        <a href="login.html" class="px-4 py-2 text-gray-700 hover:text-[#0F4C81] font-medium">Вход</a>
+                        <a href="register.html" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">Регистрация</a>
+                    </div>
+                </div>
+                
+                <!-- Мобильное меню -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильное меню (скрытое) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Главная</a>
+                <a href="programs.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Программы</a>
+                <a href="universities.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Университеты</a>
+                <a href="documents.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Документы</a>
+                <a href="portfolio.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Портфолио</a>
+                <a href="contact.html" class="block py-2 px-4 bg-[#0F4C81] text-white rounded">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white overflow-hidden">
+        <div class="relative container mx-auto px-4 py-16 md:py-24">
+            <div class="max-w-3xl animate-fadeIn">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-envelope text-4xl"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold">Свяжитесь с нами</h1>
+                </div>
+                <p class="text-lg md:text-xl mb-8 text-gray-100">
+                    Получите персонализированное руководство на вашем пути обучения за рубежом. Мы здесь, чтобы помочь вам на каждом этапе.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="openTelegramBot()"
+                       class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors text-center font-medium">
+                        <i class="fab fa-telegram mr-2"></i>Начать консультацию в Telegram
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Контактная информация -->
+            <div class="lg:col-span-1">
+                <div class="card p-6 sticky top-20">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Наши контакты</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fab fa-telegram text-xl text-[#0F4C81]"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-1">Telegram Bot</h3>
+                                <p class="text-gray-600 text-sm mb-2">
+                                    Мгновенные ответы 24/7
+                                </p>
+                                <button
+                                    onclick="openTelegramBot()"
+                                    class="text-[#0F4C81] hover:underline text-sm"
+                                >
+                                    @studywithoutfearbot
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-xl text-[#0F4C81]"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-1">Email</h3>
+                                <p class="text-gray-600 text-sm mb-2">
+                                    Ответ в течение 24-48 часов
+                                </p>
+                                <a href="mailto:info@studywithoutfear.com" class="text-[#0F4C81] hover:underline text-sm">
+                                    info@studywithoutfear.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone text-xl text-[#0F4C81]"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-1">Телефон</h3>
+                                <p class="text-gray-600 text-sm mb-2">
+                                    Пн-Пт, 9:00-18:00
+                                </p>
+                                <a href="tel:+77771234567" class="text-[#0F4C81] hover:underline text-sm">
+                                    +7 (777) 123-45-67
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-8 border-t border-gray-200">
+                        <h3 class="text-lg font-semibold mb-4">Быстрый старт</h3>
+                        <button onclick="openTelegramBot()"
+                           class="w-full px-4 py-3 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors flex items-center justify-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            Начать консультацию в Telegram
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Форма обратной связи -->
+            <div class="lg:col-span-2">
+                <div class="card p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Запросить обратный звонок</h2>
+                    
+                    <div id="form-success" class="hidden py-12 text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check-circle text-3xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800">Спасибо за обращение!</h3>
+                        <p class="text-gray-600">
+                            Мы получили ваш запрос и свяжемся с вами в течение 24-48 часов.
+                        </p>
+                    </div>
+                    
+                    <form id="contact-form" class="space-y-6">
+                        <!-- Общая ошибка -->
+                        <div id="general-error" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Полное имя <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    name="fullName"
+                                    required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]"
+                                    placeholder="Иван Иванов"
+                                />
+                                <div id="fullName-error" class="error-message hidden"></div>
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Email <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]"
+                                    placeholder="ivan@example.com"
+                                />
+                                <div id="email-error" class="error-message hidden"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Номер телефона <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]"
+                                    placeholder="+7 777 123 45 67"
+                                />
+                                <div id="phone-error" class="error-message hidden"></div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Предпочитаемые страны <span class="text-red-500">*</span>
+                                </label>
+                                <div id="selected-countries" class="border border-gray-300 rounded-lg p-3 min-h-[50px] max-h-[120px] overflow-y-auto">
+                                    <p class="text-gray-400 text-sm">Выберите страны...</p>
+                                </div>
+                                <div id="countries-list" class="countries-grid mt-2">
+                                    <!-- Страны будут добавлены через JavaScript -->
+                                </div>
+                                <div id="countries-error" class="error-message hidden">Выберите хотя бы одну страну</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="counselingMode" class="block text-sm font-medium text-gray-700 mb-2">
+                                Предпочтительный способ консультации <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="counselingMode"
+                                name="counselingMode"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]"
+                            >
+                                <option value="telegram">Telegram Bot</option>
+                                <option value="email">Email</option>
+                                <option value="phone">Телефонный звонок</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
+                                Сообщение (необязательно)
+                            </label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="5"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81] resize-none"
+                                placeholder="Расскажите нам о ваших целях обучения за рубежом, вопросах или особых требованиях..."
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            id="submit-button"
+                            class="w-full px-6 py-3 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium flex items-center justify-center"
+                        >
+                            <span id="submit-text">Отправить запрос</span>
+                            <span id="submit-loading" class="hidden">
+                                <i class="fas fa-spinner fa-spin ml-2"></i>
+                            </span>
+                        </button>
+
+                        <p class="text-sm text-gray-600 text-center">
+                            Отправляя эту форму, вы соглашаетесь с нашей политикой конфиденциальности и условиями обслуживания.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- FAQ -->
+                <div class="mt-8 card p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Часто задаваемые вопросы</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Как быстро я получу ответ?</h3>
+                            <p class="text-gray-700">
+                                Для запросов через Telegram вы получите мгновенные автоматические ответы и поддержку от человека в течение нескольких часов. Запросы по email и телефону обычно обрабатываются в течение 24-48 часов в рабочие дни.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Консультационная услуга бесплатна?</h3>
+                            <p class="text-gray-700">
+                                Да! Первичная консультация и руководство через нашего Telegram Bot и контактную форму совершенно бесплатны. Мы предоставляем комплексную информацию, чтобы помочь вам принимать обоснованные решения.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Какую информацию нужно подготовить перед обращением?</h3>
+                            <p class="text-gray-700">
+                                Подготовьте ваши академические транскрипты, результаты тестов (если есть), предпочитаемые страны и программы, а также любые конкретные вопросы. Это поможет нам предоставить более целенаправленные рекомендации.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Можете ли вы помочь с подачей заявки?</h3>
+                            <p class="text-gray-700">
+                                Мы предоставляем комплексное руководство по процессу подачи заявки, подготовке документов и дедлайнам. Для детальной помощи с заявкой мы можем обсудить варианты персонализированной поддержки.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- О нас -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Study Without Fear</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Помогаем казахстанским студентам найти международные программы обучения и стипендии
+                    </p>
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html" class="text-gray-300 hover:text-white">Программы</a></li>
+                        <li><a href="universities.html" class="text-gray-300 hover:text-white">Университеты</a></li>
+                        <li><a href="documents.html" class="text-gray-300 hover:text-white">Документы</a></li>
+                        <li><a href="portfolio.html" class="text-gray-300 hover:text-white">Портфолио</a></li>
+                        <li><a href="contact.html" class="text-white font-medium">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Поддержка -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-white font-medium">Контакты</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Связаться с нами</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@studywithoutfear.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (777) 123-45-67</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/studywithoutfearbot" class="text-gray-300 hover:text-white" target="_blank">
+                                @studywithoutfearbot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-8 border-gray-700">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Study Without Fear. Все права защищены.</p>
+                <p class="mt-2 text-sm">Платформа для казахстанских студентов</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Telegram Bot функция
+        function openTelegramBot() {
+            window.open('https://t.me/studywithoutfearbot', '_blank');
+        }
+        
+        // Данные стран
+        const COUNTRIES = [
+            { value: 'usa', label: 'США' },
+            { value: 'uk', label: 'Великобритания' },
+            { value: 'canada', label: 'Канада' },
+            { value: 'germany', label: 'Германия' },
+            { value: 'australia', label: 'Австралия' },
+            { value: 'france', label: 'Франция' },
+            { value: 'netherlands', label: 'Нидерланды' },
+            { value: 'japan', label: 'Япония' },
+            { value: 'south-korea', label: 'Южная Корея' },
+            { value: 'singapore', label: 'Сингапур' },
+            { value: 'hungary', label: 'Венгрия' },
+            { value: 'other', label: 'Другое' },
+        ];
+        
+        // Состояние формы
+        let formData = {
+            fullName: '',
+            email: '',
+            phone: '',
+            countries: [],
+            counselingMode: 'telegram',
+            message: '',
+        };
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Переключение языка
+            const langRu = document.getElementById('lang-ru');
+            const langEn = document.getElementById('lang-en');
+            
+            if (langRu && langEn) {
+                langRu.addEventListener('click', function() {
+                    setLanguage('ru');
+                });
+                
+                langEn.addEventListener('click', function() {
+                    setLanguage('en');
+                });
+            }
+            
+            // Инициализация списка стран
+            initCountriesList();
+            
+            // Обработка отправки формы
+            const contactForm = document.getElementById('contact-form');
+            const formSuccess = document.getElementById('form-success');
+            const submitButton = document.getElementById('submit-button');
+            const submitText = document.getElementById('submit-text');
+            const submitLoading = document.getElementById('submit-loading');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Сброс ошибок
+                    document.querySelectorAll('.error-message').forEach(el => {
+                        el.classList.add('hidden');
+                        el.textContent = '';
+                    });
+                    
+                    document.querySelectorAll('#general-error').forEach(el => {
+                        el.classList.add('hidden');
+                        el.textContent = '';
+                    });
+                    
+                    document.querySelectorAll('input, select, textarea').forEach(input => {
+                        input.classList.remove('input-error');
+                    });
+                    
+                    // Получение значений
+                    formData = {
+                        fullName: document.getElementById('fullName').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        phone: document.getElementById('phone').value.trim(),
+                        countries: formData.countries,
+                        counselingMode: document.getElementById('counselingMode').value,
+                        message: document.getElementById('message').value.trim(),
+                    };
+                    
+                    let isValid = true;
+                    
+                    // Валидация имени
+                    if (!formData.fullName) {
+                        document.getElementById('fullName-error').textContent = 'Введите ваше имя';
+                        document.getElementById('fullName-error').classList.remove('hidden');
+                        document.getElementById('fullName').classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Валидация email
+                    if (!formData.email) {
+                        document.getElementById('email-error').textContent = 'Введите email';
+                        document.getElementById('email-error').classList.remove('hidden');
+                        document.getElementById('email').classList.add('input-error');
+                        isValid = false;
+                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+                        document.getElementById('email-error').textContent = 'Введите правильный email';
+                        document.getElementById('email-error').classList.remove('hidden');
+                        document.getElementById('email').classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Валидация телефона
+                    if (!formData.phone) {
+                        document.getElementById('phone-error').textContent = 'Введите номер телефона';
+                        document.getElementById('phone-error').classList.remove('hidden');
+                        document.getElementById('phone').classList.add('input-error');
+                        isValid = false;
+                    }
+                    
+                    // Валидация стран
+                    if (formData.countries.length === 0) {
+                        document.getElementById('countries-error').classList.remove('hidden');
+                        isValid = false;
+                    }
+                    
+                    if (!isValid) return;
+                    
+                    // Показать загрузку
+                    submitText.textContent = 'Отправка...';
+                    submitLoading.classList.remove('hidden');
+                    submitButton.disabled = true;
+                    
+                    // Симуляция отправки
+                    setTimeout(() => {
+                        console.log('Form submitted:', formData);
+                        
+                        // Если выбран Telegram Bot, отправляем туда
+                        if (formData.counselingMode === 'telegram') {
+                            console.log('Sending request to AI Telegram Bot');
+                            window.open('https://t.me/studywithoutfearbot', '_blank');
+                        }
+                        
+                        // Показываем сообщение об успехе
+                        if (contactForm && formSuccess) {
+                            contactForm.classList.add('hidden');
+                            formSuccess.classList.remove('hidden');
+                        }
+                        
+                        // Сбрасываем форму через 3 секунды
+                        setTimeout(() => {
+                            if (contactForm && formSuccess) {
+                                contactForm.classList.remove('hidden');
+                                formSuccess.classList.add('hidden');
+                            }
+                            
+                            // Сброс формы
+                            contactForm.reset();
+                            formData.countries = [];
+                            updateSelectedCountries();
+                            
+                            submitText.textContent = 'Отправить запрос';
+                            submitLoading.classList.add('hidden');
+                            submitButton.disabled = false;
+                        }, 3000);
+                    }, 1000);
+                });
+            }
+        });
+        
+        // Функция инициализации списка стран
+        function initCountriesList() {
+            const countriesList = document.getElementById('countries-list');
+            if (!countriesList) return;
+            
+            countriesList.innerHTML = '';
+            
+            COUNTRIES.forEach(country => {
+                const label = document.createElement('label');
+                label.className = 'country-checkbox';
+                label.innerHTML = `
+                    <input type="checkbox" value="${country.value}" 
+                           ${formData.countries.includes(country.value) ? 'checked' : ''}
+                           class="w-4 h-4 text-[#0F4C81] border-gray-300 rounded focus:ring-[#0F4C81]">
+                    <span class="text-sm">${country.label}</span>
+                `;
+                
+                label.querySelector('input').addEventListener('change', function() {
+                    toggleCountry(country.value);
+                });
+                
+                countriesList.appendChild(label);
+            });
+            
+            updateSelectedCountries();
+        }
+        
+        // Функция переключения страны
+        function toggleCountry(countryValue) {
+            if (formData.countries.includes(countryValue)) {
+                formData.countries = formData.countries.filter(c => c !== countryValue);
+            } else {
+                formData.countries.push(countryValue);
+            }
+            updateSelectedCountries();
+            
+            // Скрываем ошибку стран при выборе
+            if (formData.countries.length > 0) {
+                document.getElementById('countries-error').classList.add('hidden');
+            }
+        }
+        
+        // Функция удаления страны
+        function removeCountry(countryValue) {
+            formData.countries = formData.countries.filter(c => c !== countryValue);
+            
+            // Обновляем чекбокс
+            const checkbox = document.querySelector(`input[value="${countryValue}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+            
+            updateSelectedCountries();
+        }
+        
+        // Функция обновления выбранных стран
+        function updateSelectedCountries() {
+            const selectedCountriesDiv = document.getElementById('selected-countries');
+            if (!selectedCountriesDiv) return;
+            
+            if (formData.countries.length > 0) {
+                selectedCountriesDiv.innerHTML = '';
+                const tagsContainer = document.createElement('div');
+                tagsContainer.className = 'flex flex-wrap gap-2 mb-2';
+                
+                formData.countries.forEach(country => {
+                    const countryLabel = COUNTRIES.find(c => c.value === country)?.label || country;
+                    const tag = document.createElement('span');
+                    tag.className = 'country-tag';
+                    tag.innerHTML = `
+                        ${countryLabel}
+                        <button type="button" onclick="removeCountry('${country}')" class="hover:bg-[#0d3f6b] rounded-full p-0.5">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    `;
+                    tagsContainer.appendChild(tag);
+                });
+                
+                selectedCountriesDiv.appendChild(tagsContainer);
+            } else {
+                selectedCountriesDiv.innerHTML = '<p class="text-gray-400 text-sm">Выберите страны...</p>';
+            }
+        }
+        
+        // Функция установки языка
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            if (lang === 'ru') {
+                document.getElementById('lang-ru').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-ru').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.remove('bg-[#0F4C81]', 'text-white');
+            } else {
+                document.getElementById('lang-en').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-en').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.remove('bg-[#0F4C81]', 'text-white');
+            }
+            
+            console.log('Language changed to:', lang);
+        }
+    </script>
+</body>
+</html>

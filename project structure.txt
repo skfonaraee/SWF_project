@@ -1,0 +1,44 @@
+study-without-fear/
+├── frontend/                    # HTML/CSS/JS фронтенд
+│   ├── index.html              # Главная страница
+│   ├── login.html              # Вход
+│   ├── register.html           # Регистрация
+│   ├── universities.html       # Университеты
+│   ├── university-detail.html  # Детали университета
+│   ├── programs.html           # Программы
+│   ├── program-detail.html     # Детали программы
+│   ├── scholarships.html       # Стипендии
+│   ├── documents.html          # Чеклист
+│   ├── portfolio.html          # Портфолио
+│   ├── contact.html            # Контакты
+│   ├── dashboard/
+│   │   ├── student.html        # Дашборд студента
+│   │   ├── admin.html          # Дашборд админа
+│   │   └── moderator.html      # Дашборд модератора
+│   ├── css/
+│   │   ├── tailwind.css       # Tailwind
+│   │   └── custom.css         # Доп. стили
+│   ├── js/
+│   │   ├── api.js             # Fetch к Django
+│   │   ├── auth.js            # Авторизация
+│   │   ├── navigation.js      # Навигация
+│   │   ├── forms.js           # Валидация форм
+│   │   ├── dashboard.js       # Логика дашбордов
+│   │   └── ui.js              # UI компоненты
+│   └── assets/                # Изображения, иконки
+├── backend/                    # Django проект
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── backend/
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── api/
+│   │   ├── models.py         # Модели PostgreSQL
+│   │   ├── views.py          # API views
+│   │   ├── serializers.py    # Сериализаторы
+│   │   ├── urls.py          # API маршруты
+│   │   └── admin.py         # Админка Django
+│   ├── templates/            # Django шаблоны (если нужно)
+│   └── static/              # Статика Django
+└── README.md                # Инструкция

@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Without Fear - Личный кабинет</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Toast Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sonner@2.0.3/dist/sonner.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sonner@2.0.3/dist/sonner.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .dashboard-nav {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-student {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        
+        /* Status badges */
+        .badge-watching {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .badge-preparing {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .badge-applied {
+            background-color: #f3e8ff;
+            color: #8b5cf6;
+        }
+        
+        .badge-accepted {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .badge-rejected {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn:hover {
+            background-color: #eff6ff;
+            color: var(--primary);
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Switch toggle */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+        
+        .form-input:disabled {
+            background-color: #f9fafb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            transition: all 0.2s;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+        
+        /* Avatar upload */
+        .avatar-upload {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .avatar-upload img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .avatar-upload label {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .avatar-upload input[type="file"] {
+            display: none;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            height: 100vh;
+            background-color: white;
+            z-index: 1001;
+            transition: right 0.3s ease;
+            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-nav.active {
+            right: 0;
+        }
+        
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Status colors for applications */
+        .status-watching { color: #3b82f6; }
+        .status-preparing { color: #f59e0b; }
+        .status-applied { color: #8b5cf6; }
+        .status-accepted { color: #10b981; }
+        .status-rejected { color: #ef4444; }
+        
+        /* Telegram integration */
+        .telegram-connected {
+            color: #10b981;
+        }
+        
+        .telegram-disconnected {
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Brand -->
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                        <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                    </a>
+                    <span class="badge badge-student text-sm">Студент</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <button id="lang-switch" class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        <i class="fas fa-language mr-1"></i>
+                        <span id="lang-text">РУС</span>
+                    </button>
+                    
+                    <!-- Notification Bell -->
+                    <button id="notification-btn" class="relative p-2">
+                        <i class="fas fa-bell text-xl text-gray-600"></i>
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="user-menu-btn" class="flex items-center space-x-2 hover:opacity-80">
+                            <div class="w-8 h-8 rounded-full bg-[#0F4C81] flex items-center justify-center text-white font-medium">
+                                <span id="user-initial">И</span>
+                            </div>
+                            <div class="text-left hidden lg:block">
+                                <div id="username" class="font-medium">Иван Иванов</div>
+                                <div id="user-email" class="text-sm text-gray-600">student@studywithoutfear.com</div>
+                            </div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-10">
+                            <a href="index.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-home mr-2"></i>На главную
+                            </a>
+                            <a href="#" id="notification-settings-btn" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-bell mr-2"></i>Уведомления
+                            </a>
+                            <hr class="my-2 border-gray-200">
+                            <a href="#" id="logout-btn" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2">
+                    <i class="fas fa-bars text-xl text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    <div id="mobile-nav" class="mobile-nav">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold">Study Without Fear</span>
+                </div>
+                <button id="mobile-close-btn" class="p-2">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <button class="w-full text-left px-4 py-3 rounded-lg bg-[#0F4C81] text-white">
+                    <i class="fas fa-user mr-3"></i>Профиль
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-heart mr-3"></i>Избранное
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-file-alt mr-3"></i>Трекер заявок
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-robot mr-3"></i>AI ассистент
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-cog mr-3"></i>Настройки
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-shield-alt mr-3"></i>Безопасность
+                </button>
+                
+                <hr class="my-4">
+                
+                <div class="px-4 py-3">
+                    <div class="font-medium mb-1">Иван Иванов</div>
+                    <div class="text-sm text-gray-600">student@studywithoutfear.com</div>
+                </div>
+                
+                <a href="index.html" class="block px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-home mr-3"></i>На главную
+                </a>
+                <button id="logout-btn-mobile" class="w-full text-left px-4 py-3 rounded-lg text-red-600 hover:bg-red-50">
+                    <i class="fas fa-sign-out-alt mr-3"></i>Выйти
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Личный кабинет студента</h1>
+            <p class="text-gray-600 mt-2">Добро пожаловать, <span id="welcome-username">Иван Иванов</span>!</p>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <button data-tab="profile" class="tab-btn active flex items-center gap-2">
+                <i class="fas fa-user"></i>
+                <span>Профиль</span>
+            </button>
+            <button data-tab="favorites" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-heart"></i>
+                <span>Избранное</span>
+            </button>
+            <button data-tab="tracker" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-file-alt"></i>
+                <span>Трекер заявок</span>
+            </button>
+            <button data-tab="ai" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-robot"></i>
+                <span>AI ассистент</span>
+            </button>
+            <button data-tab="settings" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-cog"></i>
+                <span>Настройки</span>
+            </button>
+            <button data-tab="security" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-shield-alt"></i>
+                <span>Безопасность</span>
+            </button>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboard-content">
+            <!-- Profile Tab -->
+            <div id="tab-profile" class="tab-content active">
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold mb-6">Профиль</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Avatar Section -->
+                        <div class="flex items-center gap-4">
+                            <div class="avatar-upload">
+                                <img id="avatar-preview" src="https://ui-avatars.com/api/?name=Иван+Иванов&background=0F4C81&color=fff&size=80" alt="Avatar">
+                                <label for="avatar-input">
+                                    <i class="fas fa-camera"></i>
+                                    <input type="file" id="avatar-input" accept="image/*">
+                                </label>
+                            </div>
+                            <button id="upload-avatar-btn" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+                                <i class="fas fa-upload mr-2"></i>Загрузить фото
+                            </button>
+                        </div>
+
+                        <!-- Profile Form -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Имя пользователя</label>
+                                <input type="text" id="username-input" class="form-input" value="Иван Иванов">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" value="student@studywithoutfear.com" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Цель обучения</label>
+                                <select id="education-goal-select" class="form-select">
+                                    <option value="">Выберите цель</option>
+                                    <option value="bachelor" selected>Бакалавриат</option>
+                                    <option value="master">Магистратура</option>
+                                    <option value="phd">PhD</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Специализация</label>
+                                <input type="text" id="specialization-input" class="form-input" value="Computer Science" placeholder="Например: Computer Science">
+                            </div>
+                        </div>
+
+                        <!-- Telegram Integration -->
+                        <div class="border-t pt-6">
+                            <h3 class="text-lg font-semibold mb-4">Интеграция с Telegram</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">Статус Telegram</p>
+                                        <p class="text-sm text-gray-600">
+                                            <span id="telegram-status" class="telegram-disconnected">Не подключен</span>
+                                        </p>
+                                    </div>
+                                    <button id="toggle-telegram-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                                        Подключить Telegram
+                                    </button>
+                                </div>
+
+                                <!-- Notification Settings (only when connected) -->
+                                <div id="notification-settings" class="space-y-3 pl-4 border-l-2 border-[#0F4C81] hidden">
+                                    <div class="flex items-center justify-between">
+                                        <label class="form-label mb-0 cursor-pointer" for="deadline-toggle">Напоминания о дедлайнах</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="deadline-toggle" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <label class="form-label mb-0 cursor-pointer" for="scholarship-toggle">Обновления о стипендиях</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="scholarship-toggle" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <label class="form-label mb-0 cursor-pointer" for="system-toggle">Системные уведомления</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="system-toggle" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Save Button -->
+                        <button id="save-profile-btn" class="px-6 py-3 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                            Сохранить изменения
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites Tab -->
+            <div id="tab-favorites" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-semibold">Избранные программы</h2>
+                        <span class="text-sm text-gray-600">Всего: 8 программ</span>
+                    </div>
+                    
+                    <div class="space-y-4" id="favorites-list">
+                        <!-- Favorites will be loaded via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tracker Tab -->
+            <div id="tab-tracker" class="tab-content">
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold mb-6">Трекер заявок</h2>
+                    
+                    <!-- Status Filter -->
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <button class="px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-100 active" data-status="all">Все</button>
+                        <button class="px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-100 status-watching" data-status="watching">Просматриваю</button>
+                        <button class="px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-100 status-preparing" data-status="preparing">Подготовка</button>
+                        <button class="px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-100 status-applied" data-status="applied">Подана</button>
+                        <button class="px-3 py-1 rounded-full border border-green-300 hover:bg-green-50 status-accepted" data-status="accepted">Принята</button>
+                        <button class="px-3 py-1 rounded-full border border-red-300 hover:bg-red-50 status-rejected" data-status="rejected">Отклонена</button>
+                    </div>
+                    
+                    <div class="space-y-4" id="applications-list">
+                        <!-- Applications will be loaded via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Assistant Tab -->
+            <div id="tab-ai" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-semibold">История AI ассистента</h2>
+                        <button id="new-ai-chat-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                            <i class="fas fa-plus mr-2"></i>Новый чат
+                        </button>
+                    </div>
+                    
+                    <!-- Chat Container -->
+                    <div class="mb-6 border border-gray-200 rounded-lg p-4 h-96 overflow-y-auto bg-gray-50">
+                        <div class="space-y-4" id="ai-chat-history">
+                            <!-- Chat history will be loaded via JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Input Area -->
+                    <div class="flex gap-2">
+                        <input type="text" id="ai-query-input" placeholder="Задайте вопрос AI ассистенту..." 
+                               class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81] focus:border-transparent">
+                        <button id="send-ai-query-btn" class="px-4 py-3 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="tab-settings" class="tab-content">
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold mb-6">Настройки</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="form-group">
+                            <label class="form-label">Язык</label>
+                            <p class="text-sm text-gray-600 mb-2">Переключатель языка находится в верхней навигации</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Тема</label>
+                            <select class="form-select">
+                                <option value="light" selected>Светлая</option>
+                                <option value="dark">Темная</option>
+                                <option value="auto">Авто</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Часовой пояс</label>
+                            <input type="text" class="form-input" value="Казахстан (UTC+5)" disabled>
+                            <p class="text-sm text-gray-600 mt-1">Фиксированный часовой пояс для всех пользователей</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div id="tab-security" class="tab-content">
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold mb-6">Безопасность</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Change Password -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Смена пароля</h3>
+                            <div class="space-y-3">
+                                <div class="form-group">
+                                    <label class="form-label">Текущий пароль</label>
+                                    <input type="password" id="current-password" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Новый пароль</label>
+                                    <input type="password" id="new-password" class="form-input">
+                                </div>
+                                <button id="update-password-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                                    Обновить пароль
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Login History -->
+                        <div class="border-t pt-6">
+                            <h3 class="text-lg font-semibold mb-4">История входов</h3>
+                            <div class="space-y-2">
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <p class="text-sm font-medium">Текущая сессия - ${new Date().toLocaleString()}</p>
+                                    <p class="text-xs text-gray-600">Chrome на Windows</p>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <p class="text-sm">2025-01-07 14:30:22</p>
+                                    <p class="text-xs text-gray-600">Safari на iPhone</p>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <p class="text-sm">2025-01-05 09:15:45</p>
+                                    <p class="text-xs text-gray-600">Firefox на macOS</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logout All -->
+                        <div class="border-t pt-6">
+                            <button id="logout-all-btn" class="px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50">
+                                Выйти со всех устройств
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Data
+        const mockData = {
+            user: {
+                id: '1',
+                username: 'Иван Иванов',
+                email: 'student@studywithoutfear.com',
+                role: 'student',
+                educationGoal: 'bachelor',
+                specialization: 'Computer Science',
+                telegramConnected: false,
+                notifications: {
+                    deadlineReminders: true,
+                    scholarshipUpdates: true,
+                    systemNotifications: true
+                }
+            },
+            favorites: [
+                {
+                    id: '1',
+                    name: 'Computer Science - MIT',
+                    university: 'Massachusetts Institute of Technology',
+                    country: 'США',
+                    type: 'Полная стипендия',
+                    deadline: '2025-01-15',
+                },
+                {
+                    id: '2',
+                    name: 'Business Administration - Oxford',
+                    university: 'University of Oxford',
+                    country: 'Великобритания',
+                    type: 'Частичная стипендия',
+                    deadline: '2025-02-01',
+                },
+                {
+                    id: '3',
+                    name: 'Engineering - ETH Zurich',
+                    university: 'ETH Zurich',
+                    country: 'Швейцария',
+                    type: 'Полная стипендия',
+                    deadline: '2025-03-01',
+                },
+            ],
+            applications: [
+                {
+                    id: '1',
+                    program: 'Computer Science - MIT',
+                    status: 'applied',
+                    deadline: '2025-01-15',
+                    notes: 'Отправлены все документы',
+                    documents: ['Резюме', 'Мотивационное письмо', 'Академическая справка'],
+                },
+                {
+                    id: '2',
+                    program: 'Engineering - ETH Zurich',
+                    status: 'preparing',
+                    deadline: '2025-03-01',
+                    notes: 'Нужно подготовить рекомендательные письма',
+                    documents: ['Резюме', 'Академическая справка'],
+                },
+                {
+                    id: '3',
+                    program: 'Business Administration - Oxford',
+                    status: 'watching',
+                    deadline: '2025-02-28',
+                    notes: 'Изучаю требования',
+                    documents: ['Резюме'],
+                },
+            ],
+            aiHistory: [
+                {
+                    id: '1',
+                    date: '2025-01-05 14:30',
+                    query: 'Какие требования для обучения в Германии?',
+                    response: 'Для обучения в Германии обычно требуется: сертификат о знании языка (TestDaF, DSH или аналогичный), академическая справка, мотивационное письмо и документы о финансировании обучения.',
+                },
+                {
+                    id: '2',
+                    date: '2025-01-03 10:15',
+                    query: 'Лучшие стипендии для студентов инженерии',
+                    response: 'Среди лучших стипендий для студентов инженерии: DAAD, Erasmus+, Erasmus Mundus, стипендии технических университетов Германии (RWTH, TUM), а также программы от компаний как Siemens и Bosch.',
+                },
+                {
+                    id: '3',
+                    date: '2024-12-28 16:45',
+                    query: 'Как подготовить мотивационное письмо?',
+                    response: 'Для подготовки убедительного мотивационного письма: 1) Начните с сильного введения, 2) Объясните ваш интерес к программе, 3) Покажите ваш опыт и достижения, 4) Объясните, как программа соответствует вашим целям, 5) Завершите кратким выводом.',
+                },
+            ]
+        };
+
+        // Current State
+        let currentTab = 'profile';
+        let currentLanguage = 'ru';
+        let user = { ...mockData.user };
+
+        // DOM Elements
+        const elements = {
+            langSwitch: document.getElementById('lang-switch'),
+            langText: document.getElementById('lang-text'),
+            username: document.getElementById('username'),
+            userEmail: document.getElementById('user-email'),
+            userInitial: document.getElementById('user-initial'),
+            welcomeUsername: document.getElementById('welcome-username'),
+            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+            mobileNav: document.getElementById('mobile-nav'),
+            mobileOverlay: document.getElementById('mobile-overlay'),
+            mobileCloseBtn: document.getElementById('mobile-close-btn'),
+            logoutBtn: document.getElementById('logout-btn'),
+            logoutBtnMobile: document.getElementById('logout-btn-mobile'),
+            logoutAllBtn: document.getElementById('logout-all-btn'),
+            userMenuBtn: document.getElementById('user-menu-btn'),
+            userDropdown: document.getElementById('user-dropdown'),
+            notificationBtn: document.getElementById('notification-btn'),
+            
+            // Profile elements
+            avatarPreview: document.getElementById('avatar-preview'),
+            avatarInput: document.getElementById('avatar-input'),
+            uploadAvatarBtn: document.getElementById('upload-avatar-btn'),
+            usernameInput: document.getElementById('username-input'),
+            educationGoalSelect: document.getElementById('education-goal-select'),
+            specializationInput: document.getElementById('specialization-input'),
+            telegramStatus: document.getElementById('telegram-status'),
+            toggleTelegramBtn: document.getElementById('toggle-telegram-btn'),
+            notificationSettings: document.getElementById('notification-settings'),
+            saveProfileBtn: document.getElementById('save-profile-btn'),
+            
+            // Favorites elements
+            favoritesList: document.getElementById('favorites-list'),
+            
+            // Tracker elements
+            applicationsList: document.getElementById('applications-list'),
+            
+            // AI elements
+            aiChatHistory: document.getElementById('ai-chat-history'),
+            aiQueryInput: document.getElementById('ai-query-input'),
+            sendAiQueryBtn: document.getElementById('send-ai-query-btn'),
+            newAiChatBtn: document.getElementById('new-ai-chat-btn'),
+            
+            // Security elements
+            updatePasswordBtn: document.getElementById('update-password-btn'),
+            currentPassword: document.getElementById('current-password'),
+            newPassword: document.getElementById('new-password'),
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            setupEventListeners();
+            updateUI();
+        });
+
+        // Load mock data
+        function loadData() {
+            // Load user data
+            elements.username.textContent = user.username;
+            elements.userEmail.textContent = user.email;
+            elements.userInitial.textContent = user.username.charAt(0);
+            elements.welcomeUsername.textContent = user.username;
+            elements.usernameInput.value = user.username;
+            elements.educationGoalSelect.value = user.educationGoal;
+            elements.specializationInput.value = user.specialization;
+            
+            // Update Telegram status
+            updateTelegramUI();
+            
+            // Load favorites
+            loadFavorites();
+            
+            // Load applications
+            loadApplications();
+            
+            // Load AI history
+            loadAIHistory();
+        }
+
+        // Load favorites
+        function loadFavorites() {
+            elements.favoritesList.innerHTML = mockData.favorites.map(fav => `
+                <div class="card p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-medium text-lg mb-1">${fav.name}</h3>
+                            <p class="text-gray-600 text-sm mb-2">${fav.university}</p>
+                            <div class="flex gap-2 mb-2">
+                                <span class="badge" style="background-color: #dbeafe; color: #1d4ed8;">${fav.country}</span>
+                                <span class="badge" style="background-color: #dcfce7; color: #16a34a;">${fav.type}</span>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                Дедлайн: ${new Date(fav.deadline).toLocaleDateString()}
+                            </p>
+                        </div>
+                        <button class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm" onclick="viewProgram('${fav.id}')">
+                            Посмотреть
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load applications
+        function loadApplications() {
+            elements.applicationsList.innerHTML = mockData.applications.map(app => {
+                const statusInfo = getStatusInfo(app.status);
+                return `
+                    <div class="card p-4">
+                        <div class="flex items-start justify-between mb-3">
+                            <div>
+                                <h3 class="font-medium text-lg mb-1">${app.program}</h3>
+                                <span class="badge ${statusInfo.badgeClass} flex items-center gap-1 w-fit">
+                                    ${statusInfo.icon}
+                                    ${statusInfo.text}
+                                </span>
+                            </div>
+                            <button class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm" onclick="editApplication('${app.id}')">
+                                Редактировать
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <p class="text-gray-600">Дедлайн</p>
+                                <p class="font-medium">${new Date(app.deadline).toLocaleDateString()}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Документы</p>
+                                <p>${app.documents.join(', ')}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Заметки</p>
+                                <p>${app.notes}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load AI history
+        function loadAIHistory() {
+            elements.aiChatHistory.innerHTML = mockData.aiHistory.map(item => `
+                <div class="space-y-2">
+                    <div class="text-sm text-gray-600">${item.date}</div>
+                    <div class="space-y-2">
+                        <div class="bg-white p-3 rounded-lg border border-gray-200">
+                            <p class="text-sm text-gray-600 mb-1">Вопрос:</p>
+                            <p>${item.query}</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                            <p class="text-sm text-gray-600 mb-1">Ответ:</p>
+                            <p class="text-gray-700">${item.response}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get status information
+        function getStatusInfo(status) {
+            switch(status) {
+                case 'watching':
+                    return {
+                        badgeClass: 'badge-watching',
+                        icon: '<i class="fas fa-eye"></i>',
+                        text: 'Просматриваю'
+                    };
+                case 'preparing':
+                    return {
+                        badgeClass: 'badge-preparing',
+                        icon: '<i class="fas fa-clock"></i>',
+                        text: 'Подготовка'
+                    };
+                case 'applied':
+                    return {
+                        badgeClass: 'badge-applied',
+                        icon: '<i class="fas fa-file-alt"></i>',
+                        text: 'Подана'
+                    };
+                case 'accepted':
+                    return {
+                        badgeClass: 'badge-accepted',
+                        icon: '<i class="fas fa-check-circle"></i>',
+                        text: 'Принята'
+                    };
+                case 'rejected':
+                    return {
+                        badgeClass: 'badge-rejected',
+                        icon: '<i class="fas fa-times-circle"></i>',
+                        text: 'Отклонена'
+                    };
+                default:
+                    return {
+                        badgeClass: 'badge-watching',
+                        icon: '',
+                        text: status
+                    };
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Language switch
+            elements.langSwitch?.addEventListener('click', toggleLanguage);
+            
+            // Mobile menu
+            elements.mobileMenuBtn?.addEventListener('click', openMobileMenu);
+            elements.mobileCloseBtn?.addEventListener('click', closeMobileMenu);
+            elements.mobileOverlay?.addEventListener('click', closeMobileMenu);
+            
+            // User dropdown
+            elements.userMenuBtn?.addEventListener('click', toggleUserDropdown);
+            document.addEventListener('click', closeUserDropdown);
+            
+            // Logout
+            elements.logoutBtn?.addEventListener('click', logout);
+            elements.logoutBtnMobile?.addEventListener('click', logout);
+            elements.logoutAllBtn?.addEventListener('click', logoutAll);
+            
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    switchTab(tab);
+                });
+            });
+            
+            // Status filter
+            document.querySelectorAll('[data-status]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const status = this.dataset.status;
+                    filterApplications(status);
+                    
+                    // Update active state
+                    document.querySelectorAll('[data-status]').forEach(b => b.classList.remove('active', 'bg-blue-100'));
+                    this.classList.add('active', 'bg-blue-100');
+                });
+            });
+            
+            // Profile
+            elements.avatarInput?.addEventListener('change', handleAvatarUpload);
+            elements.uploadAvatarBtn?.addEventListener('click', () => elements.avatarInput?.click());
+            elements.toggleTelegramBtn?.addEventListener('click', toggleTelegram);
+            elements.saveProfileBtn?.addEventListener('click', saveProfile);
+            
+            // AI Assistant
+            elements.sendAiQueryBtn?.addEventListener('click', sendAIQuery);
+            elements.newAiChatBtn?.addEventListener('click', startNewAIChat);
+            elements.aiQueryInput?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendAIQuery();
+                }
+            });
+            
+            // Security
+            elements.updatePasswordBtn?.addEventListener('click', updatePassword);
+            
+            // Notification toggles
+            document.querySelectorAll('.switch input').forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    const setting = this.id.replace('-toggle', '');
+                    updateNotificationSetting(setting, this.checked);
+                });
+            });
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+            elements.langText.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
+            showToast('Язык изменен', `Язык интерфейса изменен на ${currentLanguage === 'ru' ? 'русский' : 'английский'}`);
+        }
+
+        // Mobile menu functions
+        function openMobileMenu() {
+            elements.mobileNav.classList.add('active');
+            elements.mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            elements.mobileNav.classList.remove('active');
+            elements.mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // User dropdown functions
+        function toggleUserDropdown(e) {
+            e.stopPropagation();
+            elements.userDropdown.classList.toggle('hidden');
+        }
+
+        function closeUserDropdown(e) {
+            if (!elements.userMenuBtn.contains(e.target) && !elements.userDropdown.contains(e.target)) {
+                elements.userDropdown.classList.add('hidden');
+            }
+        }
+
+        // Switch tab
+        function switchTab(tab) {
+            currentTab = tab;
+            updateTabs();
+        }
+
+        // Update tabs visibility and active state
+        function updateTabs() {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Set active tab button
+            const activeTabBtn = document.querySelector(`.tab-btn[data-tab="${currentTab}"]`);
+            if (activeTabBtn) {
+                activeTabBtn.classList.add('active');
+            }
+            
+            // Show current tab content
+            const tabContent = document.getElementById(`tab-${currentTab}`);
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+        }
+
+        // Filter applications by status
+        function filterApplications(status) {
+            if (status === 'all') {
+                loadApplications();
+            } else {
+                const filtered = mockData.applications.filter(app => app.status === status);
+                elements.applicationsList.innerHTML = filtered.map(app => {
+                    const statusInfo = getStatusInfo(app.status);
+                    return `
+                        <div class="card p-4">
+                            <div class="flex items-start justify-between mb-3">
+                                <div>
+                                    <h3 class="font-medium text-lg mb-1">${app.program}</h3>
+                                    <span class="badge ${statusInfo.badgeClass} flex items-center gap-1 w-fit">
+                                        ${statusInfo.icon}
+                                        ${statusInfo.text}
+                                    </span>
+                                </div>
+                                <button class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm" onclick="editApplication('${app.id}')">
+                                    Редактировать
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <div>
+                                    <p class="text-gray-600">Дедлайн</p>
+                                    <p class="font-medium">${new Date(app.deadline).toLocaleDateString()}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Документы</p>
+                                    <p>${app.documents.join(', ')}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Заметки</p>
+                                    <p>${app.notes}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Handle avatar upload
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    showToast('Ошибка', 'Пожалуйста, выберите изображение');
+                    return;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) { // 5MB
+                    showToast('Ошибка', 'Изображение должно быть меньше 5MB');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    elements.avatarPreview.src = e.target.result;
+                    showToast('Фото обновлено', 'Аватар успешно загружен');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Toggle Telegram connection
+        function toggleTelegram() {
+            user.telegramConnected = !user.telegramConnected;
+            updateTelegramUI();
+            
+            if (user.telegramConnected) {
+                showToast('Telegram подключен', 'Теперь вы будете получать уведомления');
+            } else {
+                showToast('Telegram отключен', 'Уведомления больше не будут приходить');
+            }
+        }
+
+        // Update Telegram UI
+        function updateTelegramUI() {
+            if (user.telegramConnected) {
+                elements.telegramStatus.textContent = 'Подключен';
+                elements.telegramStatus.className = 'telegram-connected';
+                elements.toggleTelegramBtn.textContent = 'Отключить Telegram';
+                elements.toggleTelegramBtn.className = 'px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100';
+                elements.notificationSettings.classList.remove('hidden');
+            } else {
+                elements.telegramStatus.textContent = 'Не подключен';
+                elements.telegramStatus.className = 'telegram-disconnected';
+                elements.toggleTelegramBtn.textContent = 'Подключить Telegram';
+                elements.toggleTelegramBtn.className = 'px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]';
+                elements.notificationSettings.classList.add('hidden');
+            }
+        }
+
+        // Save profile
+        function saveProfile() {
+            user.username = elements.usernameInput.value;
+            user.educationGoal = elements.educationGoalSelect.value;
+            user.specialization = elements.specializationInput.value;
+            
+            // Update UI
+            elements.username.textContent = user.username;
+            elements.welcomeUsername.textContent = user.username;
+            elements.userInitial.textContent = user.username.charAt(0);
+            
+            showToast('Профиль обновлен', 'Изменения успешно сохранены');
+        }
+
+        // Update notification setting
+        function updateNotificationSetting(setting, value) {
+            user.notifications[setting] = value;
+            showToast('Настройки обновлены', `${getNotificationName(setting)} ${value ? 'включены' : 'выключены'}`);
+        }
+
+        function getNotificationName(setting) {
+            const names = {
+                deadline: 'Напоминания о дедлайнах',
+                scholarship: 'Обновления о стипендиях',
+                system: 'Системные уведомления'
+            };
+            return names[setting] || setting;
+        }
+
+        // Send AI query
+        function sendAIQuery() {
+            const query = elements.aiQueryInput.value.trim();
+            if (!query) return;
+            
+            // Add user message
+            const userMessage = `
+                <div class="flex justify-end mb-2">
+                    <div class="bg-[#0F4C81] text-white p-3 rounded-lg max-w-xl">
+                        <p>${query}</p>
+                    </div>
+                </div>
+            `;
+            
+            elements.aiChatHistory.innerHTML += userMessage;
+            
+            // Clear input
+            elements.aiQueryInput.value = '';
+            
+            // Show typing indicator
+            const typingIndicator = `
+                <div class="flex items-start mb-2">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                        <i class="fas fa-robot text-gray-600"></i>
+                    </div>
+                    <div class="bg-gray-100 p-3 rounded-lg">
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-75"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-150"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            elements.aiChatHistory.innerHTML += typingIndicator;
+            
+            // Scroll to bottom
+            const chatContainer = elements.aiChatHistory.parentElement;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Simulate AI response after delay
+            setTimeout(() => {
+                // Remove typing indicator
+                elements.aiChatHistory.querySelectorAll('.bg-gray-100').forEach(el => {
+                    if (el.querySelector('.animate-bounce')) {
+                        el.remove();
+                    }
+                });
+                
+                // Add AI response
+                const aiResponse = `
+                    <div class="flex items-start mb-4">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+                            <i class="fas fa-robot text-blue-600"></i>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg max-w-xl">
+                            <p>${getAIResponse(query)}</p>
+                        </div>
+                    </div>
+                `;
+                
+                elements.aiChatHistory.innerHTML += aiResponse;
+                
+                // Scroll to bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1500);
+        }
+
+        // Get AI response based on query
+        function getAIResponse(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            if (lowerQuery.includes('стипендия') || lowerQuery.includes('scholarship')) {
+                return 'Для поиска подходящих стипендий рекомендую использовать наш раздел "Программы" с фильтрацией по типу финансирования. Обратите внимание на такие стипендии как: Erasmus+, DAAD, Fulbright, Chevening. У каждой свои требования и дедлайны.';
+            } else if (lowerQuery.includes('документ') || lowerQuery.includes('document')) {
+                return 'Основные документы для подачи заявки: паспорт, академическая справка, сертификат о знании языка (IELTS/TOEFL), мотивационное письмо, рекомендательные письма, CV/резюме. Все документы могут потребовать перевода и апостиля.';
+            } else if (lowerQuery.includes('германи') || lowerQuery.includes('germany')) {
+                return 'Для обучения в Германии: требуется знание немецкого или английского языка, финансирование (блокированный счет), академическая справка, мотивационное письмо. Многие университеты предлагают программы на английском.';
+            } else if (lowerQuery.includes('мотивацион') || lowerQuery.includes('motivation')) {
+                return 'Мотивационное письмо должно: 1) Объяснять ваш интерес к программе 2) Показывать ваш академический опыт 3) Связывать ваши цели с программой 4) Быть уникальным для каждого заявления 5) Соблюдать требования по длине.';
+            } else {
+                return 'Спасибо за ваш вопрос! Я AI-ассистент Study Without Fear. Для получения более детальной информации по вашей ситуации, пожалуйста, уточните ваш запрос или воспользуйтесь соответствующими разделами нашего сайта.';
+            }
+        }
+
+        // Start new AI chat
+        function startNewAIChat() {
+            elements.aiChatHistory.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-robot text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">AI Ассистент</h3>
+                    <p class="text-gray-600">Задайте мне вопрос о программах, стипендиях или документах</p>
+                </div>
+            `;
+            
+            showToast('Новый чат', 'Начните новый разговор с AI ассистентом');
+        }
+
+        // Update password
+        function updatePassword() {
+            const currentPass = elements.currentPassword.value;
+            const newPass = elements.newPassword.value;
+            
+            if (!currentPass || !newPass) {
+                showToast('Ошибка', 'Пожалуйста, заполните все поля');
+                return;
+            }
+            
+            if (newPass.length < 8) {
+                showToast('Ошибка', 'Новый пароль должен содержать минимум 8 символов');
+                return;
+            }
+            
+            // In real app, this would make API call
+            elements.currentPassword.value = '';
+            elements.newPassword.value = '';
+            showToast('Пароль обновлен', 'Ваш пароль был успешно изменен');
+        }
+
+        // Global functions for table actions
+        window.viewProgram = function(id) {
+            showToast('Просмотр программы', `Открытие программы с ID: ${id}`);
+            // In real app, navigate to program page
+        };
+
+        window.editApplication = function(id) {
+            showToast('Редактирование заявки', `Редактирование заявки с ID: ${id}`);
+            // In real app, open edit modal
+        };
+
+        // Toast notification
+        function showToast(title, description) {
+            if (window.sonner) {
+                window.sonner.toast(title, {
+                    description: description,
+                    duration: 4000,
+                });
+            } else {
+                alert(`${title}: ${description}`);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                // In real app, this would clear auth tokens
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Logout from all devices
+        function logoutAll() {
+            if (confirm('Вы уверены, что хотите выйти со всех устройств?')) {
+                showToast('Выход выполнен', 'Вы вышли со всех устройств');
+                // In real app, this would clear all sessions
+            }
+        }
+
+        // Update UI
+        function updateUI() {
+            updateTabs();
+        }
+    </script>
+</body>
+</html>

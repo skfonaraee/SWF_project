@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали программы - Study Without Fear</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .coverage-check {
+            transition: all 0.3s ease;
+        }
+        
+        .coverage-check.checked {
+            color: #10b981;
+        }
+        
+        .coverage-check.unchecked {
+            color: #9ca3af;
+        }
+        
+        .requirement-bullet {
+            color: #0F4C81;
+        }
+        
+        .document-item {
+            transition: background-color 0.3s ease;
+        }
+        
+        .document-item:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Навигация -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Лого -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                </div>
+                
+                <!-- Основные ссылки -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Главная</a>
+                    <a href="programs.html" class="text-[#0F4C81] font-medium border-b-2 border-[#0F4C81]">Программы</a>
+                    <a href="universities.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Университеты</a>
+                    <a href="documents.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Документы</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Портфолио</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Контакты</a>
+                </div>
+                
+                <!-- Правая часть (язык и вход) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Язык -->
+                    <div class="flex items-center space-x-2">
+                        <button id="lang-ru" class="px-2 py-1 bg-[#0F4C81] text-white rounded text-sm font-medium">РУС</button>
+                        <button id="lang-en" class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-sm font-medium">ENG</button>
+                    </div>
+                    
+                    <!-- Кнопки входа/регистрации -->
+                    <div id="auth-buttons">
+                        <a href="login.html" class="px-4 py-2 text-gray-700 hover:text-[#0F4C81] font-medium">Вход</a>
+                        <a href="register.html" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">Регистрация</a>
+                    </div>
+                </div>
+                
+                <!-- Мобильное меню -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильное меню (скрытое) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Главная</a>
+                <a href="programs.html" class="block py-2 px-4 bg-[#0F4C81] text-white rounded">Программы</a>
+                <a href="universities.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Университеты</a>
+                <a href="documents.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Документы</a>
+                <a href="portfolio.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Портфолио</a>
+                <a href="contact.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Шапка программы -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-8">
+            <a href="programs.html" class="flex items-center gap-2 text-[#0F4C81] hover:underline mb-6 font-medium">
+                <i class="fas fa-arrow-left"></i>
+                Назад к программам
+            </a>
+            
+            <div class="flex items-start gap-6 mb-8">
+                <div id="program-flag" class="text-6xl">🇪🇺</div>
+                <div class="flex-1">
+                    <h1 id="program-name" class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Загрузка...</h1>
+                    <div id="program-info" class="flex flex-wrap items-center gap-6 text-gray-600 mb-4">
+                        <!-- Информация загрузится через JS -->
+                    </div>
+                </div>
+                <span id="program-type" class="px-6 py-3 rounded-full text-lg font-medium hidden lg:block">
+                    <!-- Тип загрузится через JS -->
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Обзор -->
+        <div class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Обзор программы</h2>
+            <p id="program-description" class="text-gray-700 mb-6 text-lg leading-relaxed">Загрузка...</p>
+            <div class="flex items-center gap-2 text-gray-700">
+                <i class="fas fa-book-open text-[#0F4C81]"></i>
+                <span class="font-medium">Дисциплина:</span>
+                <span id="discipline-text" class="text-[#0F4C81] font-medium">Загрузка...</span>
+            </div>
+        </div>
+
+        <!-- Что покрывает стипендия -->
+        <div class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Что покрывает эта стипендия</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="coverage-list">
+                <!-- Покрытие загрузится через JS -->
+            </div>
+        </div>
+
+        <!-- Требования -->
+        <div class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Требования к кандидатам</h2>
+            <div id="requirements-list" class="space-y-6">
+                <!-- Требования загрузятся через JS -->
+            </div>
+        </div>
+
+        <!-- Документы -->
+        <div class="card p-8 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-file-alt text-xl text-[#0F4C81]"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">Необходимые документы</h2>
+            </div>
+            <ul id="documents-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <!-- Документы загрузятся через JS -->
+            </ul>
+        </div>
+
+        <!-- CTA -->
+        <div class="hero-gradient rounded-lg shadow-md p-8 text-white text-center">
+            <i class="fas fa-award text-5xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-4">Готовы подать заявку?</h2>
+            <p class="mb-6 text-gray-100 text-lg max-w-2xl mx-auto">
+                Получите персональное руководство и проверьте свое соответствие через нашего Telegram Bot
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button onclick="openTelegramBot()"
+                        class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors font-medium">
+                    <i class="fab fa-telegram mr-2"></i>Проверить соответствие в Telegram Bot
+                </button>
+                <a href="documents.html"
+                   class="inline-block px-8 py-4 bg-white text-[#0F4C81] rounded-lg hover:bg-gray-100 transition-colors font-medium">
+                    <i class="fas fa-file-alt mr-2"></i>Посмотреть чеклист документов
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- О нас -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Study Without Fear</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Помогаем казахстанским студентам найти международные программы обучения и стипендии
+                    </p>
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html" class="text-white font-medium">Программы</a></li>
+                        <li><a href="universities.html" class="text-gray-300 hover:text-white">Университеты</a></li>
+                        <li><a href="documents.html" class="text-gray-300 hover:text-white">Документы</a></li>
+                        <li><a href="portfolio.html" class="text-gray-300 hover:text-white">Портфолио</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Поддержка -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Связаться с нами</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@studywithoutfear.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (777) 123-45-67</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/studywithoutfearbot" class="text-gray-300 hover:text-white" target="_blank">
+                                @studywithoutfearbot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-8 border-gray-700">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Study Without Fear. Все права защищены.</p>
+                <p class="mt-2 text-sm">Платформа для казахстанских студентов</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Telegram Bot функция
+        function openTelegramBot() {
+            window.open('https://t.me/studywithoutfearbot', '_blank');
+        }
+
+        // Данные программ
+        const programsData = {
+            'erasmus-plus': {
+                name: 'Erasmus+ Scholarship',
+                country: 'Europe',
+                flag: '🇪🇺',
+                type: 'Full',
+                level: 'Master',
+                discipline: 'Various',
+                deadline: '2025-01-15',
+                description: 'Erasmus+ предлагает полные стипендии для студентов магистратуры для обучения в европейских университетах с полным покрытием расходов.',
+                url: 'https://erasmus-plus.ec.europa.eu/',
+                coverage: {
+                    tuition: true,
+                    accommodation: true,
+                    insurance: true,
+                    flight: true
+                },
+                requirements: {
+                    gpa: '3.0+',
+                    language: 'IELTS 6.5 или TOEFL 90+',
+                    citizenship: 'Граждане не из ЕС',
+                    additional: ['Сильная академическая успеваемость', 'Мотивационное письмо', 'Рекомендательные письма']
+                },
+                documents: [
+                    'Паспорт',
+                    'Диплом бакалавра',
+                    'Академическая выписка',
+                    '2 рекомендательных письма',
+                    'Мотивационное письмо',
+                    'Резюме/CV',
+                    'Сертификат языка (IELTS/TOEFL)',
+                    'Фотографии на паспорт'
+                ]
+            },
+            'stipendium-hungaricum': {
+                name: 'Stipendium Hungaricum',
+                country: 'Hungary',
+                flag: '🇭🇺',
+                type: 'Full',
+                level: 'Bachelor',
+                discipline: 'Various',
+                deadline: '2025-01-16',
+                description: 'Венгерская государственная стипендия, предлагающая полное покрытие обучения и ежемесячную стипендию для иностранных студентов.',
+                url: 'https://www.stipendiumhungaricum.hu/',
+                coverage: {
+                    tuition: true,
+                    accommodation: true,
+                    insurance: true,
+                    flight: false
+                },
+                requirements: {
+                    gpa: '2.5+',
+                    language: 'IELTS 5.5 или эквивалент',
+                    citizenship: 'Страны-партнеры',
+                    additional: ['Возраст до 25 лет для бакалавриата']
+                },
+                documents: [
+                    'Паспорт',
+                    'Аттестат о среднем образовании',
+                    'Академическая выписка',
+                    'Медицинская справка',
+                    'Мотивационное письмо',
+                    'Резюме/CV',
+                    'Сертификат языка',
+                    'Фотографии на паспорт'
+                ]
+            },
+            'daad-scholarship': {
+                name: 'DAAD Scholarship',
+                country: 'Germany',
+                flag: '🇩🇪',
+                type: 'Full',
+                level: 'Master',
+                discipline: 'Engineering, IT, Sciences',
+                deadline: '2024-10-31',
+                description: 'Немецкая служба академических обменов предлагает стипендии для высококвалифицированных иностранных студентов.',
+                url: 'https://www.daad.de/en/',
+                coverage: {
+                    tuition: true,
+                    accommodation: true,
+                    insurance: true,
+                    flight: true
+                },
+                requirements: {
+                    gpa: '3.5+',
+                    language: 'IELTS 6.5 или немецкий B2',
+                    citizenship: 'Приоритет для развивающихся стран',
+                    additional: ['Предпочтительно наличие соответствующего опыта работы']
+                },
+                documents: [
+                    'Паспорт',
+                    'Диплом бакалавра',
+                    'Академическая выписка',
+                    '2-3 рекомендательных письма',
+                    'Мотивационное письмо',
+                    'Резюме/CV',
+                    'Сертификат языка',
+                    'Исследовательское предложение (для исследовательских программ)'
+                ]
+            }
+        };
+
+        // Загрузка данных программы
+        function loadProgramData() {
+            const programId = localStorage.getItem('selectedProgramId') || 'erasmus-plus';
+            const program = programsData[programId];
+            
+            if (!program) {
+                // Если программа не найдена
+                document.querySelector('h1').textContent = 'Программа не найдена';
+                return;
+            }
+            
+            // Флаг и название
+            document.getElementById('program-flag').textContent = program.flag;
+            document.getElementById('program-name').textContent = program.name;
+            
+            // Информация
+            const isUpcoming = new Date(program.deadline) > new Date();
+            const infoDiv = document.getElementById('program-info');
+            infoDiv.innerHTML = `
+                <div class="flex items-center gap-3 text-gray-700">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-map-marker-alt text-[#0F4C81]"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">Страна</div>
+                        <div class="font-medium">${program.country}</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 text-gray-700">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-[#0F4C81]"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">Уровень</div>
+                        <div class="font-medium">${program.level === 'Bachelor' ? 'Бакалавриат' : 
+                          program.level === 'Master' ? 'Магистратура' : 'Докторантура'}</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 text-gray-700">
+                    <div class="w-10 h-10 ${isUpcoming ? 'bg-green-100' : 'bg-red-100'} rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-alt ${isUpcoming ? 'text-green-600' : 'text-red-600'}"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">Дедлайн</div>
+                        <div class="font-medium ${isUpcoming ? 'text-green-600' : 'text-red-600'}">${program.deadline}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Тип
+            const typeBadge = document.getElementById('program-type');
+            const typeColors = {
+                'Full': 'bg-green-100 text-green-800',
+                'Partial': 'bg-blue-100 text-blue-800',
+                'Government': 'bg-purple-100 text-purple-800',
+                'Self-funded': 'bg-gray-100 text-gray-800'
+            };
+            typeBadge.className = `px-6 py-3 rounded-full ${typeColors[program.type] || 'bg-gray-100 text-gray-800'} font-medium`;
+            typeBadge.textContent = program.type === 'Full' ? 'Полная стипендия' : 
+                                   program.type === 'Partial' ? 'Частичная стипендия' : 
+                                   program.type === 'Government' ? 'Государственный грант' : 'Самофинансирование';
+            typeBadge.classList.remove('hidden');
+            
+            // Описание
+            document.getElementById('program-description').textContent = program.description;
+            document.getElementById('discipline-text').textContent = program.discipline;
+            
+            // Покрытие
+            const coverageList = document.getElementById('coverage-list');
+            coverageList.innerHTML = `
+                <div class="flex flex-col items-center p-4 border border-gray-200 rounded-lg">
+                    ${program.coverage.tuition ? 
+                        '<i class="fas fa-check-circle text-3xl coverage-check checked mb-3"></i>' : 
+                        '<div class="w-8 h-8 rounded-full border-2 border-gray-300 mb-3"></div>'}
+                    <span class="${program.coverage.tuition ? 'text-gray-900 font-medium' : 'text-gray-400'} text-center">
+                        Оплата обучения
+                    </span>
+                </div>
+                <div class="flex flex-col items-center p-4 border border-gray-200 rounded-lg">
+                    ${program.coverage.accommodation ? 
+                        '<i class="fas fa-check-circle text-3xl coverage-check checked mb-3"></i>' : 
+                        '<div class="w-8 h-8 rounded-full border-2 border-gray-300 mb-3"></div>'}
+                    <span class="${program.coverage.accommodation ? 'text-gray-900 font-medium' : 'text-gray-400'} text-center">
+                        Проживание
+                    </span>
+                </div>
+                <div class="flex flex-col items-center p-4 border border-gray-200 rounded-lg">
+                    ${program.coverage.insurance ? 
+                        '<i class="fas fa-check-circle text-3xl coverage-check checked mb-3"></i>' : 
+                        '<div class="w-8 h-8 rounded-full border-2 border-gray-300 mb-3"></div>'}
+                    <span class="${program.coverage.insurance ? 'text-gray-900 font-medium' : 'text-gray-400'} text-center">
+                        Медицинская страховка
+                    </span>
+                </div>
+                <div class="flex flex-col items-center p-4 border border-gray-200 rounded-lg">
+                    ${program.coverage.flight ? 
+                        '<i class="fas fa-check-circle text-3xl coverage-check checked mb-3"></i>' : 
+                        '<div class="w-8 h-8 rounded-full border-2 border-gray-300 mb-3"></div>'}
+                    <span class="${program.coverage.flight ? 'text-gray-900 font-medium' : 'text-gray-400'} text-center">
+                        Авиабилеты
+                    </span>
+                </div>
+            `;
+            
+            // Требования
+            const requirementsList = document.getElementById('requirements-list');
+            let requirementsHTML = '';
+            
+            if (program.requirements.gpa) {
+                requirementsHTML += `
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-line text-blue-600"></i>
+                            </div>
+                            <span class="text-lg font-medium text-gray-900">Минимальный GPA:</span>
+                        </div>
+                        <p class="text-gray-700 pl-11">${program.requirements.gpa}</p>
+                    </div>
+                `;
+            }
+            
+            if (program.requirements.language) {
+                requirementsHTML += `
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-language text-blue-600"></i>
+                            </div>
+                            <span class="text-lg font-medium text-gray-900">Требования к языку:</span>
+                        </div>
+                        <p class="text-gray-700 pl-11">${program.requirements.language}</p>
+                    </div>
+                `;
+            }
+            
+            if (program.requirements.citizenship) {
+                requirementsHTML += `
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-passport text-blue-600"></i>
+                            </div>
+                            <span class="text-lg font-medium text-gray-900">Гражданство:</span>
+                        </div>
+                        <p class="text-gray-700 pl-11">${program.requirements.citizenship}</p>
+                    </div>
+                `;
+            }
+            
+            if (program.requirements.additional && program.requirements.additional.length > 0) {
+                requirementsHTML += `
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-list-check text-blue-600"></i>
+                            </div>
+                            <span class="text-lg font-medium text-gray-900">Дополнительные требования:</span>
+                        </div>
+                        <ul class="pl-11 space-y-2">
+                            ${program.requirements.additional.map(req => `
+                                <li class="flex items-start gap-3 text-gray-700">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    <span>${req}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            requirementsList.innerHTML = requirementsHTML;
+            
+            // Документы
+            const documentsList = document.getElementById('documents-list');
+            documentsList.innerHTML = program.documents.map(doc => `
+                <li class="flex items-center gap-3 document-item p-4 rounded-lg border border-gray-200">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-check text-[#0F4C81] text-sm"></i>
+                    </div>
+                    <span class="text-gray-700">${doc}</span>
+                </li>
+            `).join('');
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Переключение языка
+            const langRu = document.getElementById('lang-ru');
+            const langEn = document.getElementById('lang-en');
+            
+            if (langRu && langEn) {
+                langRu.addEventListener('click', function() {
+                    setLanguage('ru');
+                });
+                
+                langEn.addEventListener('click', function() {
+                    setLanguage('en');
+                });
+            }
+            
+            // Загрузка данных программы
+            loadProgramData();
+        });
+        
+        // Функция установки языка
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            if (lang === 'ru') {
+                document.getElementById('lang-ru').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-ru').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.remove('bg-[#0F4C81]', 'text-white');
+            } else {
+                document.getElementById('lang-en').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-en').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.remove('bg-[#0F4C81]', 'text-white');
+            }
+            
+            console.log('Language changed to:', lang);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Without Fear - Начни обучение за рубежом</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-card {
+            transition: transform 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: #0F4C81;
+        }
+        
+        /* Стили для иконок сервисов */
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Важные заметки как в чеклисте */
+        .important-notes {
+            border-left-color: #f59e0b;
+            border-left-width: 4px;
+        }
+        
+        /* Статистика с акцентами */
+        .stat-card {
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .stat-card:hover {
+            border-color: #0F4C81;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Навигация -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Лого -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                </div>
+                
+                <!-- Основные ссылки -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-[#0F4C81] font-medium border-b-2 border-[#0F4C81]">Главная</a>
+                    <a href="programs.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Программы</a>
+                    <a href="universities.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Университеты</a>
+                    <a href="documents.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Документы</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Портфолио</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Контакты</a>
+                </div>
+                
+                <!-- Правая часть (язык и вход) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Язык -->
+                    <div class="flex items-center space-x-2">
+                        <button id="lang-ru" class="px-2 py-1 bg-[#0F4C81] text-white rounded text-sm font-medium">РУС</button>
+                        <button id="lang-en" class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-sm font-medium">ENG</button>
+                    </div>
+                    
+                    <!-- Кнопки входа/регистрации (меняются после входа) -->
+                    <div id="auth-buttons">
+                        <a href="login.html" class="px-4 py-2 text-gray-700 hover:text-[#0F4C81] font-medium">Вход</a>
+                        <a href="register.html" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">Регистрация</a>
+                    </div>
+                    
+                    <!-- Профиль (показывается после входа) -->
+                    <div id="user-profile" class="hidden items-center space-x-3">
+                        <div class="relative">
+                            <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=0F4C81&color=fff" 
+                                 alt="Avatar" class="w-8 h-8 rounded-full cursor-pointer border-2 border-[#0F4C81]">
+                            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+                                <a href="dashboard/student.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>Мой профиль
+                                </a>
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Настройки
+                                </a>
+                                <hr class="my-2 border-gray-200">
+                                <a href="#" id="logout-btn" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                                </a>
+                            </div>
+                        </div>
+                        <span id="username" class="font-medium text-gray-700 hidden md:inline">Пользователь</span>
+                    </div>
+                </div>
+                
+                <!-- Мобильное меню -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильное меню (скрытое) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 px-4 bg-[#0F4C81] text-white rounded">Главная</a>
+                <a href="programs.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Программы</a>
+                <a href="universities.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Университеты</a>
+                <a href="documents.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Документы</a>
+                <a href="portfolio.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Портфолио</a>
+                <a href="contact.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white overflow-hidden">
+        <div class="relative container mx-auto px-4 py-16 md:py-24">
+            <div class="max-w-3xl animate-fadeIn">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-graduation-cap text-4xl"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold">Начни свой путь к обучению за рубежом</h1>
+                </div>
+                <p class="text-lg md:text-xl mb-8 text-gray-100">
+                    Найди стипендии, программы и получи пошаговое руководство для обучения за границей
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="programs.html" 
+                       class="inline-block px-8 py-4 bg-white text-[#0F4C81] rounded-lg hover:bg-gray-100 transition-colors text-center font-medium">
+                        Исследовать программы и гранты
+                    </a>
+                    <button onclick="openTelegramBot()"
+                       class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors text-center font-medium">
+                        <i class="fab fa-telegram mr-2"></i>Консультация через Telegram Bot
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="card p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Почему выбирают Study Without Fear?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Мы предоставляем всестороннюю поддержку на всем пути обучения за рубежом
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-[#0F4C81] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Структурированное руководство</h3>
+                        <p class="text-gray-600">
+                            Пошаговая поддержка по университетам, стипендиям и всему процессу поступления
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-[#0F4C81] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-cog text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Персонализированные советы</h3>
+                        <p class="text-gray-600">
+                            Получайте индивидуальные рекомендации через нашего Telegram Bot на основе вашего профиля
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-[#0F4C81] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-database text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Полная база данных</h3>
+                        <p class="text-gray-600">
+                            Доступ к тысячам программ, стипендий и дедлайнов из университетов по всему миру
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="card p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Наши сервисы</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Все что нужно для успешной подачи заявки и обучения за рубежом
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Сервис 1 -->
+                <div class="service-card p-6 rounded-lg text-left card">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-globe-americas text-2xl text-white"></i>
+                    </div>
+                    <div class="text-[#0F4C81] font-medium text-lg text-center mb-3">Подбор программ</div>
+                    <p class="text-sm text-gray-600 mb-4 text-center">
+                        Найдите идеальную учебную программу, соответствующую вашим целям и квалификации
+                    </p>
+                    <div class="text-center">
+                        <a href="programs.html" class="text-[#0F4C81] hover:underline inline-flex items-center gap-1 font-medium text-sm">
+                            Узнать больше <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Сервис 2 -->
+                <div class="service-card p-6 rounded-lg text-left card">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-award text-2xl text-white"></i>
+                    </div>
+                    <div class="text-[#0F4C81] font-medium text-lg text-center mb-3">Консультация по стипендиям</div>
+                    <p class="text-sm text-gray-600 mb-4 text-center">
+                        Доступ к полной базе стипендий и грантов с персонализированными рекомендациями
+                    </p>
+                    <div class="text-center">
+                        <a href="scholarships.html" class="text-[#0F4C81] hover:underline inline-flex items-center gap-1 font-medium text-sm">
+                            Узнать больше <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Сервис 3 -->
+                <div class="service-card p-6 rounded-lg text-left card">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-file-alt text-2xl text-white"></i>
+                    </div>
+                    <div class="text-[#0F4C81] font-medium text-lg text-center mb-3">Чеклист документов</div>
+                    <p class="text-sm text-gray-600 mb-4 text-center">
+                        Никогда не пропустите нужный документ с нашими подробными чеклистами
+                    </p>
+                    <div class="text-center">
+                        <a href="documents.html" class="text-[#0F4C81] hover:underline inline-flex items-center gap-1 font-medium text-sm">
+                            Узнать больше <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Сервис 4 -->
+                <div class="service-card p-6 rounded-lg text-left card">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-briefcase text-2xl text-white"></i>
+                    </div>
+                    <div class="text-[#0F4C81] font-medium text-lg text-center mb-3">Развитие портфолио</div>
+                    <p class="text-sm text-gray-600 mb-4 text-center">
+                        Получите экспертные советы по созданию убедительного портфолио
+                    </p>
+                    <div class="text-center">
+                        <a href="portfolio.html" class="text-[#0F4C81] hover:underline inline-flex items-center gap-1 font-medium text-sm">
+                            Узнать больше <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="hero-gradient rounded-lg shadow-md p-8 text-white text-center mb-8">
+            <i class="fas fa-graduation-cap text-5xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-4">Не знаете, что ищете?</h2>
+            <p class="mb-6 text-gray-100 max-w-2xl mx-auto text-lg">
+                Используйте нашего Telegram bot, чтобы получить персонализированные рекомендации на основе вашего профиля, целей и предпочтений
+            </p>
+            <button onclick="openTelegramBot()"
+                    class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors font-medium">
+                <i class="fab fa-telegram mr-2"></i>Начать консультацию
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="stat-card p-6 rounded-lg text-center card">
+                <div class="text-[#0F4C81] text-3xl font-bold mb-2">500+</div>
+                <div class="text-[#0F4C81] font-medium mb-1">Программ стипендий</div>
+                <p class="text-sm text-gray-600">Полные и частичные гранты</p>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg text-center card">
+                <div class="text-[#0F4C81] text-3xl font-bold mb-2">50+</div>
+                <div class="text-[#0F4C81] font-medium mb-1">Стран</div>
+                <p class="text-sm text-gray-600">Для обучения за рубежом</p>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg text-center card">
+                <div class="text-[#0F4C81] text-3xl font-bold mb-2">1000+</div>
+                <div class="text-[#0F4C81] font-medium mb-1">Университетов</div>
+                <p class="text-sm text-gray-600">Мировые рейтинговые вузы</p>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg text-center card">
+                <div class="text-[#0F4C81] text-3xl font-bold mb-2">24/7</div>
+                <div class="text-[#0F4C81] font-medium mb-1">Поддержка бота</div>
+                <p class="text-sm text-gray-600">Персональная помощь всегда</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Важные заметки -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-yellow-50 rounded-lg p-6 important-notes">
+            <h3 class="text-lg font-bold mb-3 text-yellow-900">Почему начинать с нами?</h3>
+            <ul class="space-y-3 text-yellow-900">
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span><strong>Бесплатный доступ:</strong> Все основные сервисы доступны бесплатно для казахстанских студентов</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span><strong>Актуальная информация:</strong> База данных обновляется ежедневно с учетом новых программ и дедлайнов</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span><strong>Поддержка на каждом этапе:</strong> От выбора программы до подачи документов и адаптации в новой стране</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span><strong>Сообщество выпускников:</strong> Связь с теми, кто уже прошел этот путь и готов поделиться опытом</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span><strong>Фокус на Казахстане:</strong> Мы понимаем специфику документов и требований для казахстанских студентов</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- О нас -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Study Without Fear</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Помогаем казахстанским студентам найти международные программы обучения и стипендии
+                    </p>
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html" class="text-gray-300 hover:text-white">Программы</a></li>
+                        <li><a href="universities.html" class="text-gray-300 hover:text-white">Университеты</a></li>
+                        <li><a href="documents.html" class="text-gray-300 hover:text-white">Документы</a></li>
+                        <li><a href="portfolio.html" class="text-gray-300 hover:text-white">Портфолио</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Поддержка -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Связаться с нами</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@studywithoutfear.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (777) 123-45-67</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/studywithoutfearbot" class="text-gray-300 hover:text-white" target="_blank">
+                                @studywithoutfearbot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-8 border-gray-700">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Study Without Fear. Все права защищены.</p>
+                <p class="mt-2 text-sm">Платформа для казахстанских студентов</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Telegram Bot функция
+        function openTelegramBot() {
+            window.open('https://t.me/studywithoutfearbot', '_blank');
+        }
+        
+        // Проверка авторизации при загрузке
+        function checkAuthStatus() {
+            const user = localStorage.getItem('user');
+            const authButtons = document.getElementById('auth-buttons');
+            const userProfile = document.getElementById('user-profile');
+            
+            if (user) {
+                const userData = JSON.parse(user);
+                authButtons.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                document.getElementById('username').textContent = userData.username;
+                if (userData.avatar) {
+                    document.getElementById('user-avatar').src = userData.avatar;
+                }
+            } else {
+                authButtons.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+            }
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Переключение языка
+            const langRu = document.getElementById('lang-ru');
+            const langEn = document.getElementById('lang-en');
+            
+            if (langRu && langEn) {
+                langRu.addEventListener('click', function() {
+                    setLanguage('ru');
+                });
+                
+                langEn.addEventListener('click', function() {
+                    setLanguage('en');
+                });
+                
+                // Установка начального языка
+                const savedLang = localStorage.getItem('language') || 'ru';
+                setLanguage(savedLang);
+            }
+            
+            // Профиль dropdown
+            const userAvatar = document.getElementById('user-avatar');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            
+            if (userAvatar && profileDropdown) {
+                userAvatar.addEventListener('click', function() {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                
+                // Закрыть dropdown при клике вне
+                document.addEventListener('click', function(event) {
+                    if (!userAvatar.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Кнопка выхода
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    checkAuthStatus();
+                    window.location.reload();
+                });
+            }
+        });
+        
+        // Функция установки языка
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            if (lang === 'ru') {
+                document.getElementById('lang-ru').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-ru').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.remove('bg-[#0F4C81]', 'text-white');
+            } else {
+                document.getElementById('lang-en').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-en').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.remove('bg-[#0F4C81]', 'text-white');
+            }
+            
+            // Здесь будет загрузка переводов
+            console.log('Language changed to:', lang);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Without Fear - Панель модератора</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Toast Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sonner@2.0.3/dist/sonner.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sonner@2.0.3/dist/sonner.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .dashboard-nav {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .nav-link:hover {
+            background-color: #eff6ff;
+        }
+        
+        .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .nav-link.active:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-moderator {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .badge-status-active {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .badge-status-pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .badge-changes-added {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .badge-changes-edited {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .badge-changes-deleted {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .table th {
+            background-color: #f9fafb;
+            padding: 0.75rem 1.5rem;
+            text-align: left;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table tr:hover td {
+            background-color: #f9fafb;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn:hover {
+            background-color: #eff6ff;
+            color: var(--primary);
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            height: 100vh;
+            background-color: white;
+            z-index: 1001;
+            transition: right 0.3s ease;
+            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-nav.active {
+            right: 0;
+        }
+        
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            transition: all 0.2s;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Brand -->
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                        <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                    </a>
+                    <span class="badge badge-moderator text-sm">Модератор</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <button id="lang-switch" class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        <i class="fas fa-language mr-1"></i>
+                        <span id="lang-text">РУС</span>
+                    </button>
+                    
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="user-menu-btn" class="flex items-center space-x-2 hover:opacity-80">
+                            <div class="w-8 h-8 rounded-full bg-[#0F4C81] flex items-center justify-center text-white font-medium">
+                                <span id="user-initial">M</span>
+                            </div>
+                            <div class="text-left hidden lg:block">
+                                <div id="username" class="font-medium">Модератор</div>
+                                <div id="user-email" class="text-sm text-gray-600">moderator@studywithoutfear.com</div>
+                            </div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-10">
+                            <a href="index.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-home mr-2"></i>На главную
+                            </a>
+                            <a href="#" id="view-changes-btn" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-history mr-2"></i>История изменений
+                            </a>
+                            <hr class="my-2 border-gray-200">
+                            <a href="#" id="logout-btn" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2">
+                    <i class="fas fa-bars text-xl text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    <div id="mobile-nav" class="mobile-nav">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold">Study Without Fear</span>
+                </div>
+                <button id="mobile-close-btn" class="p-2">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <button class="w-full text-left px-4 py-3 rounded-lg bg-[#0F4C81] text-white">
+                    <i class="fas fa-book-open mr-3"></i>Программы
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-award mr-3"></i>Стипендии
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-university mr-3"></i>Университеты
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-file-alt mr-3"></i>Документы
+                </button>
+                
+                <hr class="my-4">
+                
+                <div class="px-4 py-3">
+                    <div class="font-medium mb-1">Модератор</div>
+                    <div class="text-sm text-gray-600">moderator@studywithoutfear.com</div>
+                </div>
+                
+                <a href="index.html" class="block px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-home mr-3"></i>На главную
+                </a>
+                <button id="view-changes-btn-mobile" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-history mr-3"></i>История изменений
+                </button>
+                <button id="logout-btn-mobile" class="w-full text-left px-4 py-3 rounded-lg text-red-600 hover:bg-red-50">
+                    <i class="fas fa-sign-out-alt mr-3"></i>Выйти
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Панель модератора</h1>
+                    <p class="text-gray-600 mt-2">Управление программами, стипендиями и документами</p>
+                </div>
+                <button id="show-history-btn" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 flex items-center gap-2">
+                    <i class="fas fa-history"></i>
+                    <span class="hidden sm:inline">История изменений</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <button data-tab="programs" class="tab-btn active flex items-center gap-2">
+                <i class="fas fa-book-open"></i>
+                <span>Программы</span>
+            </button>
+            <button data-tab="scholarships" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-award"></i>
+                <span>Стипендии</span>
+            </button>
+            <button data-tab="universities" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-university"></i>
+                <span>Университеты</span>
+            </button>
+            <button data-tab="documents" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-file-alt"></i>
+                <span>Документы</span>
+            </button>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboard-content">
+            <!-- Programs Tab -->
+            <div id="tab-programs" class="tab-content active">
+                <div class="card p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold mb-4 sm:mb-0">Управление программами</h2>
+                        <button id="add-program-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] flex items-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            Добавить программу
+                        </button>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="mb-6">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="program-search" placeholder="Поиск программ..." 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81] focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <!-- Programs Table -->
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название программы</th>
+                                    <th>Университет</th>
+                                    <th>Страна</th>
+                                    <th>Тип</th>
+                                    <th>Уровень</th>
+                                    <th>Дедлайн</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="programs-table-body">
+                                <!-- Programs will be loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scholarships Tab -->
+            <div id="tab-scholarships" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold mb-4 sm:mb-0">Управление стипендиями</h2>
+                        <button id="add-scholarship-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] flex items-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            Добавить стипендию
+                        </button>
+                    </div>
+                    
+                    <!-- Scholarships Table -->
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название стипендии</th>
+                                    <th>Регион</th>
+                                    <th>Покрытие</th>
+                                    <th>Дедлайн</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scholarships-table-body">
+                                <!-- Scholarships will be loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Universities Tab -->
+            <div id="tab-universities" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold mb-4 sm:mb-0">Управление университетами</h2>
+                        <button id="add-university-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] flex items-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            Добавить университет
+                        </button>
+                    </div>
+                    
+                    <!-- Universities Table -->
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название университета</th>
+                                    <th>Страна</th>
+                                    <th>Тип</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="universities-table-body">
+                                <!-- Universities will be loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents Tab -->
+            <div id="tab-documents" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold mb-4 sm:mb-0">Управление документами</h2>
+                        <button id="add-document-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] flex items-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            Добавить документ
+                        </button>
+                    </div>
+                    
+                    <!-- Documents Table -->
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название документа</th>
+                                    <th>Категория</th>
+                                    <th>Последнее обновление</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="documents-table-body">
+                                <!-- Documents will be loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Add Program Modal -->
+    <div id="add-program-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold">Добавить программу</h3>
+                    <button id="close-program-modal" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="add-program-form">
+                    <div class="space-y-4">
+                        <div class="form-group">
+                            <label class="form-label">Название программы *</label>
+                            <input type="text" required class="form-input" placeholder="Например: Computer Science - MIT">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Университет *</label>
+                            <input type="text" required class="form-input" placeholder="Например: Massachusetts Institute of Technology">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Страна *</label>
+                                <select class="form-select">
+                                    <option value="">Выберите страну</option>
+                                    <option value="USA">США</option>
+                                    <option value="UK">Великобритания</option>
+                                    <option value="Germany">Германия</option>
+                                    <option value="Canada">Канада</option>
+                                    <option value="Australia">Австралия</option>
+                                    <option value="Switzerland">Швейцария</option>
+                                    <option value="Netherlands">Нидерланды</option>
+                                    <option value="Singapore">Сингапур</option>
+                                    <option value="Japan">Япония</option>
+                                    <option value="South Korea">Южная Корея</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Тип стипендии *</label>
+                                <select class="form-select">
+                                    <option value="">Выберите тип</option>
+                                    <option value="Full Scholarship">Полная стипендия</option>
+                                    <option value="Partial Scholarship">Частичная стипендия</option>
+                                    <option value="Grant">Грант</option>
+                                    <option value="Government Scholarship">Государственная стипендия</option>
+                                    <option value="Self-funded">Самофинансирование</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Уровень обучения *</label>
+                                <select class="form-select">
+                                    <option value="">Выберите уровень</option>
+                                    <option value="Bachelor">Бакалавриат</option>
+                                    <option value="Master">Магистратура</option>
+                                    <option value="PhD">PhD</option>
+                                    <option value="Postdoc">Постдок</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Дедлайн *</label>
+                                <input type="date" required class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Описание</label>
+                            <textarea class="form-textarea" placeholder="Опишите программу, требования, преимущества..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Требования</label>
+                            <textarea class="form-textarea" placeholder="Укажите требования для поступления..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Преимущества</label>
+                            <textarea class="form-textarea" placeholder="Укажите преимущества программы..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Ссылка на программу</label>
+                            <input type="url" class="form-input" placeholder="https://...">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" id="cancel-program-modal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+                            Отмена
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                            Добавить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Scholarship Modal -->
+    <div id="add-scholarship-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold">Добавить стипендию</h3>
+                    <button id="close-scholarship-modal" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="add-scholarship-form">
+                    <div class="space-y-4">
+                        <div class="form-group">
+                            <label class="form-label">Название стипендии *</label>
+                            <input type="text" required class="form-input" placeholder="Например: Erasmus+">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Регион *</label>
+                                <select class="form-select">
+                                    <option value="">Выберите регион</option>
+                                    <option value="Europe">Европа</option>
+                                    <option value="USA">США</option>
+                                    <option value="Canada">Канада</option>
+                                    <option value="Australia">Австралия</option>
+                                    <option value="Asia">Азия</option>
+                                    <option value="Southeast Asia">Юго-Восточная Азия</option>
+                                    <option value="UAE">ОАЭ</option>
+                                    <option value="Global">Глобальная</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Покрытие *</label>
+                                <select class="form-select">
+                                    <option value="">Выберите покрытие</option>
+                                    <option value="Full">Полное</option>
+                                    <option value="Partial">Частичное</option>
+                                    <option value="Tuition Only">Только обучение</option>
+                                    <option value="Living Expenses">Проживание</option>
+                                    <option value="Travel">Проезд</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Дедлайн *</label>
+                            <input type="date" required class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Ссылка на официальный сайт</label>
+                            <input type="url" class="form-input" placeholder="https://...">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Описание</label>
+                            <textarea class="form-textarea" placeholder="Опишите стипендию, критерии отбора, преимущества..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Критерии отбора</label>
+                            <textarea class="form-textarea" placeholder="Укажите требования для подачи заявки..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Процесс подачи заявки</label>
+                            <textarea class="form-textarea" placeholder="Опишите шаги подачи заявки..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" id="cancel-scholarship-modal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+                            Отмена
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                            Добавить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold">История изменений</h3>
+                    <button id="close-history-modal" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Дата и время</th>
+                                <th>Действие</th>
+                                <th>Объект</th>
+                                <th>Детали</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <!-- History will be loaded via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Data
+        const mockData = {
+            programs: [
+                { 
+                    id: '1', 
+                    name: 'Computer Science - MIT', 
+                    university: 'Massachusetts Institute of Technology',
+                    country: 'USA', 
+                    type: 'Full Scholarship', 
+                    level: 'Master',
+                    deadline: '2025-01-15',
+                    status: 'active',
+                },
+                { 
+                    id: '2', 
+                    name: 'Engineering - ETH Zurich', 
+                    university: 'ETH Zurich',
+                    country: 'Switzerland', 
+                    type: 'Partial Scholarship', 
+                    level: 'PhD',
+                    deadline: '2025-03-01',
+                    status: 'active',
+                },
+                { 
+                    id: '3', 
+                    name: 'Business Administration - Oxford', 
+                    university: 'University of Oxford',
+                    country: 'UK', 
+                    type: 'Full Scholarship', 
+                    level: 'Master',
+                    deadline: '2025-02-28',
+                    status: 'pending',
+                },
+            ],
+            scholarships: [
+                { 
+                    id: '1', 
+                    name: 'Erasmus+', 
+                    region: 'Europe',
+                    coverage: 'Full',
+                    deadline: '2025-02-01',
+                    status: 'active',
+                },
+                { 
+                    id: '2', 
+                    name: 'Fulbright', 
+                    region: 'USA',
+                    coverage: 'Full',
+                    deadline: '2025-04-15',
+                    status: 'active',
+                },
+                { 
+                    id: '3', 
+                    name: 'Stipendium Hungaricum', 
+                    region: 'Europe',
+                    coverage: 'Full',
+                    deadline: '2025-03-15',
+                    status: 'active',
+                },
+            ],
+            universities: [
+                { id: '1', name: 'Harvard University', country: 'USA', type: 'Top', status: 'active' },
+                { id: '2', name: 'University of Oxford', country: 'UK', type: 'Top', status: 'active' },
+                { id: '3', name: 'Stanford University', country: 'USA', type: 'Top', status: 'active' },
+                { id: '4', name: 'University of Cambridge', country: 'UK', type: 'Top', status: 'active' },
+            ],
+            documents: [
+                { id: '1', name: 'Passport Requirements', category: 'General', updated: '2025-01-05', status: 'active' },
+                { id: '2', name: 'IELTS Guidelines', category: 'Language', updated: '2025-01-03', status: 'active' },
+                { id: '3', name: 'Motivation Letter Template', category: 'Application', updated: '2024-12-20', status: 'active' },
+                { id: '4', name: 'CV/Resume Guidelines', category: 'Application', updated: '2024-12-15', status: 'active' },
+            ],
+            history: [
+                { id: '1', date: '2025-01-08 14:30', action: 'added', item: 'Программа', details: 'Computer Science - MIT' },
+                { id: '2', date: '2025-01-07 10:15', action: 'edited', item: 'Университет', details: 'Обновлена информация об University of Oxford' },
+                { id: '3', date: '2025-01-06 16:45', action: 'deleted', item: 'Документ', details: 'Удален устаревший документ с требованиями' },
+                { id: '4', date: '2025-01-05 09:20', action: 'added', item: 'Стипендия', details: 'Добавлена стипендия Erasmus+' },
+                { id: '5', date: '2025-01-04 13:30', action: 'edited', item: 'Программа', details: 'Обновлен дедлайн для Engineering - ETH Zurich' },
+            ]
+        };
+
+        // Current State
+        let currentTab = 'programs';
+        let currentLanguage = 'ru';
+
+        // DOM Elements
+        const elements = {
+            langSwitch: document.getElementById('lang-switch'),
+            langText: document.getElementById('lang-text'),
+            username: document.getElementById('username'),
+            userEmail: document.getElementById('user-email'),
+            userInitial: document.getElementById('user-initial'),
+            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+            mobileNav: document.getElementById('mobile-nav'),
+            mobileOverlay: document.getElementById('mobile-overlay'),
+            mobileCloseBtn: document.getElementById('mobile-close-btn'),
+            logoutBtn: document.getElementById('logout-btn'),
+            logoutBtnMobile: document.getElementById('logout-btn-mobile'),
+            userMenuBtn: document.getElementById('user-menu-btn'),
+            userDropdown: document.getElementById('user-dropdown'),
+            viewChangesBtn: document.getElementById('view-changes-btn'),
+            viewChangesBtnMobile: document.getElementById('view-changes-btn-mobile'),
+            showHistoryBtn: document.getElementById('show-history-btn'),
+            
+            // Modals
+            addProgramModal: document.getElementById('add-program-modal'),
+            addScholarshipModal: document.getElementById('add-scholarship-modal'),
+            historyModal: document.getElementById('history-modal'),
+            
+            // Forms
+            addProgramBtn: document.getElementById('add-program-btn'),
+            addProgramForm: document.getElementById('add-program-form'),
+            closeProgramModal: document.getElementById('close-program-modal'),
+            cancelProgramModal: document.getElementById('cancel-program-modal'),
+            
+            addScholarshipBtn: document.getElementById('add-scholarship-btn'),
+            addScholarshipForm: document.getElementById('add-scholarship-form'),
+            closeScholarshipModal: document.getElementById('close-scholarship-modal'),
+            cancelScholarshipModal: document.getElementById('cancel-scholarship-modal'),
+            
+            closeHistoryModal: document.getElementById('close-history-modal'),
+            
+            // Other buttons
+            addUniversityBtn: document.getElementById('add-university-btn'),
+            addDocumentBtn: document.getElementById('add-document-btn')
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMockData();
+            setupEventListeners();
+            updateUI();
+        });
+
+        // Load mock data into tables
+        function loadMockData() {
+            // Load programs table
+            const programsTableBody = document.getElementById('programs-table-body');
+            if (programsTableBody) {
+                programsTableBody.innerHTML = mockData.programs.map(program => `
+                    <tr>
+                        <td>${program.name}</td>
+                        <td>${program.university}</td>
+                        <td>${program.country}</td>
+                        <td>${program.type}</td>
+                        <td>${program.level}</td>
+                        <td>${new Date(program.deadline).toLocaleDateString()}</td>
+                        <td>
+                            <span class="badge ${program.status === 'active' ? 'badge-status-active' : 'badge-status-pending'}">
+                                ${program.status === 'active' ? 'Активна' : 'На проверке'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editItem('program', '${program.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteItem('program', '${program.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Load scholarships table
+            const scholarshipsTableBody = document.getElementById('scholarships-table-body');
+            if (scholarshipsTableBody) {
+                scholarshipsTableBody.innerHTML = mockData.scholarships.map(scholarship => `
+                    <tr>
+                        <td>${scholarship.name}</td>
+                        <td>${scholarship.region}</td>
+                        <td>${scholarship.coverage}</td>
+                        <td>${new Date(scholarship.deadline).toLocaleDateString()}</td>
+                        <td>
+                            <span class="badge badge-status-active">Активна</span>
+                        </td>
+                        <td>
+                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editItem('scholarship', '${scholarship.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteItem('scholarship', '${scholarship.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Load universities table
+            const universitiesTableBody = document.getElementById('universities-table-body');
+            if (universitiesTableBody) {
+                universitiesTableBody.innerHTML = mockData.universities.map(uni => `
+                    <tr>
+                        <td>${uni.name}</td>
+                        <td>${uni.country}</td>
+                        <td>${uni.type}</td>
+                        <td>
+                            <span class="badge badge-status-active">Активен</span>
+                        </td>
+                        <td>
+                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editItem('university', '${uni.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteItem('university', '${uni.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Load documents table
+            const documentsTableBody = document.getElementById('documents-table-body');
+            if (documentsTableBody) {
+                documentsTableBody.innerHTML = mockData.documents.map(doc => `
+                    <tr>
+                        <td>${doc.name}</td>
+                        <td>${doc.category}</td>
+                        <td>${doc.updated}</td>
+                        <td>
+                            <span class="badge badge-status-active">Активен</span>
+                        </td>
+                        <td>
+                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editItem('document', '${doc.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteItem('document', '${doc.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Load history table
+            const historyTableBody = document.getElementById('history-table-body');
+            if (historyTableBody) {
+                historyTableBody.innerHTML = mockData.history.map(entry => {
+                    let badgeClass = '';
+                    let badgeText = '';
+                    
+                    switch(entry.action) {
+                        case 'added':
+                            badgeClass = 'badge-changes-added';
+                            badgeText = 'Добавлено';
+                            break;
+                        case 'edited':
+                            badgeClass = 'badge-changes-edited';
+                            badgeText = 'Изменено';
+                            break;
+                        case 'deleted':
+                            badgeClass = 'badge-changes-deleted';
+                            badgeText = 'Удалено';
+                            break;
+                    }
+                    
+                    return `
+                        <tr>
+                            <td>${entry.date}</td>
+                            <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+                            <td>${entry.item}</td>
+                            <td>${entry.details}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Language switch
+            elements.langSwitch?.addEventListener('click', toggleLanguage);
+            
+            // Mobile menu
+            elements.mobileMenuBtn?.addEventListener('click', openMobileMenu);
+            elements.mobileCloseBtn?.addEventListener('click', closeMobileMenu);
+            elements.mobileOverlay?.addEventListener('click', closeMobileMenu);
+            
+            // User dropdown
+            elements.userMenuBtn?.addEventListener('click', toggleUserDropdown);
+            document.addEventListener('click', closeUserDropdown);
+            
+            // Logout
+            elements.logoutBtn?.addEventListener('click', logout);
+            elements.logoutBtnMobile?.addEventListener('click', logout);
+            
+            // History modal
+            elements.viewChangesBtn?.addEventListener('click', openHistoryModal);
+            elements.viewChangesBtnMobile?.addEventListener('click', openHistoryModal);
+            elements.showHistoryBtn?.addEventListener('click', openHistoryModal);
+            elements.closeHistoryModal?.addEventListener('click', closeHistoryModal);
+            
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    switchTab(tab);
+                });
+            });
+            
+            // Program modal
+            elements.addProgramBtn?.addEventListener('click', openAddProgramModal);
+            elements.closeProgramModal?.addEventListener('click', closeAddProgramModal);
+            elements.cancelProgramModal?.addEventListener('click', closeAddProgramModal);
+            elements.addProgramForm?.addEventListener('submit', addProgram);
+            
+            // Scholarship modal
+            elements.addScholarshipBtn?.addEventListener('click', openAddScholarshipModal);
+            elements.closeScholarshipModal?.addEventListener('click', closeAddScholarshipModal);
+            elements.cancelScholarshipModal?.addEventListener('click', closeAddScholarshipModal);
+            elements.addScholarshipForm?.addEventListener('submit', addScholarship);
+            
+            // Other add buttons
+            elements.addUniversityBtn?.addEventListener('click', () => showToast('Добавление университета', 'Эта функция будет доступна в следующем обновлении'));
+            elements.addDocumentBtn?.addEventListener('click', () => showToast('Добавление документа', 'Эта функция будет доступна в следующем обновлении'));
+            
+            // Close modals on outside click
+            elements.addProgramModal?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAddProgramModal();
+                }
+            });
+            
+            elements.addScholarshipModal?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAddScholarshipModal();
+                }
+            });
+            
+            elements.historyModal?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeHistoryModal();
+                }
+            });
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+            elements.langText.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
+            updateUI();
+        }
+
+        // Mobile menu functions
+        function openMobileMenu() {
+            elements.mobileNav.classList.add('active');
+            elements.mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            elements.mobileNav.classList.remove('active');
+            elements.mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // User dropdown functions
+        function toggleUserDropdown(e) {
+            e.stopPropagation();
+            elements.userDropdown.classList.toggle('hidden');
+        }
+
+        function closeUserDropdown(e) {
+            if (!elements.userMenuBtn.contains(e.target) && !elements.userDropdown.contains(e.target)) {
+                elements.userDropdown.classList.add('hidden');
+            }
+        }
+
+        // Switch tab
+        function switchTab(tab) {
+            currentTab = tab;
+            updateTabs();
+        }
+
+        // Update UI based on current tab
+        function updateUI() {
+            updateTabs();
+        }
+
+        // Update tabs visibility and active state
+        function updateTabs() {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Set active tab button
+            const activeTabBtn = document.querySelector(`.tab-btn[data-tab="${currentTab}"]`);
+            if (activeTabBtn) {
+                activeTabBtn.classList.add('active');
+            }
+            
+            // Show current tab content
+            const tabContent = document.getElementById(`tab-${currentTab}`);
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+        }
+
+        // Modal functions
+        function openAddProgramModal() {
+            elements.addProgramModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddProgramModal() {
+            elements.addProgramModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openAddScholarshipModal() {
+            elements.addScholarshipModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddScholarshipModal() {
+            elements.addScholarshipModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openHistoryModal() {
+            elements.historyModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHistoryModal() {
+            elements.historyModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Form submission functions
+        function addProgram(e) {
+            e.preventDefault();
+            showToast('Программа добавлена', 'Программа успешно добавлена в базу данных');
+            closeAddProgramModal();
+            // In real app, reload data from backend
+        }
+
+        function addScholarship(e) {
+            e.preventDefault();
+            showToast('Стипендия добавлена', 'Стипендия успешно добавлена в базу данных');
+            closeAddScholarshipModal();
+            // In real app, reload data from backend
+        }
+
+        // Global functions for table actions
+        window.editItem = function(type, id) {
+            showToast('Редактирование', `Редактирование ${type} с ID: ${id}`);
+            // In real app, open edit modal
+        };
+
+        window.deleteItem = function(type, id) {
+            const typeNames = {
+                program: 'программы',
+                scholarship: 'стипендии',
+                university: 'университета',
+                document: 'документа'
+            };
+            
+            const typeName = typeNames[type] || 'объекта';
+            
+            if (confirm(`Вы уверены, что хотите удалить этот ${typeName}?`)) {
+                showToast('Удаление', `${typeName.charAt(0).toUpperCase() + typeName.slice(1)} успешно удален`);
+                // In real app, make API call to delete
+            }
+        };
+
+        // Toast notification
+        function showToast(title, description) {
+            if (window.sonner) {
+                window.sonner.toast(title, {
+                    description: description,
+                    duration: 4000,
+                });
+            } else {
+                alert(`${title}: ${description}`);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                // In real app, this would clear auth tokens
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

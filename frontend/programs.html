@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Программы и гранты - Study Without Fear</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .filter-sidebar {
+            position: sticky;
+            top: 5rem;
+        }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Навигация -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Лого -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                </div>
+                
+                <!-- Основные ссылки -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Главная</a>
+                    <a href="programs.html" class="text-[#0F4C81] font-medium border-b-2 border-[#0F4C81]">Программы</a>
+                    <a href="universities.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Университеты</a>
+                    <a href="documents.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Документы</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Портфолио</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Контакты</a>
+                </div>
+                
+                <!-- Правая часть (язык и вход) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Язык -->
+                    <div class="flex items-center space-x-2">
+                        <button id="lang-ru" class="px-2 py-1 bg-[#0F4C81] text-white rounded text-sm font-medium">РУС</button>
+                        <button id="lang-en" class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-sm font-medium">ENG</button>
+                    </div>
+                    
+                    <!-- Кнопки входа/регистрации -->
+                    <div id="auth-buttons">
+                        <a href="login.html" class="px-4 py-2 text-gray-700 hover:text-[#0F4C81] font-medium">Вход</a>
+                        <a href="register.html" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">Регистрация</a>
+                    </div>
+                </div>
+                
+                <!-- Мобильное меню -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильное меню (скрытое) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Главная</a>
+                <a href="programs.html" class="block py-2 px-4 bg-[#0F4C81] text-white rounded">Программы</a>
+                <a href="universities.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Университеты</a>
+                <a href="documents.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Документы</a>
+                <a href="portfolio.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Портфолио</a>
+                <a href="contact.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white overflow-hidden">
+        <div class="relative container mx-auto px-4 py-16 md:py-24">
+            <div class="max-w-3xl">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-award text-4xl"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold">Программы и гранты</h1>
+                </div>
+                <p class="text-lg md:text-xl mb-8 text-gray-100">
+                    Исследуйте <span id="programs-count" class="font-bold">0</span> программ стипендий и грантов со всего мира
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="openTelegramBot()"
+                       class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors text-center font-medium">
+                        <i class="fab fa-telegram mr-2"></i>Получить персональные рекомендации
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Фильтры -->
+            <div class="lg:w-64 flex-shrink-0">
+                <div class="card p-6 filter-sidebar">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="flex items-center gap-2 text-lg font-semibold">
+                            <i class="fas fa-filter"></i>
+                            Фильтры
+                        </h3>
+                        <button id="reset-filters" class="text-sm text-[#0F4C81] hover:underline">
+                            Сбросить
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Страна -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Страна</label>
+                            <select id="country-filter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]">
+                                <option value="">Все страны</option>
+                                <option value="Europe">Европа</option>
+                                <option value="Hungary">Венгрия</option>
+                                <option value="Germany">Германия</option>
+                                <option value="United Kingdom">Великобритания</option>
+                                <option value="United States">США</option>
+                                <option value="Japan">Япония</option>
+                                <option value="Australia">Австралия</option>
+                                <option value="South Korea">Южная Корея</option>
+                                <option value="Canada">Канада</option>
+                                <option value="China">Китай</option>
+                            </select>
+                        </div>
+
+                        <!-- Тип стипендии -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Тип стипендии</label>
+                            <select id="type-filter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]">
+                                <option value="">Все типы</option>
+                                <option value="Full">Полная</option>
+                                <option value="Partial">Частичная</option>
+                                <option value="Government">Государственная</option>
+                                <option value="Self-funded">Самофинансирование</option>
+                            </select>
+                        </div>
+
+                        <!-- Уровень -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Уровень</label>
+                            <select id="level-filter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]">
+                                <option value="">Все уровни</option>
+                                <option value="Bachelor">Бакалавриат</option>
+                                <option value="Master">Магистратура</option>
+                                <option value="PhD">Докторантура</option>
+                            </select>
+                        </div>
+
+                        <!-- Дисциплина -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Дисциплина</label>
+                            <select id="discipline-filter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]">
+                                <option value="">Все дисциплины</option>
+                                <option value="Various">Различные</option>
+                                <option value="Engineering, IT, Sciences">Инженерия, IT, Науки</option>
+                                <option value="Health, Natural Sciences, Engineering, Social Sciences">Здоровье, Естественные науки, Инженерия, Социальные науки</option>
+                            </select>
+                        </div>
+
+                        <!-- Дедлайн -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Дедлайн</label>
+                            <select id="deadline-filter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81]">
+                                <option value="all">Все дедлайны</option>
+                                <option value="upcoming">Только предстоящие</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Мобильное меню фильтров -->
+                    <button id="mobile-filters-toggle" class="lg:hidden w-full mt-4 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium">
+                        <i class="fas fa-filter mr-2"></i>
+                        Показать фильтры
+                    </button>
+                </div>
+            </div>
+
+            <!-- Программы -->
+            <div class="flex-1">
+                <!-- Мобильные фильтры (скрыто) -->
+                <div id="mobile-filters" class="hidden lg:hidden mb-4">
+                    <!-- Фильтры будут скопированы сюда для мобильной версии -->
+                </div>
+
+                <!-- Контейнер для программ -->
+                <div id="programs-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Программы загрузятся через JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок популярных стипендий -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="card p-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Популярные стипендии по регионам</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Европа -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-[#0F4C81] flex items-center gap-2">
+                        <i class="fas fa-globe-europe"></i>
+                        Европа
+                    </h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://erasmus-plus.ec.europa.eu/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Erasmus+</a></li>
+                        <li><a href="https://www.stipendiumhungaricum.hu/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Stipendium Hungaricum</a></li>
+                        <li><a href="https://www.daad.de/en/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> DAAD</a></li>
+                        <li><a href="https://www.chevening.org/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Chevening</a></li>
+                        <li><a href="https://www.campusfrance.org/en/eiffel-scholarship-program-of-excellence" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Eiffel</a></li>
+                    </ul>
+                </div>
+                
+                <!-- США -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-[#0F4C81] flex items-center gap-2">
+                        <i class="fas fa-flag-usa"></i>
+                        США
+                    </h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://fulbright.state.gov/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Fulbright</a></li>
+                        <li><a href="https://www.questbridge.org/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> QuestBridge</a></li>
+                        <li><a href="https://www.gatesfoundation.org/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Gates</a></li>
+                        <li><a href="https://www.worldlearning.org/program/global-ugrad/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Global UGRAD</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Канада -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-[#0F4C81] flex items-center gap-2">
+                        <i class="fas fa-flag-canada"></i>
+                        Канада
+                    </h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.vanier.gc.ca/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Vanier</a></li>
+                        <li><a href="https://future.utoronto.ca/pearson/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Lester B. Pearson</a></li>
+                        <li><a href="https://www.educanada.ca/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Canadian Commonwealth</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Австралия -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-[#0F4C81] flex items-center gap-2">
+                        <i class="fas fa-flag-australia"></i>
+                        Австралия
+                    </h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.australiaawards.gov.au/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Australia Awards</a></li>
+                        <li><a href="https://internationaleducation.gov.au/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Endeavour Scholarships</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Азия -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-[#0F4C81] flex items-center gap-2">
+                        <i class="fas fa-globe-asia"></i>
+                        Азия
+                    </h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.mext.go.jp/en/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> MEXT</a></li>
+                        <li><a href="https://www.csc.edu.cn/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Chinese Government Scholarship</a></li>
+                        <li><a href="https://kgsp.korea.go.kr/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> KGSP</a></li>
+                        <li><a href="https://www.nus.edu.sg/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> NUS/NTU Scholarships</a></li>
+                    </ul>
+                </div>
+                
+                <!-- ОАЭ -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-[#0F4C81] flex items-center gap-2">
+                        <i class="fas fa-flag-uae"></i>
+                        ОАЭ
+                    </h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.moe.gov.ae/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Emirates Scholarship</a></li>
+                        <li><a href="https://www.dubaifuture.gov.ae/" target="_blank" class="text-gray-700 hover:text-[#0F4C81] flex items-center gap-2"><i class="fas fa-external-link-alt text-xs"></i> Dubai Government Scholarships</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- О нас -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Study Without Fear</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Помогаем казахстанским студентам найти международные программы обучения и стипендии
+                    </p>
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html" class="text-white font-medium">Программы</a></li>
+                        <li><a href="universities.html" class="text-gray-300 hover:text-white">Университеты</a></li>
+                        <li><a href="documents.html" class="text-gray-300 hover:text-white">Документы</a></li>
+                        <li><a href="portfolio.html" class="text-gray-300 hover:text-white">Портфолио</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Поддержка -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Связаться с нами</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@studywithoutfear.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (777) 123-45-67</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/studywithoutfearbot" class="text-gray-300 hover:text-white" target="_blank">
+                                @studywithoutfearbot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-8 border-gray-700">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Study Without Fear. Все права защищены.</p>
+                <p class="mt-2 text-sm">Платформа для казахстанских студентов</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Telegram Bot функция
+        function openTelegramBot() {
+            window.open('https://t.me/studywithoutfearbot', '_blank');
+        }
+        
+        // Данные программ
+        const programsData = [
+            {
+                id: 'erasmus-plus',
+                name: 'Erasmus+ Scholarship',
+                country: 'Europe',
+                flag: '🇪🇺',
+                type: 'Full',
+                level: 'Master',
+                discipline: 'Various',
+                deadline: '2025-01-15',
+                description: 'Erasmus+ предлагает полные стипендии для студентов магистратуры для обучения в европейских университетах с полным покрытием расходов.',
+                url: 'https://erasmus-plus.ec.europa.eu/'
+            },
+            {
+                id: 'stipendium-hungaricum',
+                name: 'Stipendium Hungaricum',
+                country: 'Hungary',
+                flag: '🇭🇺',
+                type: 'Full',
+                level: 'Bachelor',
+                discipline: 'Various',
+                deadline: '2025-01-16',
+                description: 'Венгерская государственная стипендия, предлагающая полное покрытие обучения и ежемесячную стипендию для иностранных студентов.',
+                url: 'https://www.stipendiumhungaricum.hu/'
+            },
+            {
+                id: 'daad-scholarship',
+                name: 'DAAD Scholarship',
+                country: 'Germany',
+                flag: '🇩🇪',
+                type: 'Full',
+                level: 'Master',
+                discipline: 'Engineering, IT, Sciences',
+                deadline: '2024-10-31',
+                description: 'Немецкая служба академических обменов предлагает стипендии для высококвалифицированных иностранных студентов.',
+                url: 'https://www.daad.de/en/'
+            },
+            {
+                id: 'chevening',
+                name: 'Chevening Scholarship',
+                country: 'United Kingdom',
+                flag: '🇬🇧',
+                type: 'Full',
+                level: 'Master',
+                discipline: 'Various',
+                deadline: '2024-11-05',
+                description: 'Глобальная стипендиальная программа правительства Великобритании для будущих лидеров для получения однолетних степеней магистра.',
+                url: 'https://www.chevening.org/'
+            },
+            {
+                id: 'fulbright',
+                name: 'Fulbright Foreign Student Program',
+                country: 'United States',
+                flag: '🇺🇸',
+                type: 'Full',
+                level: 'Master',
+                discipline: 'Various',
+                deadline: '2024-10-15',
+                description: 'Престижная стипендиальная программа для иностранных студентов для получения степеней магистра в Соединенных Штатах.',
+                url: 'https://fulbright.state.gov/'
+            },
+            {
+                id: 'mext',
+                name: 'MEXT Scholarship',
+                country: 'Japan',
+                flag: '🇯🇵',
+                type: 'Full',
+                level: 'Bachelor',
+                discipline: 'Various',
+                deadline: '2025-04-30',
+                description: 'Японская государственная стипендия для бакалавриата и магистратуры с полным покрытием расходов.',
+                url: 'https://www.mext.go.jp/en/'
+            }
+        ];
+
+        // Функция для создания карточки программы
+        function createProgramCard(program) {
+            const isUpcoming = new Date(program.deadline) > new Date();
+            const typeColors = {
+                'Full': 'bg-green-100 text-green-800',
+                'Partial': 'bg-blue-100 text-blue-800',
+                'Government': 'bg-purple-100 text-purple-800',
+                'Self-funded': 'bg-gray-100 text-gray-800'
+            };
+            
+            const levelTranslations = {
+                'Bachelor': 'Бакалавриат',
+                'Master': 'Магистратура',
+                'PhD': 'Докторантура'
+            };
+            
+            const typeTranslations = {
+                'Full': 'Полная',
+                'Partial': 'Частичная',
+                'Government': 'Государственная',
+                'Self-funded': 'Самофинансирование'
+            };
+            
+            return `
+                <div class="card overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl">${program.flag}</span>
+                                <div>
+                                    <h3 class="text-xl font-semibold mb-1 text-gray-800">${program.name}</h3>
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        ${program.country}
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm ${typeColors[program.type] || 'bg-gray-100 text-gray-800'}">
+                                ${typeTranslations[program.type] || program.type}
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <i class="fas fa-graduation-cap"></i>
+                                ${levelTranslations[program.level] || program.level}
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span class="${isUpcoming ? 'text-green-600' : 'text-red-600'}">
+                                    ${program.deadline}
+                                </span>
+                            </div>
+                        </div>
+
+                        <p class="text-sm text-gray-600 mb-4">${program.discipline}</p>
+                        <p class="text-gray-700 mb-6 line-clamp-3">${program.description}</p>
+
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="viewProgramDetail('${program.id}')"
+                                    class="flex-1 px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">
+                                Узнать больше
+                            </button>
+                            <button onclick="checkEligibility('${program.id}', '${program.url}')"
+                                    class="flex-1 px-4 py-2 border-2 border-[#0F4C81] text-[#0F4C81] rounded-lg hover:bg-[#0F4C81] hover:text-white transition-colors font-medium">
+                                Проверить соответствие
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Функция для отображения программ
+        function displayPrograms(programs) {
+            const container = document.getElementById('programs-container');
+            const countElement = document.getElementById('programs-count');
+            
+            countElement.textContent = programs.length;
+            
+            if (programs.length === 0) {
+                container.innerHTML = `
+                    <div class="card p-12 text-center col-span-2">
+                        <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Программы не найдены</h3>
+                        <p class="text-gray-600">
+                            Попробуйте изменить фильтры, чтобы увидеть больше результатов
+                        </p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = programs.map(createProgramCard).join('');
+            }
+        }
+
+        // Фильтрация программ
+        function filterPrograms() {
+            const country = document.getElementById('country-filter').value;
+            const type = document.getElementById('type-filter').value;
+            const level = document.getElementById('level-filter').value;
+            const discipline = document.getElementById('discipline-filter').value;
+            const deadlineFilter = document.getElementById('deadline-filter').value;
+            
+            const filtered = programsData.filter(program => {
+                if (country && program.country !== country) return false;
+                if (type && program.type !== type) return false;
+                if (level && program.level !== level) return false;
+                if (discipline && program.discipline !== discipline) return false;
+                
+                if (deadlineFilter === 'upcoming') {
+                    const deadlineDate = new Date(program.deadline);
+                    const today = new Date();
+                    if (deadlineDate <= today) return false;
+                }
+                
+                return true;
+            });
+            
+            displayPrograms(filtered);
+        }
+
+        // Просмотр деталей программы
+        function viewProgramDetail(id) {
+            localStorage.setItem('selectedProgramId', id);
+            window.location.href = 'program-detail.html';
+        }
+
+        // Проверка соответствия
+        function checkEligibility(id, url) {
+            if (url) {
+                window.open(url, '_blank');
+            } else {
+                window.open('https://t.me/studywithoutfearbot', '_blank');
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Переключение языка
+            const langRu = document.getElementById('lang-ru');
+            const langEn = document.getElementById('lang-en');
+            
+            if (langRu && langEn) {
+                langRu.addEventListener('click', function() {
+                    setLanguage('ru');
+                });
+                
+                langEn.addEventListener('click', function() {
+                    setLanguage('en');
+                });
+            }
+            
+            // Отображение программ
+            displayPrograms(programsData);
+            
+            // Настройка фильтров
+            const filters = ['country-filter', 'type-filter', 'level-filter', 'discipline-filter', 'deadline-filter'];
+            filters.forEach(filterId => {
+                document.getElementById(filterId).addEventListener('change', filterPrograms);
+            });
+            
+            // Сброс фильтров
+            document.getElementById('reset-filters').addEventListener('click', function() {
+                filters.forEach(filterId => {
+                    document.getElementById(filterId).value = '';
+                });
+                document.getElementById('deadline-filter').value = 'all';
+                filterPrograms();
+            });
+            
+            // Мобильные фильтры
+            const mobileFiltersToggle = document.getElementById('mobile-filters-toggle');
+            const mobileFilters = document.getElementById('mobile-filters');
+            const sidebar = document.querySelector('.lg\\:w-64 .card');
+            
+            if (mobileFiltersToggle && mobileFilters && sidebar) {
+                mobileFiltersToggle.addEventListener('click', function() {
+                    if (mobileFilters.classList.contains('hidden')) {
+                        // Копируем фильтры в мобильное меню
+                        mobileFilters.innerHTML = sidebar.innerHTML;
+                        mobileFilters.classList.remove('hidden');
+                        mobileFilters.classList.add('card');
+                        
+                        // Настройка событий для мобильных фильтров
+                        const mobileFilterSelects = mobileFilters.querySelectorAll('select');
+                        mobileFilterSelects.forEach(select => {
+                            const originalId = select.id;
+                            select.addEventListener('change', function() {
+                                // Обновляем оригинальный фильтр
+                                const original = document.getElementById(originalId);
+                                if (original) {
+                                    original.value = this.value;
+                                    original.dispatchEvent(new Event('change'));
+                                }
+                            });
+                        });
+                        
+                        // Кнопка сброса
+                        const mobileResetBtn = mobileFilters.querySelector('#reset-filters');
+                        if (mobileResetBtn) {
+                            mobileResetBtn.addEventListener('click', function() {
+                                filters.forEach(filterId => {
+                                    document.getElementById(filterId).value = '';
+                                });
+                                document.getElementById('deadline-filter').value = 'all';
+                                filterPrograms();
+                                mobileFilters.classList.add('hidden');
+                            });
+                        }
+                        
+                        // Кнопка закрытия
+                        const closeBtn = document.createElement('button');
+                        closeBtn.className = 'mt-4 w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 font-medium';
+                        closeBtn.innerHTML = '<i class="fas fa-times mr-2"></i>Закрыть фильтры';
+                        closeBtn.addEventListener('click', function() {
+                            mobileFilters.classList.add('hidden');
+                        });
+                        mobileFilters.appendChild(closeBtn);
+                    } else {
+                        mobileFilters.classList.add('hidden');
+                    }
+                });
+            }
+        });
+        
+        // Функция установки языка
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            if (lang === 'ru') {
+                document.getElementById('lang-ru').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-ru').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.remove('bg-[#0F4C81]', 'text-white');
+            } else {
+                document.getElementById('lang-en').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-en').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.remove('bg-[#0F4C81]', 'text-white');
+            }
+            
+            console.log('Language changed to:', lang);
+        }
+    </script>
+</body>
+</html>

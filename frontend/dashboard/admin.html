@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Without Fear - Панель администратора</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Toast Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sonner@2.0.3/dist/sonner.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sonner@2.0.3/dist/sonner.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .dashboard-nav {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-card {
+            border-left: 4px solid;
+        }
+        
+        .stat-card.users {
+            border-left-color: var(--primary);
+        }
+        
+        .stat-card.applications {
+            border-left-color: var(--info);
+        }
+        
+        .stat-card.programs {
+            border-left-color: var(--success);
+        }
+        
+        .stat-card.ai {
+            border-left-color: var(--warning);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-admin {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .badge-moderator {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .badge-student {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .badge-status-active {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .badge-status-pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .badge-status-inactive {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .table th {
+            background-color: #f9fafb;
+            padding: 0.75rem 1.5rem;
+            text-align: left;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table tr:hover td {
+            background-color: #f9fafb;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn:hover {
+            background-color: #eff6ff;
+            color: var(--primary);
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            height: 100vh;
+            background-color: white;
+            z-index: 1001;
+            transition: right 0.3s ease;
+            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-nav.active {
+            right: 0;
+        }
+        
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            transition: all 0.2s;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .page-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background-color: white;
+            transition: all 0.2s;
+        }
+        
+        .page-btn:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Filters */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-select {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            min-width: 150px;
+        }
+        
+        /* Quick Actions */
+        .quick-action-card {
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            text-align: left;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .quick-action-card:hover {
+            background-color: #f8fafc;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Brand -->
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                        <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                    </a>
+                    <span class="badge badge-admin text-sm">Администратор</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <button id="lang-switch" class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        <i class="fas fa-language mr-1"></i>
+                        <span id="lang-text">РУС</span>
+                    </button>
+                    
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="user-menu-btn" class="flex items-center space-x-2 hover:opacity-80">
+                            <div class="w-8 h-8 rounded-full bg-[#0F4C81] flex items-center justify-center text-white font-medium">
+                                <span id="user-initial">A</span>
+                            </div>
+                            <div class="text-left hidden lg:block">
+                                <div id="username" class="font-medium">Администратор</div>
+                                <div id="user-email" class="text-sm text-gray-600">admin@studywithoutfear.com</div>
+                            </div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-10">
+                            <a href="index.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-home mr-2"></i>На главную
+                            </a>
+                            <a href="#" id="quick-export-btn" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-file-export mr-2"></i>Экспорт данных
+                            </a>
+                            <hr class="my-2 border-gray-200">
+                            <a href="#" id="logout-btn" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2">
+                    <i class="fas fa-bars text-xl text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    <div id="mobile-nav" class="mobile-nav">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold">Study Without Fear</span>
+                </div>
+                <button id="mobile-close-btn" class="p-2">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <button class="w-full text-left px-4 py-3 rounded-lg bg-[#0F4C81] text-white">
+                    <i class="fas fa-chart-bar mr-3"></i>Статистика
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-users mr-3"></i>Пользователи
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-book-open mr-3"></i>Программы
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-award mr-3"></i>Стипендии
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-robot mr-3"></i>AI логи
+                </button>
+                
+                <hr class="my-4">
+                
+                <div class="px-4 py-3">
+                    <div class="font-medium mb-1">Администратор</div>
+                    <div class="text-sm text-gray-600">admin@studywithoutfear.com</div>
+                </div>
+                
+                <a href="index.html" class="block px-4 py-3 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-home mr-3"></i>На главную
+                </a>
+                <button id="logout-btn-mobile" class="w-full text-left px-4 py-3 rounded-lg text-red-600 hover:bg-red-50">
+                    <i class="fas fa-sign-out-alt mr-3"></i>Выйти
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Панель администратора</h1>
+            <p class="text-gray-600 mt-2">Управление платформой и мониторинг активности</p>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <button data-tab="statistics" class="tab-btn active flex items-center gap-2">
+                <i class="fas fa-chart-bar"></i>
+                <span>Статистика</span>
+            </button>
+            <button data-tab="users" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-users"></i>
+                <span>Пользователи</span>
+            </button>
+            <button data-tab="programs" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-book-open"></i>
+                <span>Программы</span>
+            </button>
+            <button data-tab="scholarships" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-award"></i>
+                <span>Стипендии</span>
+            </button>
+            <button data-tab="ai-logs" class="tab-btn flex items-center gap-2">
+                <i class="fas fa-robot"></i>
+                <span>AI логи</span>
+            </button>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboard-content">
+            <!-- Statistics Tab -->
+            <div id="tab-statistics" class="tab-content active">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="card p-6 stat-card users">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">Всего пользователей</p>
+                                <h2 class="text-3xl font-bold mt-2">1,247</h2>
+                                <p class="text-green-600 text-sm mt-1">+89 на этой неделе</p>
+                            </div>
+                            <i class="fas fa-users text-3xl text-[#0F4C81]"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6 stat-card applications">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">Активные заявки</p>
+                                <h2 class="text-3xl font-bold mt-2">3,456</h2>
+                                <p class="text-blue-600 text-sm mt-1">По всем программам</p>
+                            </div>
+                            <i class="fas fa-file-alt text-3xl text-[#3b82f6]"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6 stat-card programs">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">Всего программ</p>
+                                <h2 class="text-3xl font-bold mt-2">789</h2>
+                                <p class="text-gray-600 text-sm mt-1">В 234 стипендиях</p>
+                            </div>
+                            <i class="fas fa-book-open text-3xl text-[#10b981]"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6 stat-card ai">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">AI запросы (месяц)</p>
+                                <h2 class="text-3xl font-bold mt-2">5,678</h2>
+                                <p class="text-yellow-600 text-sm mt-1">~189 в день</p>
+                            </div>
+                            <i class="fas fa-robot text-3xl text-[#f59e0b]"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="card p-6 mb-8">
+                    <h2 class="text-xl font-semibold mb-4">Быстрые действия</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <button id="quick-add-user" class="quick-action-card">
+                            <i class="fas fa-user-plus text-[#0F4C81] text-xl mb-2"></i>
+                            <div class="font-medium">Добавить пользователя</div>
+                            <p class="text-sm text-gray-600 mt-1">Создать нового пользователя</p>
+                        </button>
+                        <button id="quick-add-program" class="quick-action-card">
+                            <i class="fas fa-book-medical text-[#10b981] text-xl mb-2"></i>
+                            <div class="font-medium">Добавить программу</div>
+                            <p class="text-sm text-gray-600 mt-1">Новая учебная программа</p>
+                        </button>
+                        <button id="quick-add-scholarship" class="quick-action-card">
+                            <i class="fas fa-award text-[#f59e0b] text-xl mb-2"></i>
+                            <div class="font-medium">Добавить стипендию</div>
+                            <p class="text-sm text-gray-600 mt-1">Новая стипендия</p>
+                        </button>
+                        <button id="quick-export" class="quick-action-card">
+                            <i class="fas fa-file-export text-[#8b5cf6] text-xl mb-2"></i>
+                            <div class="font-medium">Экспорт отчетов</div>
+                            <p class="text-sm text-gray-600 mt-1">Выгрузить данные</p>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h2 class="text-xl font-semibold mb-4">Последние регистрации</h2>
+                        <div class="space-y-4" id="recent-users">
+                            <!-- Recent users loaded via JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <h2 class="text-xl font-semibold mb-4">Популярные программы</h2>
+                        <div class="space-y-4" id="popular-programs">
+                            <!-- Popular programs loaded via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="tab-users" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold mb-4 sm:mb-0">Управление пользователями</h2>
+                        <button id="add-user-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] flex items-center gap-2">
+                            <i class="fas fa-user-plus"></i>
+                            Добавить пользователя
+                        </button>
+                    </div>
+                    
+                    <!-- Search and Filters -->
+                    <div class="mb-6 space-y-4">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="user-search" placeholder="Поиск пользователей..." 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F4C81] focus:border-transparent">
+                        </div>
+                        
+                        <div class="filter-container">
+                            <select id="user-role-filter" class="filter-select">
+                                <option value="">Все роли</option>
+                                <option value="student">Студент</option>
+                                <option value="moderator">Модератор</option>
+                                <option value="admin">Администратор</option>
+                            </select>
+                            
+                            <select id="user-status-filter" class="filter-select">
+                                <option value="">Все статусы</option>
+                                <option value="active">Активные</option>
+                                <option value="inactive">Неактивные</option>
+                                <option value="pending">На проверке</option>
+                            </select>
+                            
+                            <select id="user-sort" class="filter-select">
+                                <option value="newest">Сначала новые</option>
+                                <option value="oldest">Сначала старые</option>
+                                <option value="name">По имени</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Users Table -->
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Имя пользователя</th>
+                                    <th>Email</th>
+                                    <th>Роль</th>
+                                    <th>Дата регистрации</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- Users will be loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-between mt-6">
+                        <div class="text-sm text-gray-600">
+                            Показано <span id="users-start">1</span>-<span id="users-end">10</span> из <span id="users-total">1247</span>
+                        </div>
+                        <div class="pagination">
+                            <button class="page-btn" id="prev-page">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <span class="px-2">...</span>
+                            <button class="page-btn">12</button>
+                            <button class="page-btn" id="next-page">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Programs Tab -->
+            <div id="tab-programs" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold mb-4 sm:mb-0">Управление программами</h2>
+                        <button id="add-program-btn" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] flex items-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            Добавить программу
+                        </button>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="filter-container mb-6">
+                        <select id="country-filter" class="filter-select">
+                            <option value="">Все страны</option>
+                            <option value="USA">США</option>
+                            <option value="UK">Великобритания</option>
+                            <option value="Germany">Германия</option>
+                            <option value="Canada">Канада</option>
+                            <option value="Australia">Австралия</option>
+                            <option value="Switzerland">Швейцария</option>
+                            <option value="Netherlands">Нидерланды</option>
+                        </select>
+                        
+                        <select id="level-filter" class="filter-select">
+                            <option value="">Все уровни</option>
+                            <option value="Bachelor">Бакалавриат</option>
+                            <option value="Master">Магистратура</option>
+                            <option value="PhD">PhD</option>
+                        </select>
+                        
+                        <select id="discipline-filter" class="filter-select">
+                            <option value="">Все дисциплины</option>
+                            <option value="Computer Science">Информатика</option>
+                            <option value="Engineering">Инженерия</option>
+                            <option value="Business">Бизнес</option>
+                            <option value="Medicine">Медицина</option>
+                            <option value="Arts">Искусство</option>
+                            <option value="Science">Наука</option>
+                        </select>
+                        
+                        <select id="program-status-filter" class="filter-select">
+                            <option value="">Все статусы</option>
+                            <option value="active">Активные</option>
+                            <option value="pending">На проверке</option>
+                            <option value="inactive">Неактивные</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Programs Table -->
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название программы</th>
+                                    <th>Университет</th>
+                                    <th>Страна</th>
+                                    <th>Тип</th>
+                                    <th>Уровень</th>
+                                    <th>Заявки</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="programs-table-body">
+                                <!-- Programs will be loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-between mt-6">
+                        <div class="text-sm text-gray-600">
+                            Показано <span id="programs-start">1</span>-<span id="programs-end">10</span> из <span id="programs-total">789</span>
+                        </div>
+                        <div class="pagination">
+                            <button class="page-btn" id="programs-prev">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <span class="px-2">...</span>
+                            <button class="page-btn">12</button>
+                            <button class="page-btn" id="programs-next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Logs Tab -->
+            <div id="tab-ai-logs" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold mb-4 sm:mb-0">Логи AI ассистента</h2>
+                        <button id="export-ai-logs" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 flex items-center gap-2">
+                            <i class="fas fa-download"></i>
+                            Экспорт логов
+                        </button>
+                    </div>
+                    
+                    <!-- AI Logs Filters -->
+                    <div class="filter-container mb-6">
+                        <select id="ai-user-filter" class="filter-select">
+                            <option value="">Все пользователи</option>
+                            <option value="student_001">student_001</option>
+                            <option value="student_002">student_002</option>
+                            <option value="moderator">moderator</option>
+                        </select>
+                        
+                        <select id="ai-date-filter" class="filter-select">
+                            <option value="today">Сегодня</option>
+                            <option value="week" selected>Неделя</option>
+                            <option value="month">Месяц</option>
+                            <option value="all">Все время</option>
+                        </select>
+                        
+                        <input type="date" id="ai-start-date" class="filter-select" placeholder="Дата начала">
+                        <input type="date" id="ai-end-date" class="filter-select" placeholder="Дата окончания">
+                    </div>
+                    
+                    <!-- AI Logs Table -->
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Пользователь</th>
+                                    <th>Запрос</th>
+                                    <th>Время</th>
+                                    <th>Токены</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ai-logs-table-body">
+                                <!-- AI logs will be loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-between mt-6">
+                        <div class="text-sm text-gray-600">
+                            Показано <span id="ai-start">1</span>-<span id="ai-end">10</span> из <span id="ai-total">5,678</span>
+                        </div>
+                        <div class="pagination">
+                            <button class="page-btn" id="ai-prev">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <span class="px-2">...</span>
+                            <button class="page-btn">50</button>
+                            <button class="page-btn" id="ai-next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scholarships Tab -->
+            <div id="tab-scholarships" class="tab-content">
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold mb-6">Управление стипендиями</h2>
+                    <p class="text-gray-600 mb-6">Интерфейс управления стипендиями - аналогичен таблице программ с фильтрацией по региону и типу покрытия.</p>
+                    
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название стипендии</th>
+                                    <th>Регион</th>
+                                    <th>Покрытие</th>
+                                    <th>Дедлайн</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Erasmus+</td>
+                                    <td>Европа</td>
+                                    <td>Полное</td>
+                                    <td>2025-02-01</td>
+                                    <td><span class="badge badge-status-active">Активна</span></td>
+                                    <td>
+                                        <button class="p-1 text-blue-600 hover:text-blue-800 mr-2">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="p-1 text-red-600 hover:text-red-800">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold">Добавить пользователя</h3>
+                    <button id="close-user-modal" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="add-user-form">
+                    <div class="space-y-4">
+                        <div class="form-group">
+                            <label class="form-label">Имя пользователя *</label>
+                            <input type="text" required class="form-input" placeholder="Введите имя пользователя">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" required class="form-input" placeholder="Введите email">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Роль *</label>
+                            <select class="form-select" required>
+                                <option value="">Выберите роль</option>
+                                <option value="student">Студент</option>
+                                <option value="moderator">Модератор</option>
+                                <option value="admin">Администратор</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Пароль *</label>
+                            <input type="password" required class="form-input" placeholder="Введите пароль">
+                            <p class="text-xs text-gray-600 mt-1">Пароль должен содержать 8-20 символов, заглавные и строчные буквы, цифры и специальные символы</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" id="cancel-user-modal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+                            Отмена
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                            Добавить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Program Modal -->
+    <div id="add-program-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold">Добавить программу</h3>
+                    <button id="close-program-modal" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="add-program-form">
+                    <div class="space-y-4">
+                        <div class="form-group">
+                            <label class="form-label">Название программы *</label>
+                            <input type="text" required class="form-input" placeholder="Например: Computer Science - MIT">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Университет *</label>
+                            <input type="text" required class="form-input" placeholder="Например: Massachusetts Institute of Technology">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Страна *</label>
+                                <select class="form-select" required>
+                                    <option value="">Выберите страну</option>
+                                    <option value="USA">США</option>
+                                    <option value="UK">Великобритания</option>
+                                    <option value="Germany">Германия</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Тип стипендии *</label>
+                                <select class="form-select" required>
+                                    <option value="">Выберите тип</option>
+                                    <option value="Full Scholarship">Полная стипендия</option>
+                                    <option value="Partial Scholarship">Частичная стипендия</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Уровень обучения *</label>
+                                <select class="form-select" required>
+                                    <option value="">Выберите уровень</option>
+                                    <option value="Bachelor">Бакалавриат</option>
+                                    <option value="Master">Магистратура</option>
+                                    <option value="PhD">PhD</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Дедлайн *</label>
+                                <input type="date" required class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Дисциплина</label>
+                            <input type="text" class="form-input" placeholder="Например: Computer Science">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Описание</label>
+                            <textarea class="form-input" rows="3" placeholder="Опишите программу..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" id="cancel-program-modal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+                            Отмена
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b]">
+                            Добавить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Data
+        const mockData = {
+            users: [
+                { id: '1', username: 'student_001', email: 'student1@email.com', role: 'student', joined: '2025-01-01', status: 'active' },
+                { id: '2', username: 'student_002', email: 'student2@email.com', role: 'student', joined: '2025-01-02', status: 'active' },
+                { id: '3', username: 'moderator', email: 'moderator@studywithoutfear.com', role: 'moderator', joined: '2024-12-01', status: 'active' },
+                { id: '4', username: 'admin', email: 'admin@studywithoutfear.com', role: 'admin', joined: '2024-11-15', status: 'active' },
+                { id: '5', username: 'student_003', email: 'student3@email.com', role: 'student', joined: '2024-12-30', status: 'active' },
+                { id: '6', username: 'student_004', email: 'student4@email.com', role: 'student', joined: '2024-12-29', status: 'pending' },
+                { id: '7', username: 'student_005', email: 'student5@email.com', role: 'student', joined: '2024-12-28', status: 'active' },
+                { id: '8', username: 'moderator2', email: 'moderator2@studywithoutfear.com', role: 'moderator', joined: '2024-12-20', status: 'inactive' },
+            ],
+            programs: [
+                { id: '1', name: 'Computer Science - MIT', university: 'MIT', country: 'USA', type: 'Full Scholarship', level: 'Master', discipline: 'Computer Science', status: 'active', applications: 45 },
+                { id: '2', name: 'Engineering - ETH Zurich', university: 'ETH Zurich', country: 'Switzerland', type: 'Partial Scholarship', level: 'PhD', discipline: 'Engineering', status: 'active', applications: 32 },
+                { id: '3', name: 'Business - Oxford', university: 'University of Oxford', country: 'UK', type: 'Full Scholarship', level: 'Master', discipline: 'Business', status: 'pending', applications: 28 },
+                { id: '4', name: 'Medicine - Harvard', university: 'Harvard University', country: 'USA', type: 'Partial Scholarship', level: 'Bachelor', discipline: 'Medicine', status: 'active', applications: 56 },
+                { id: '5', name: 'Computer Science - Stanford', university: 'Stanford University', country: 'USA', type: 'Full Scholarship', level: 'PhD', discipline: 'Computer Science', status: 'active', applications: 41 },
+                { id: '6', name: 'Engineering - Cambridge', university: 'University of Cambridge', country: 'UK', type: 'Partial Scholarship', level: 'Master', discipline: 'Engineering', status: 'active', applications: 38 },
+                { id: '7', name: 'Arts - Sorbonne', university: 'Sorbonne University', country: 'France', type: 'Full Scholarship', level: 'Bachelor', discipline: 'Arts', status: 'pending', applications: 22 },
+                { id: '8', name: 'Science - Max Planck', university: 'Max Planck Institute', country: 'Germany', type: 'Full Scholarship', level: 'PhD', discipline: 'Science', status: 'active', applications: 19 },
+            ],
+            aiLogs: [
+                { id: '1', user: 'student_001', query: 'What are requirements for MIT?', timestamp: '2025-01-08 14:30', tokens: 450 },
+                { id: '2', user: 'student_002', query: 'Best scholarships for engineering', timestamp: '2025-01-08 13:15', tokens: 380 },
+                { id: '3', user: 'student_001', query: 'How to prepare motivation letter?', timestamp: '2025-01-08 10:20', tokens: 520 },
+                { id: '4', user: 'student_003', query: 'Deadlines for European universities', timestamp: '2025-01-07 16:45', tokens: 290 },
+                { id: '5', user: 'student_004', query: 'TOEFL requirements for USA', timestamp: '2025-01-07 11:30', tokens: 320 },
+                { id: '6', user: 'student_005', query: 'Scholarships for Asian students', timestamp: '2025-01-06 09:15', tokens: 410 },
+                { id: '7', user: 'moderator', query: 'Update program information', timestamp: '2025-01-05 14:20', tokens: 180 },
+                { id: '8', user: 'student_001', query: 'Visa requirements for Germany', timestamp: '2025-01-05 10:45', tokens: 370 },
+                { id: '9', user: 'student_002', query: 'Cost of living in Switzerland', timestamp: '2025-01-04 15:30', tokens: 280 },
+                { id: '10', user: 'student_003', query: 'How to get recommendation letters', timestamp: '2025-01-04 12:10', tokens: 340 },
+            ],
+            stats: {
+                totalUsers: 1247,
+                activeApplications: 3456,
+                totalPrograms: 789,
+                totalScholarships: 234,
+                aiQueriesThisMonth: 5678,
+                newUsersThisWeek: 89,
+            }
+        };
+
+        // Current State
+        let currentTab = 'statistics';
+        let currentLanguage = 'ru';
+        let currentPage = {
+            users: 1,
+            programs: 1,
+            aiLogs: 1
+        };
+        let itemsPerPage = 10;
+
+        // DOM Elements
+        const elements = {
+            langSwitch: document.getElementById('lang-switch'),
+            langText: document.getElementById('lang-text'),
+            username: document.getElementById('username'),
+            userEmail: document.getElementById('user-email'),
+            userInitial: document.getElementById('user-initial'),
+            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+            mobileNav: document.getElementById('mobile-nav'),
+            mobileOverlay: document.getElementById('mobile-overlay'),
+            mobileCloseBtn: document.getElementById('mobile-close-btn'),
+            logoutBtn: document.getElementById('logout-btn'),
+            logoutBtnMobile: document.getElementById('logout-btn-mobile'),
+            userMenuBtn: document.getElementById('user-menu-btn'),
+            userDropdown: document.getElementById('user-dropdown'),
+            
+            // Modals
+            addUserModal: document.getElementById('add-user-modal'),
+            addProgramModal: document.getElementById('add-program-modal'),
+            
+            // Quick actions
+            quickAddUser: document.getElementById('quick-add-user'),
+            quickAddProgram: document.getElementById('quick-add-program'),
+            quickAddScholarship: document.getElementById('quick-add-scholarship'),
+            quickExport: document.getElementById('quick-export'),
+            
+            // Add buttons
+            addUserBtn: document.getElementById('add-user-btn'),
+            addProgramBtn: document.getElementById('add-program-btn'),
+            exportAiLogs: document.getElementById('export-ai-logs'),
+            
+            // Forms
+            addUserForm: document.getElementById('add-user-form'),
+            closeUserModal: document.getElementById('close-user-modal'),
+            cancelUserModal: document.getElementById('cancel-user-modal'),
+            
+            addProgramForm: document.getElementById('add-program-form'),
+            closeProgramModal: document.getElementById('close-program-modal'),
+            cancelProgramModal: document.getElementById('cancel-program-modal'),
+            
+            // Pagination
+            prevPage: document.getElementById('prev-page'),
+            nextPage: document.getElementById('next-page'),
+            programsPrev: document.getElementById('programs-prev'),
+            programsNext: document.getElementById('programs-next'),
+            aiPrev: document.getElementById('ai-prev'),
+            aiNext: document.getElementById('ai-next')
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            setupEventListeners();
+            updateUI();
+        });
+
+        // Load mock data
+        function loadData() {
+            // Load recent users
+            const recentUsers = document.getElementById('recent-users');
+            if (recentUsers) {
+                recentUsers.innerHTML = mockData.users.slice(0, 3).map(user => `
+                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full ${getRoleColor(user.role)} flex items-center justify-center text-white">
+                                ${user.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-medium">${user.username}</div>
+                                <div class="text-sm text-gray-600">${user.email}</div>
+                            </div>
+                        </div>
+                        <span class="${getBadgeClass(user.role)}">${getRoleName(user.role)}</span>
+                    </div>
+                `).join('');
+            }
+
+            // Load popular programs
+            const popularPrograms = document.getElementById('popular-programs');
+            if (popularPrograms) {
+                popularPrograms.innerHTML = mockData.programs.slice(0, 3).map(program => `
+                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                        <div>
+                            <div class="font-medium">${program.name}</div>
+                            <div class="text-sm text-gray-600">${program.country} • ${program.applications} заявок</div>
+                        </div>
+                        <span class="${program.status === 'active' ? 'badge badge-status-active' : 'badge badge-status-pending'}">
+                            ${program.status === 'active' ? 'Активна' : 'На проверке'}
+                        </span>
+                    </div>
+                `).join('');
+            }
+
+            // Load users table
+            loadUsersTable();
+            
+            // Load programs table
+            loadProgramsTable();
+            
+            // Load AI logs table
+            loadAiLogsTable();
+        }
+
+        // Helper functions
+        function getRoleColor(role) {
+            switch(role) {
+                case 'admin': return 'bg-red-500';
+                case 'moderator': return 'bg-blue-500';
+                case 'student': return 'bg-green-500';
+                default: return 'bg-gray-500';
+            }
+        }
+
+        function getRoleName(role) {
+            switch(role) {
+                case 'admin': return 'Админ';
+                case 'moderator': return 'Модератор';
+                case 'student': return 'Студент';
+                default: return role;
+            }
+        }
+
+        function getBadgeClass(role) {
+            switch(role) {
+                case 'admin': return 'badge badge-admin';
+                case 'moderator': return 'badge badge-moderator';
+                case 'student': return 'badge badge-student';
+                default: return 'badge';
+            }
+        }
+
+        // Load users table with pagination
+        function loadUsersTable() {
+            const page = currentPage.users;
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const users = mockData.users.slice(start, end);
+            
+            const usersTableBody = document.getElementById('users-table-body');
+            if (usersTableBody) {
+                usersTableBody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${getBadgeClass(user.role)}</td>
+                        <td>${new Date(user.joined).toLocaleDateString()}</td>
+                        <td>
+                            <span class="badge ${user.status === 'active' ? 'badge-status-active' : user.status === 'pending' ? 'badge-status-pending' : 'badge-status-inactive'}">
+                                ${user.status === 'active' ? 'Активен' : user.status === 'pending' ? 'На проверке' : 'Неактивен'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editUser('${user.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteUser('${user.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            // Update pagination info
+            document.getElementById('users-start').textContent = start + 1;
+            document.getElementById('users-end').textContent = Math.min(end, mockData.users.length);
+            document.getElementById('users-total').textContent = mockData.users.length;
+        }
+
+        // Load programs table with pagination
+        function loadProgramsTable() {
+            const page = currentPage.programs;
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const programs = mockData.programs.slice(start, end);
+            
+            const programsTableBody = document.getElementById('programs-table-body');
+            if (programsTableBody) {
+                programsTableBody.innerHTML = programs.map(program => `
+                    <tr>
+                        <td>${program.name}</td>
+                        <td>${program.university}</td>
+                        <td>${program.country}</td>
+                        <td>${program.type}</td>
+                        <td>${program.level}</td>
+                        <td>${program.applications}</td>
+                        <td>
+                            <span class="badge ${program.status === 'active' ? 'badge-status-active' : 'badge-status-pending'}">
+                                ${program.status === 'active' ? 'Активна' : 'На проверке'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editProgram('${program.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteProgram('${program.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            // Update pagination info
+            document.getElementById('programs-start').textContent = start + 1;
+            document.getElementById('programs-end').textContent = Math.min(end, mockData.programs.length);
+            document.getElementById('programs-total').textContent = mockData.programs.length;
+        }
+
+        // Load AI logs table with pagination
+        function loadAiLogsTable() {
+            const page = currentPage.aiLogs;
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const logs = mockData.aiLogs.slice(start, end);
+            
+            const aiLogsTableBody = document.getElementById('ai-logs-table-body');
+            if (aiLogsTableBody) {
+                aiLogsTableBody.innerHTML = logs.map(log => `
+                    <tr>
+                        <td>${log.user}</td>
+                        <td class="max-w-xs truncate">${log.query}</td>
+                        <td>${log.timestamp}</td>
+                        <td>${log.tokens}</td>
+                        <td>
+                            <button class="p-1 text-gray-600 hover:text-gray-800" onclick="viewAILog('${log.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            // Update pagination info
+            document.getElementById('ai-start').textContent = start + 1;
+            document.getElementById('ai-end').textContent = Math.min(end, mockData.aiLogs.length);
+            document.getElementById('ai-total').textContent = mockData.aiLogs.length;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Language switch
+            elements.langSwitch?.addEventListener('click', toggleLanguage);
+            
+            // Mobile menu
+            elements.mobileMenuBtn?.addEventListener('click', openMobileMenu);
+            elements.mobileCloseBtn?.addEventListener('click', closeMobileMenu);
+            elements.mobileOverlay?.addEventListener('click', closeMobileMenu);
+            
+            // User dropdown
+            elements.userMenuBtn?.addEventListener('click', toggleUserDropdown);
+            document.addEventListener('click', closeUserDropdown);
+            
+            // Logout
+            elements.logoutBtn?.addEventListener('click', logout);
+            elements.logoutBtnMobile?.addEventListener('click', logout);
+            
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    switchTab(tab);
+                });
+            });
+            
+            // Quick actions
+            elements.quickAddUser?.addEventListener('click', openAddUserModal);
+            elements.quickAddProgram?.addEventListener('click', openAddProgramModal);
+            elements.quickAddScholarship?.addEventListener('click', () => showToast('Добавление стипендии', 'Открыт интерфейс добавления стипендии'));
+            elements.quickExport?.addEventListener('click', () => showToast('Экспорт данных', 'Начата подготовка отчета для экспорта'));
+            
+            // User modal
+            elements.addUserBtn?.addEventListener('click', openAddUserModal);
+            elements.closeUserModal?.addEventListener('click', closeAddUserModal);
+            elements.cancelUserModal?.addEventListener('click', closeAddUserModal);
+            elements.addUserForm?.addEventListener('submit', addUser);
+            
+            // Program modal
+            elements.addProgramBtn?.addEventListener('click', openAddProgramModal);
+            elements.closeProgramModal?.addEventListener('click', closeAddProgramModal);
+            elements.cancelProgramModal?.addEventListener('click', closeAddProgramModal);
+            elements.addProgramForm?.addEventListener('submit', addProgram);
+            
+            // Export AI logs
+            elements.exportAiLogs?.addEventListener('click', () => showToast('Экспорт логов', 'Логи AI ассистента экспортированы'));
+            
+            // Pagination
+            elements.prevPage?.addEventListener('click', () => changePage('users', -1));
+            elements.nextPage?.addEventListener('click', () => changePage('users', 1));
+            elements.programsPrev?.addEventListener('click', () => changePage('programs', -1));
+            elements.programsNext?.addEventListener('click', () => changePage('programs', 1));
+            elements.aiPrev?.addEventListener('click', () => changePage('aiLogs', -1));
+            elements.aiNext?.addEventListener('click', () => changePage('aiLogs', 1));
+            
+            // Filters
+            document.getElementById('user-role-filter')?.addEventListener('change', filterUsers);
+            document.getElementById('user-status-filter')?.addEventListener('change', filterUsers);
+            document.getElementById('user-sort')?.addEventListener('change', sortUsers);
+            
+            document.getElementById('country-filter')?.addEventListener('change', filterPrograms);
+            document.getElementById('level-filter')?.addEventListener('change', filterPrograms);
+            document.getElementById('discipline-filter')?.addEventListener('change', filterPrograms);
+            document.getElementById('program-status-filter')?.addEventListener('change', filterPrograms);
+            
+            document.getElementById('ai-user-filter')?.addEventListener('change', filterAiLogs);
+            document.getElementById('ai-date-filter')?.addEventListener('change', filterAiLogs);
+            document.getElementById('ai-start-date')?.addEventListener('change', filterAiLogs);
+            document.getElementById('ai-end-date')?.addEventListener('change', filterAiLogs);
+            
+            // Close modals on outside click
+            elements.addUserModal?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAddUserModal();
+                }
+            });
+            
+            elements.addProgramModal?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAddProgramModal();
+                }
+            });
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+            elements.langText.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
+            showToast('Язык изменен', `Язык интерфейса изменен на ${currentLanguage === 'ru' ? 'русский' : 'английский'}`);
+        }
+
+        // Mobile menu functions
+        function openMobileMenu() {
+            elements.mobileNav.classList.add('active');
+            elements.mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            elements.mobileNav.classList.remove('active');
+            elements.mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // User dropdown functions
+        function toggleUserDropdown(e) {
+            e.stopPropagation();
+            elements.userDropdown.classList.toggle('hidden');
+        }
+
+        function closeUserDropdown(e) {
+            if (!elements.userMenuBtn.contains(e.target) && !elements.userDropdown.contains(e.target)) {
+                elements.userDropdown.classList.add('hidden');
+            }
+        }
+
+        // Switch tab
+        function switchTab(tab) {
+            currentTab = tab;
+            updateTabs();
+        }
+
+        // Update tabs visibility and active state
+        function updateTabs() {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Set active tab button
+            const activeTabBtn = document.querySelector(`.tab-btn[data-tab="${currentTab}"]`);
+            if (activeTabBtn) {
+                activeTabBtn.classList.add('active');
+            }
+            
+            // Show current tab content
+            const tabContent = document.getElementById(`tab-${currentTab}`);
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+        }
+
+        // Modal functions
+        function openAddUserModal() {
+            elements.addUserModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddUserModal() {
+            elements.addUserModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openAddProgramModal() {
+            elements.addProgramModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddProgramModal() {
+            elements.addProgramModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Form submission functions
+        function addUser(e) {
+            e.preventDefault();
+            showToast('Пользователь добавлен', 'Новый пользователь успешно добавлен в систему');
+            closeAddUserModal();
+            // In real app, reload data from backend
+        }
+
+        function addProgram(e) {
+            e.preventDefault();
+            showToast('Программа добавлена', 'Новая программа успешно добавлена в базу данных');
+            closeAddProgramModal();
+            // In real app, reload data from backend
+        }
+
+        // Pagination functions
+        function changePage(type, direction) {
+            const maxPage = Math.ceil(mockData[type].length / itemsPerPage);
+            
+            currentPage[type] += direction;
+            
+            if (currentPage[type] < 1) currentPage[type] = 1;
+            if (currentPage[type] > maxPage) currentPage[type] = maxPage;
+            
+            if (type === 'users') loadUsersTable();
+            if (type === 'programs') loadProgramsTable();
+            if (type === 'aiLogs') loadAiLogsTable();
+        }
+
+        // Filter functions
+        function filterUsers() {
+            // In real app, this would filter the data
+            showToast('Фильтр применен', 'Фильтры пользователей применены');
+        }
+
+        function filterPrograms() {
+            // In real app, this would filter the data
+            showToast('Фильтр применен', 'Фильтры программ применены');
+        }
+
+        function sortUsers() {
+            // In real app, this would sort the data
+            showToast('Сортировка', 'Пользователи отсортированы');
+        }
+
+        function filterAiLogs() {
+            // In real app, this would filter the data
+            showToast('Фильтр применен', 'Фильтры AI логов применены');
+        }
+
+        // Global functions for table actions
+        window.editUser = function(id) {
+            showToast('Редактирование пользователя', `Редактирование пользователя с ID: ${id}`);
+            // In real app, open edit modal
+        };
+
+        window.deleteUser = function(id) {
+            if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                showToast('Пользователь удален', `Пользователь с ID: ${id} удален из системы`);
+                // In real app, make API call to delete
+            }
+        };
+
+        window.editProgram = function(id) {
+            showToast('Редактирование программы', `Редактирование программы с ID: ${id}`);
+            // In real app, open edit modal
+        };
+
+        window.deleteProgram = function(id) {
+            if (confirm('Вы уверены, что хотите удалить эту программу?')) {
+                showToast('Программа удалена', `Программа с ID: ${id} удалена из системы`);
+                // In real app, make API call to delete
+            }
+        };
+
+        window.viewAILog = function(id) {
+            showToast('Просмотр AI лога', `Просмотр лога с ID: ${id}`);
+            // In real app, open modal with full log details
+        };
+
+        // Toast notification
+        function showToast(title, description) {
+            if (window.sonner) {
+                window.sonner.toast(title, {
+                    description: description,
+                    duration: 4000,
+                });
+            } else {
+                alert(`${title}: ${description}`);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                // In real app, this would clear auth tokens
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Update UI
+        function updateUI() {
+            updateTabs();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чеклист документов - Study Without Fear</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-card {
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .profile-card.selected {
+            border-color: #0F4C81;
+            background-color: #eff6ff;
+        }
+        
+        .document-item {
+            transition: transform 0.3s ease;
+        }
+        
+        .document-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .importance-critical {
+            border-left-color: #ef4444;
+        }
+        
+        .importance-high {
+            border-left-color: #f97316;
+        }
+        
+        .importance-medium {
+            border-left-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Навигация -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Лого -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                </div>
+                
+                <!-- Основные ссылки -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Главная</a>
+                    <a href="programs.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Программы</a>
+                    <a href="universities.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Университеты</a>
+                    <a href="documents.html" class="text-[#0F4C81] font-medium border-b-2 border-[#0F4C81]">Документы</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Портфолио</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Контакты</a>
+                </div>
+                
+                <!-- Правая часть (язык и вход) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Язык -->
+                    <div class="flex items-center space-x-2">
+                        <button id="lang-ru" class="px-2 py-1 bg-[#0F4C81] text-white rounded text-sm font-medium">РУС</button>
+                        <button id="lang-en" class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-sm font-medium">ENG</button>
+                    </div>
+                    
+                    <!-- Кнопки входа/регистрации -->
+                    <div id="auth-buttons">
+                        <a href="login.html" class="px-4 py-2 text-gray-700 hover:text-[#0F4C81] font-medium">Вход</a>
+                        <a href="register.html" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">Регистрация</a>
+                    </div>
+                </div>
+                
+                <!-- Мобильное меню -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильное меню (скрытое) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Главная</a>
+                <a href="programs.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Программы</a>
+                <a href="universities.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Университеты</a>
+                <a href="documents.html" class="block py-2 px-4 bg-[#0F4C81] text-white rounded">Документы</a>
+                <a href="portfolio.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Портфолио</a>
+                <a href="contact.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white overflow-hidden">
+        <div class="relative container mx-auto px-4 py-16 md:py-24">
+            <div class="max-w-3xl">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-file-alt text-4xl"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold">Чеклист документов</h1>
+                </div>
+                <p class="text-lg md:text-xl mb-8 text-gray-100">
+                    Полное руководство по всем документам, необходимым для вашего заявления на обучение за рубежом. Никогда больше не пропускайте требуемые документы.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="downloadChecklist()"
+                       class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors text-center font-medium">
+                        <i class="fas fa-download mr-2"></i>Скачать чеклист
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Выбор профиля -->
+        <div class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Выберите ваш профиль</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <button data-profile="general" class="profile-card selected p-6 rounded-lg text-left card">
+                    <div class="text-4xl mb-3">📄</div>
+                    <div class="text-[#0F4C81] font-medium text-lg">Общие документы</div>
+                    <p class="text-sm text-gray-600 mt-2">Базовые документы для всех студентов</p>
+                </button>
+                
+                <button data-profile="high-school" class="profile-card p-6 rounded-lg text-left card">
+                    <div class="text-4xl mb-3">🎓</div>
+                    <div class="text-gray-700 font-medium text-lg">Школьник (10-11 класс)</div>
+                    <p class="text-sm text-gray-600 mt-2">Для поступающих после школы</p>
+                </button>
+                
+                <button data-profile="college" class="profile-card p-6 rounded-lg text-left card">
+                    <div class="text-4xl mb-3">📚</div>
+                    <div class="text-gray-700 font-medium text-lg">Студент колледжа/университета</div>
+                    <p class="text-sm text-gray-600 mt-2">Для переводящихся студентов</p>
+                </button>
+                
+                <button data-profile="gap-year" class="profile-card p-6 rounded-lg text-left card">
+                    <div class="text-4xl mb-3">🌍</div>
+                    <div class="text-gray-700 font-medium text-lg">Студент gap year</div>
+                    <p class="text-sm text-gray-600 mt-2">После академического перерыва</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- Основные документы -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Основные документы для всех студентов</h2>
+                <button onclick="downloadChecklist()" class="flex items-center gap-2 px-6 py-3 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">
+                    <i class="fas fa-download"></i>
+                    Скачать чеклист
+                </button>
+            </div>
+
+            <div id="documents-list" class="space-y-6">
+                <!-- Документы загрузятся через JS -->
+            </div>
+        </div>
+
+        <!-- Профиль-специфичные документы -->
+        <div id="profile-specific" class="mb-8 hidden">
+            <h2 id="profile-title" class="text-2xl font-bold mb-6 text-gray-800"></h2>
+            <div class="card p-8">
+                <ul id="specific-documents" class="space-y-4">
+                    <!-- Документы загрузятся через JS -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="hero-gradient rounded-lg shadow-md p-8 text-white text-center mb-8">
+            <i class="fas fa-file-alt text-5xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-4">Нужна помощь с документами?</h2>
+            <p class="mb-6 text-gray-100 max-w-2xl mx-auto text-lg">
+                Получите персональное руководство по подготовке документов и требованиям для вашей выбранной программы и страны через нашего Telegram Bot.
+            </p>
+            <button onclick="openTelegramBot()"
+                    class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors font-medium">
+                <i class="fab fa-telegram mr-2"></i>Получить помощь по документам через Telegram
+            </button>
+        </div>
+
+        <!-- Важные заметки -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+            <h3 class="text-lg font-bold mb-3 text-yellow-900">Важные заметки</h3>
+            <ul class="space-y-3 text-yellow-900">
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span>Требования могут различаться в зависимости от страны, университета и программы. Всегда проверяйте конкретные требования.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span>Начинайте собирать документы как минимум за 3-6 месяцев до дедлайнов подачи заявок.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span>Сохраняйте как цифровые, так и физические копии всех документов.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span>Некоторые документы могут потребовать официального перевода и апостиля.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-yellow-600 mt-1">&bull;</span>
+                    <span>Если вам меньше 18 лет, могут потребоваться дополнительные документы согласия опекуна.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- О нас -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Study Without Fear</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Помогаем казахстанским студентам найти международные программы обучения и стипендии
+                    </p>
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html" class="text-gray-300 hover:text-white">Программы</a></li>
+                        <li><a href="universities.html" class="text-gray-300 hover:text-white">Университеты</a></li>
+                        <li><a href="documents.html" class="text-white font-medium">Документы</a></li>
+                        <li><a href="portfolio.html" class="text-gray-300 hover:text-white">Портфолио</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Поддержка -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Связаться с нами</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@studywithoutfear.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (777) 123-45-67</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/studywithoutfearbot" class="text-gray-300 hover:text-white" target="_blank">
+                                @studywithoutfearbot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-8 border-gray-700">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Study Without Fear. Все права защищены.</p>
+                <p class="mt-2 text-sm">Платформа для казахстанских студентов</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Telegram Bot функция
+        function openTelegramBot() {
+            window.open('https://t.me/studywithoutfearbot', '_blank');
+        }
+        
+        // Функция скачивания чеклиста
+        function downloadChecklist() {
+            const profile = document.querySelector('.profile-card.selected').dataset.profile;
+            const checklistName = `${profile === 'general' ? 'Общие' : documentsData.profileNames[profile]} документы`;
+            
+            // Создаем контент для PDF/скачивания
+            const content = `
+                ЧЕКЛИСТ ДОКУМЕНТОВ: ${checklistName}
+                Дата создания: ${new Date().toLocaleDateString()}
+                
+                ОСНОВНЫЕ ДОКУМЕНТЫ:
+                ${documentsData.general.map((doc, index) => `
+                ${index + 1}. ${doc.name}
+                   - Важность: ${doc.importance === 'critical' ? 'Критический' : doc.importance === 'high' ? 'Высокий приоритет' : 'Требуется'}
+                   - Описание: ${doc.description}
+                   - Советы: ${doc.tips.join('; ')}
+                `).join('\n')}
+                
+                ${profile !== 'general' && documentsData.profiles[profile] ? `
+                ДОПОЛНИТЕЛЬНЫЕ ДОКУМЕНТЫ:
+                ${documentsData.profiles[profile].map((doc, index) => `
+                ${index + 1}. ${doc}
+                `).join('\n')}
+                ` : ''}
+                
+                ВАЖНЫЕ ЗАМЕТКИ:
+                • Требования могут различаться в зависимости от страны, университета и программы
+                • Начинайте собирать документы за 3-6 месяцев до дедлайнов
+                • Сохраняйте цифровые и физические копии
+                • Некоторые документы требуют перевода и апостиля
+                • Если вам меньше 18 лет, могут потребоваться документы согласия опекуна
+                
+                Study Without Fear © 2024
+                https://t.me/studywithoutfearbot
+            `;
+            
+            // Создаем Blob и скачиваем
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `чеклист_документов_${profile}_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+        
+        // Данные документов
+        const documentsData = {
+            general: [
+                {
+                    name: 'Паспорт',
+                    description: 'Действительный паспорт со сроком действия не менее 6 месяцев',
+                    importance: 'critical',
+                    tips: ['Сделайте несколько копий', 'Проверьте срок действия', 'Подайте заявку заранее при необходимости']
+                },
+                {
+                    name: 'Свидетельство о рождении',
+                    description: 'Официальное свидетельство о рождении (может потребоваться апостиль)',
+                    importance: 'critical',
+                    tips: ['Получите официальный перевод, если не на английском', 'Храните оригинал в безопасности']
+                },
+                {
+                    name: 'Академические сертификаты',
+                    description: 'Аттестат о среднем образовании, диплом бакалавра или эквивалент',
+                    importance: 'critical',
+                    tips: ['Получите заверенные копии', 'Переведите при необходимости', 'Включите конвертацию оценок при необходимости']
+                },
+                {
+                    name: 'Академические выписки',
+                    description: 'Полная запись оценок и курсов',
+                    importance: 'critical',
+                    tips: ['Запросите из учреждения заранее', 'Получите официальные запечатанные копии', 'Включите объяснение шкалы оценок']
+                },
+                {
+                    name: 'Сертификат языковой компетенции',
+                    description: 'Результаты IELTS, TOEFL или других языковых тестов',
+                    importance: 'critical',
+                    tips: ['Зарегистрируйтесь на тест за 2-3 месяца', 'Проверьте срок действия', 'Знайте минимальные требования к баллам']
+                }
+            ],
+            
+            profiles: {
+                'high-school': [
+                    'Текущие школьные выписки',
+                    'Прогнозируемые оценки (если доступны)',
+                    'Запись внеклассной деятельности',
+                    'Формы согласия родителей/опекунов (если младше 18)',
+                    'Финансовые документы родителей/опекунов',
+                    'Рекомендательные письма от школы',
+                    'Подтверждение достижений и наград'
+                ],
+                'college': [
+                    'Сертификат о зачислении в университет',
+                    'Выписки из всех посещаемых учреждений',
+                    'Письмо от академического советника',
+                    'Научные статьи или публикации (если есть)',
+                    'Сертификаты о стажировке',
+                    'Академические награды и почести'
+                ],
+                'gap-year': [
+                    'Объяснительное письмо о gap year',
+                    'Активности во время gap year (работа, волонтерство, курсы)',
+                    'Сертификаты опыта работы',
+                    'Дополнительные языковые сертификаты',
+                    'Сертификаты курсов саморазвития',
+                    'Документация о путешествиях или волонтерском опыте'
+                ]
+            },
+            
+            profileNames: {
+                'general': 'Общие документы',
+                'high-school': 'Школьник (10-11 класс)',
+                'college': 'Студент колледжа/университета',
+                'gap-year': 'Студент gap year'
+            }
+        };
+        
+        // Функция для создания элемента документа
+        function createDocumentItem(doc, index) {
+            const importanceColors = {
+                'critical': 'importance-critical border-red-500',
+                'high': 'importance-high border-orange-500',
+                'medium': 'importance-medium border-blue-500'
+            };
+            
+            const importanceText = {
+                'critical': 'Критический',
+                'high': 'Высокий приоритет',
+                'medium': 'Требуется'
+            };
+            
+            const importanceIcons = {
+                'critical': 'fas fa-exclamation-circle',
+                'high': 'fas fa-exclamation-triangle',
+                'medium': 'fas fa-check-circle'
+            };
+            
+            const importanceIconColors = {
+                'critical': 'text-red-500',
+                'high': 'text-orange-500',
+                'medium': 'text-blue-500'
+            };
+            
+            return `
+                <div class="card overflow-hidden document-item border-l-4 ${importanceColors[doc.importance]}">
+                    <div class="p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 mt-1 ${importanceIconColors[doc.importance]}">
+                                <i class="${importanceIcons[doc.importance]} text-xl"></i>
+                            </div>
+                            
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h3 class="text-xl font-semibold mb-2 text-gray-800">${doc.name}</h3>
+                                        <p class="text-gray-600">${doc.description}</p>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-sm whitespace-nowrap ml-4 ${
+                                        doc.importance === 'critical' ? 'bg-red-100 text-red-800' :
+                                        doc.importance === 'high' ? 'bg-orange-100 text-orange-800' :
+                                        'bg-blue-100 text-blue-800'
+                                    }">
+                                        ${importanceText[doc.importance]}
+                                    </span>
+                                </div>
+                                
+                                <div class="mt-4 bg-blue-50 rounded-lg p-4">
+                                    <p class="text-sm font-medium mb-2 text-[#0F4C81]">💡 Советы:</p>
+                                    <ul class="space-y-2">
+                                        ${doc.tips.map((tip, tipIndex) => `
+                                            <li class="text-sm text-gray-700 flex items-start gap-3">
+                                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                                <span>${tip}</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Функция для отображения документов
+        function displayDocuments(profile) {
+            const container = document.getElementById('documents-list');
+            const documents = documentsData.general;
+            
+            container.innerHTML = documents.map((doc, index) => createDocumentItem(doc, index)).join('');
+            
+            // Обновляем профиль-специфичные документы
+            const profileSpecific = document.getElementById('profile-specific');
+            const profileTitle = document.getElementById('profile-title');
+            const specificDocuments = document.getElementById('specific-documents');
+            
+            if (profile !== 'general' && documentsData.profiles[profile]) {
+                profileSpecific.classList.remove('hidden');
+                profileTitle.textContent = `Дополнительные документы для ${documentsData.profileNames[profile]}`;
+                
+                specificDocuments.innerHTML = documentsData.profiles[profile].map(doc => `
+                    <li class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg">
+                        <div class="w-8 h-8 bg-[#0F4C81] rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="text-gray-800 font-medium">${doc}</span>
+                            <p class="text-sm text-gray-600 mt-1">Документ для профиля ${documentsData.profileNames[profile]}</p>
+                        </div>
+                    </li>
+                `).join('');
+            } else {
+                profileSpecific.classList.add('hidden');
+            }
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Переключение языка
+            const langRu = document.getElementById('lang-ru');
+            const langEn = document.getElementById('lang-en');
+            
+            if (langRu && langEn) {
+                langRu.addEventListener('click', function() {
+                    setLanguage('ru');
+                });
+                
+                langEn.addEventListener('click', function() {
+                    setLanguage('en');
+                });
+            }
+            
+            // Отображение документов
+            displayDocuments('general');
+            
+            // Обработка выбора профиля
+            const profileCards = document.querySelectorAll('.profile-card');
+            profileCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Удаляем выбранный класс у всех карточек
+                    profileCards.forEach(c => {
+                        c.classList.remove('selected');
+                        c.classList.remove('text-[#0F4C81]');
+                        c.classList.add('text-gray-700');
+                        const title = c.querySelector('.font-medium');
+                        if (title) {
+                            title.classList.remove('text-[#0F4C81]');
+                            title.classList.add('text-gray-700');
+                        }
+                    });
+                    
+                    // Добавляем выбранный класс к текущей карточке
+                    this.classList.add('selected');
+                    this.classList.add('text-[#0F4C81]');
+                    this.classList.remove('text-gray-700');
+                    const title = this.querySelector('.font-medium');
+                    if (title) {
+                        title.classList.add('text-[#0F4C81]');
+                        title.classList.remove('text-gray-700');
+                    }
+                    
+                    // Получаем профиль
+                    const profile = this.dataset.profile;
+                    
+                    // Обновляем документы
+                    displayDocuments(profile);
+                });
+            });
+        });
+        
+        // Функция установки языка
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            if (lang === 'ru') {
+                document.getElementById('lang-ru').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-ru').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.remove('bg-[#0F4C81]', 'text-white');
+            } else {
+                document.getElementById('lang-en').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-en').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.remove('bg-[#0F4C81]', 'text-white');
+            }
+            
+            console.log('Language changed to:', lang);
+        }
+    </script>
+</body>
+</html>

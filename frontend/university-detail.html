@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали университета - Study Without Fear</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .program-tag {
+            transition: all 0.3s ease;
+        }
+        
+        .program-tag:hover {
+            background-color: #0d3f6b;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Навигация -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Лого -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                </div>
+                
+                <!-- Основные ссылки -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Главная</a>
+                    <a href="programs.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Программы</a>
+                    <a href="universities.html" class="text-[#0F4C81] font-medium border-b-2 border-[#0F4C81]">Университеты</a>
+                    <a href="documents.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Документы</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Портфолио</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Контакты</a>
+                </div>
+                
+                <!-- Правая часть (язык и вход) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Язык -->
+                    <div class="flex items-center space-x-2">
+                        <button id="lang-ru" class="px-2 py-1 bg-[#0F4C81] text-white rounded text-sm font-medium">РУС</button>
+                        <button id="lang-en" class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-sm font-medium">ENG</button>
+                    </div>
+                    
+                    <!-- Кнопки входа/регистрации -->
+                    <div id="auth-buttons">
+                        <a href="login.html" class="px-4 py-2 text-gray-700 hover:text-[#0F4C81] font-medium">Вход</a>
+                        <a href="register.html" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">Регистрация</a>
+                    </div>
+                </div>
+                
+                <!-- Мобильное меню -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильное меню (скрытое) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Главная</a>
+                <a href="programs.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Программы</a>
+                <a href="universities.html" class="block py-2 px-4 bg-[#0F4C81] text-white rounded">Университеты</a>
+                <a href="documents.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Документы</a>
+                <a href="portfolio.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Портфолио</a>
+                <a href="contact.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Шапка университета -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-8">
+            <a href="universities.html" class="flex items-center gap-2 text-[#0F4C81] hover:underline mb-6 font-medium">
+                <i class="fas fa-arrow-left"></i>
+                Назад к университетам
+            </a>
+            
+            <div class="flex flex-col lg:flex-row gap-8 items-start mb-8">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div id="university-flag" class="text-5xl">🇬🇧</div>
+                        <div>
+                            <h1 id="university-name" class="text-3xl md:text-4xl font-bold mb-2 text-gray-800">Загрузка...</h1>
+                            <div id="university-info" class="flex flex-wrap items-center gap-4 text-gray-600">
+                                <!-- Информация загрузится через JS -->
+                            </div>
+                        </div>
+                    </div>
+                    <p id="university-description" class="text-gray-700 text-lg leading-relaxed">Загрузка...</p>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <span id="university-type" class="px-6 py-3 rounded-full text-lg font-medium text-center">
+                        <!-- Тип загрузится через JS -->
+                    </span>
+                    <button onclick="checkRequirements()"
+                            class="px-6 py-3 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">
+                        Проверить требования
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Программы -->
+        <div class="card p-8 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-book-open text-xl text-[#0F4C81]"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">Доступные программы</h2>
+            </div>
+            <div id="programs-list" class="flex flex-wrap gap-3">
+                <!-- Программы загрузятся через JS -->
+            </div>
+        </div>
+
+        <!-- Ключевые особенности -->
+        <div class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Ключевые особенности</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="feature-card p-6 bg-blue-50 rounded-lg">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Академическое превосходство</h3>
+                    <p class="text-gray-600">Высококвалифицированные преподаватели и современные учебные программы</p>
+                </div>
+                
+                <div class="feature-card p-6 bg-green-50 rounded-lg">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-globe text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Международное сообщество</h3>
+                    <p class="text-gray-600">Студенты из более чем 100 стран мира</p>
+                </div>
+                
+                <div class="feature-card p-6 bg-purple-50 rounded-lg">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-building text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Современный кампус</h3>
+                    <p class="text-gray-600">Современные лаборатории, библиотеки и спортивные объекты</p>
+                </div>
+                
+                <div class="feature-card p-6 bg-orange-50 rounded-lg">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-briefcase text-orange-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Карьерные возможности</h3>
+                    <p class="text-gray-600">Партнерства с ведущими компаниями для стажировок и трудоустройства</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Требования -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Общие требования -->
+            <div class="card p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-check text-xl text-[#0F4C81]"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Общие требования</h2>
+                </div>
+                <div id="requirements-list" class="space-y-4">
+                    <!-- Требования загрузятся через JS -->
+                </div>
+            </div>
+
+            <!-- Сроки подачи -->
+            <div class="card p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-xl text-green-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Сроки подачи</h2>
+                </div>
+                <div id="deadlines-list" class="space-y-4">
+                    <!-- Сроки загрузятся через JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Стоимость обучения -->
+        <div class="card p-8 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-money-bill-wave text-xl text-purple-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">Стоимость обучения и финансирование</h2>
+            </div>
+            <div id="cost-info" class="space-y-4">
+                <!-- Стоимость загрузится через JS -->
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="hero-gradient rounded-lg shadow-md p-8 text-white text-center">
+            <i class="fas fa-university text-5xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-4">Нужна помощь с поступлением?</h2>
+            <p class="mb-6 text-gray-100 text-lg max-w-2xl mx-auto">
+                Получите персональную консультацию по поступлению в этот университет через нашего Telegram Bot
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button onclick="openTelegramBot()"
+                        class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors font-medium">
+                    <i class="fab fa-telegram mr-2"></i>Консультация по поступлению
+                </button>
+                <button onclick="checkRequirements()"
+                        class="inline-block px-8 py-4 bg-white text-[#0F4C81] rounded-lg hover:bg-gray-100 transition-colors font-medium">
+                    <i class="fas fa-clipboard-check mr-2"></i>Проверить соответствие
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- О нас -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Study Without Fear</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Помогаем казахстанским студентам найти международные программы обучения и стипендии
+                    </p>
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html" class="text-gray-300 hover:text-white">Программы</a></li>
+                        <li><a href="universities.html" class="text-white font-medium">Университеты</a></li>
+                        <li><a href="documents.html" class="text-gray-300 hover:text-white">Документы</a></li>
+                        <li><a href="portfolio.html" class="text-gray-300 hover:text-white">Портфолио</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Поддержка -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Связаться с нами</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@studywithoutfear.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (777) 123-45-67</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/studywithoutfearbot" class="text-gray-300 hover:text-white" target="_blank">
+                                @studywithoutfearbot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-8 border-gray-700">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Study Without Fear. Все права защищены.</p>
+                <p class="mt-2 text-sm">Платформа для казахстанских студентов</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Telegram Bot функция
+        function openTelegramBot() {
+            window.open('https://t.me/studywithoutfearbot', '_blank');
+        }
+
+        // Проверка требований
+        function checkRequirements() {
+            const universityId = localStorage.getItem('selectedUniversityId') || 'oxford';
+            window.open(`https://t.me/studywithoutfearbot?start=university_${universityId}`, '_blank');
+        }
+
+        // Данные университетов
+        const universitiesData = {
+            'oxford': {
+                name: 'University of Oxford',
+                country: 'United Kingdom',
+                flag: '🇬🇧',
+                type: 'Top',
+                ranking: '#1 в Великобритании',
+                description: 'Старейший университет в англоязычном мире и одно из самых престижных учреждений в мире.',
+                programs: ['Law', 'Business', 'Medicine', 'Engineering', 'Computer Science', 'Economics', 'Politics', 'History'],
+                requirements: {
+                    gpa: '4.0 GPA или эквивалент',
+                    language: 'IELTS 7.5 (минимум 7.0 в каждом компоненте)',
+                    tests: 'В зависимости от программы: SAT, ACT, A-levels',
+                    additional: 'Сильная академическая успеваемость, внеклассные достижения'
+                },
+                deadlines: {
+                    undergraduate: '15 октября 2024',
+                    graduate: 'Различается по программам',
+                    scholarship: 'В соответствии с заявлением на поступление'
+                },
+                costs: {
+                    tuition: '£38,000 - £45,000 в год',
+                    living: '£12,000 - £15,000 в год',
+                    scholarships: 'Доступны стипендии для иностранных студентов'
+                }
+            },
+            'manchester': {
+                name: 'University of Manchester',
+                country: 'United Kingdom',
+                flag: '🇬🇧',
+                type: 'Accessible',
+                description: 'Крупный исследовательский университет с сильными программами в области инженерии, бизнеса и медицины.',
+                programs: ['Engineering', 'Business', 'Computer Science', 'Medicine', 'Biological Sciences', 'Psychology'],
+                requirements: {
+                    gpa: '3.2+ GPA или эквивалент',
+                    language: 'IELTS 6.5 (минимум 6.0 в каждом компоненте)',
+                    tests: 'Зависит от программы',
+                    additional: 'Хорошая академическая успеваемость'
+                },
+                deadlines: {
+                    undergraduate: '25 января 2025',
+                    graduate: 'Зависит от программы (обычно апрель-июнь)',
+                    scholarship: 'Различные сроки'
+                },
+                costs: {
+                    tuition: '£20,000 - £30,000 в год',
+                    living: '£10,000 - £12,000 в год',
+                    scholarships: 'Доступны стипендии для иностранных студентов'
+                }
+            },
+            'tum': {
+                name: 'Technical University of Munich',
+                country: 'Germany',
+                flag: '🇩🇪',
+                type: 'Top',
+                ranking: '#1 в Германии',
+                description: 'Ведущий технический университет Европы с сильными программами в области инженерии и естественных наук.',
+                programs: ['Engineering', 'Computer Science', 'Natural Sciences', 'Mathematics', 'Architecture'],
+                requirements: {
+                    gpa: '3.5+ GPA или эквивалент',
+                    language: 'Немецкий C1 или английский IELTS 6.5+',
+                    tests: 'В зависимости от программы',
+                    additional: 'Сильная математическая подготовка для технических программ'
+                },
+                deadlines: {
+                    undergraduate: '15 июля для зимнего семестра',
+                    graduate: 'Различается по программам',
+                    scholarship: 'Зависит от программы'
+                },
+                costs: {
+                    tuition: '€150 - €300 в семестр',
+                    living: '€10,000 - €12,000 в год',
+                    scholarships: 'Множество стипендий от DAAD и других организаций'
+                }
+            }
+        };
+
+        // Загрузка данных университета
+        function loadUniversityData() {
+            const universityId = localStorage.getItem('selectedUniversityId') || 'oxford';
+            const university = universitiesData[universityId];
+            
+            if (!university) {
+                // Если университет не найден
+                document.querySelector('h1').textContent = 'Университет не найден';
+                return;
+            }
+            
+            // Флаг и название
+            document.getElementById('university-flag').textContent = university.flag;
+            document.getElementById('university-name').textContent = university.name;
+            
+            // Информация
+            const infoDiv = document.getElementById('university-info');
+            infoDiv.innerHTML = `
+                <div class="flex items-center gap-2 text-gray-700">
+                    <i class="fas fa-map-marker-alt text-[#0F4C81]"></i>
+                    <span class="font-medium">${university.country}</span>
+                </div>
+                ${university.ranking ? `
+                    <div class="flex items-center gap-2 text-gray-700">
+                        <i class="fas fa-trophy text-[#0F4C81]"></i>
+                        <span class="font-medium">${university.ranking}</span>
+                    </div>
+                ` : ''}
+                <div class="flex items-center gap-2 text-gray-700">
+                    <i class="fas fa-university text-[#0F4C81]"></i>
+                    <span class="font-medium">${university.type === 'Top' ? 'Топовый университет' : 'Доступный университет'}</span>
+                </div>
+            `;
+            
+            // Описание
+            document.getElementById('university-description').textContent = university.description;
+            
+            // Тип
+            const typeBadge = document.getElementById('university-type');
+            const typeColors = {
+                'Top': 'bg-purple-100 text-purple-800',
+                'Accessible': 'bg-green-100 text-green-800'
+            };
+            typeBadge.className = `px-6 py-3 rounded-full ${typeColors[university.type] || 'bg-gray-100 text-gray-800'} font-medium`;
+            typeBadge.textContent = university.type === 'Top' ? 'Топовый университет' : 'Доступный университет';
+            
+            // Программы
+            const programsList = document.getElementById('programs-list');
+            programsList.innerHTML = university.programs.map(program => `
+                <span class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg program-tag font-medium">
+                    ${program}
+                </span>
+            `).join('');
+            
+            // Требования
+            const requirementsList = document.getElementById('requirements-list');
+            requirementsList.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-chart-line text-[#0F4C81]"></i>
+                            <span class="font-medium text-gray-900">Академическая успеваемость:</span>
+                        </div>
+                        <p class="text-gray-700 ml-7">${university.requirements.gpa}</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-language text-[#0F4C81]"></i>
+                            <span class="font-medium text-gray-900">Языковые требования:</span>
+                        </div>
+                        <p class="text-gray-700 ml-7">${university.requirements.language}</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-pencil-alt text-[#0F4C81]"></i>
+                            <span class="font-medium text-gray-900">Вступительные тесты:</span>
+                        </div>
+                        <p class="text-gray-700 ml-7">${university.requirements.tests}</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-list-check text-[#0F4C81]"></i>
+                            <span class="font-medium text-gray-900">Дополнительные требования:</span>
+                        </div>
+                        <p class="text-gray-700 ml-7">${university.requirements.additional}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Сроки
+            const deadlinesList = document.getElementById('deadlines-list');
+            deadlinesList.innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-3 bg-blue-50 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-user-graduate text-blue-600"></i>
+                            <span class="font-medium text-gray-900">Бакалавриат:</span>
+                        </div>
+                        <p class="text-gray-700 ml-7">${university.deadlines.undergraduate}</p>
+                    </div>
+                    <div class="p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-user-tie text-green-600"></i>
+                            <span class="font-medium text-gray-900">Магистратура/Докторантура:</span>
+                        </div>
+                        <p class="text-gray-700 ml-7">${university.deadlines.graduate}</p>
+                    </div>
+                    <div class="p-3 bg-purple-50 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-award text-purple-600"></i>
+                            <span class="font-medium text-gray-900">Стипендии:</span>
+                        </div>
+                        <p class="text-gray-700 ml-7">${university.deadlines.scholarship}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Стоимость
+            const costInfo = document.getElementById('cost-info');
+            costInfo.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-money-bill text-blue-600"></i>
+                            <span class="font-medium text-gray-900">Обучение:</span>
+                        </div>
+                        <p class="text-gray-700">${university.costs.tuition}</p>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-home text-green-600"></i>
+                            <span class="font-medium text-gray-900">Проживание и расходы:</span>
+                        </div>
+                        <p class="text-gray-700">${university.costs.living}</p>
+                    </div>
+                    <div class="p-4 bg-purple-50 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-handshake text-purple-600"></i>
+                            <span class="font-medium text-gray-900">Финансирование:</span>
+                        </div>
+                        <p class="text-gray-700">${university.costs.scholarships}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Переключение языка
+            const langRu = document.getElementById('lang-ru');
+            const langEn = document.getElementById('lang-en');
+            
+            if (langRu && langEn) {
+                langRu.addEventListener('click', function() {
+                    setLanguage('ru');
+                });
+                
+                langEn.addEventListener('click', function() {
+                    setLanguage('en');
+                });
+            }
+            
+            // Загрузка данных университета
+            loadUniversityData();
+        });
+        
+        // Функция установки языка
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            if (lang === 'ru') {
+                document.getElementById('lang-ru').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-ru').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.remove('bg-[#0F4C81]', 'text-white');
+            } else {
+                document.getElementById('lang-en').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-en').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.remove('bg-[#0F4C81]', 'text-white');
+            }
+            
+            console.log('Language changed to:', lang);
+        }
+    </script>
+</body>
+</html>

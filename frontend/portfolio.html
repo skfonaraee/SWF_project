@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио - Study Without Fear</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0F4C81;
+            --primary-dark: #0d3f6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F4C81 0%, #1a5a94 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-[#F7F7F7]">
+    <!-- Навигация -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Лого -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-[#0F4C81]"></i>
+                    <span class="text-xl font-bold text-gray-800">Study Without Fear</span>
+                </div>
+                
+                <!-- Основные ссылки -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Главная</a>
+                    <a href="programs.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Программы</a>
+                    <a href="universities.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Университеты</a>
+                    <a href="documents.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Документы</a>
+                    <a href="portfolio.html" class="text-[#0F4C81] font-medium border-b-2 border-[#0F4C81]">Портфолио</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-[#0F4C81] font-medium">Контакты</a>
+                </div>
+                
+                <!-- Правая часть (язык и вход) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Язык -->
+                    <div class="flex items-center space-x-2">
+                        <button id="lang-ru" class="px-2 py-1 bg-[#0F4C81] text-white rounded text-sm font-medium">РУС</button>
+                        <button id="lang-en" class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-sm font-medium">ENG</button>
+                    </div>
+                    
+                    <!-- Кнопки входа/регистрации -->
+                    <div id="auth-buttons">
+                        <a href="login.html" class="px-4 py-2 text-gray-700 hover:text-[#0F4C81] font-medium">Вход</a>
+                        <a href="register.html" class="px-4 py-2 bg-[#0F4C81] text-white rounded-lg hover:bg-[#0d3f6b] transition-colors font-medium">Регистрация</a>
+                    </div>
+                </div>
+                
+                <!-- Мобильное меню -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильное меню (скрытое) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Главная</a>
+                <a href="programs.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Программы</a>
+                <a href="universities.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Университеты</a>
+                <a href="documents.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Документы</a>
+                <a href="portfolio.html" class="block py-2 px-4 bg-[#0F4C81] text-white rounded">Портфолио</a>
+                <a href="contact.html" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white overflow-hidden">
+        <div class="relative container mx-auto px-4 py-16 md:py-24">
+            <div class="max-w-3xl animate-fadeIn">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-briefcase text-4xl"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold">Развитие портфолио</h1>
+                </div>
+                <p class="text-lg md:text-xl mb-8 text-gray-100">
+                    Создайте убедительное портфолио, которое продемонстрирует ваши навыки, достижения и потенциал для университетов и комитетов по стипендиям.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="openTelegramBot()"
+                       class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors text-center font-medium">
+                        <i class="fab fa-telegram mr-2"></i>Получить консультацию по портфолио
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Почему важно портфолио -->
+        <div class="card p-8 mb-8 animate-fadeIn">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Почему ваше портфолио важно</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h3 class="mb-2 text-lg font-semibold text-[#0F4C81]">Демонстрирует навыки</h3>
+                    <p class="text-gray-700">
+                        Показывает практическое применение ваших знаний помимо оценок и тестов.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="mb-2 text-lg font-semibold text-[#0F4C81]">Показывает инициативу</h3>
+                    <p class="text-gray-700">
+                        Доказывает вашу страсть и преданность через самостоятельные проекты и обучение.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="mb-2 text-lg font-semibold text-[#0F4C81]">Выделяет вас</h3>
+                    <p class="text-gray-700">
+                        Отличает вас от других абитуриентов с похожими академическими достижениями.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Платформы для портфолио -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Выберите платформу для портфолио</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- GitHub -->
+                <div class="card overflow-hidden">
+                    <div class="bg-gray-800 text-white p-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fab fa-github text-2xl"></i>
+                            <h3 class="text-xl font-bold">GitHub</h3>
+                        </div>
+                        <p class="text-gray-100">Идеально для разработчиков и программистов</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-medium mb-2 text-gray-600">Особенности:</p>
+                            <ul class="space-y-1">
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Репозитории кода
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Документация проектов
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    История коллабораций
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-600">
+                                <span class="font-medium">Лучше для:</span> Computer Science, Software Engineering, Data Science
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Behance -->
+                <div class="card overflow-hidden">
+                    <div class="bg-blue-600 text-white p-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-briefcase text-2xl"></i>
+                            <h3 class="text-xl font-bold">Behance</h3>
+                        </div>
+                        <p class="text-gray-100">Идеально для дизайнеров и творческих профессионалов</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-medium mb-2 text-gray-600">Особенности:</p>
+                            <ul class="space-y-1">
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Визуальные презентации проектов
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Кейс-стади
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Профессиональная сеть
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-600">
+                                <span class="font-medium">Лучше для:</span> Графический дизайн, UI/UX, Иллюстрация, Фотография
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Персональный сайт -->
+                <div class="card overflow-hidden">
+                    <div class="bg-green-600 text-white p-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-globe text-2xl"></i>
+                            <h3 class="text-xl font-bold">Персональный сайт</h3>
+                        </div>
+                        <p class="text-gray-100">Полный контроль над вашей презентацией</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-medium mb-2 text-gray-600">Особенности:</p>
+                            <ul class="space-y-1">
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Кастомизация брендинга
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Неограниченный контент
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Профессиональный домен
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-600">
+                                <span class="font-medium">Лучше для:</span> Все направления, особенно для комплексных портфолио
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Drive / Dropbox -->
+                <div class="card overflow-hidden">
+                    <div class="bg-yellow-600 text-white p-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-folder-open text-2xl"></i>
+                            <h3 class="text-xl font-bold">Google Drive / Dropbox</h3>
+                        </div>
+                        <p class="text-gray-100">Легко организовать и делиться множеством файлов</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <p class="text-sm font-medium mb-2 text-gray-600">Особенности:</p>
+                            <ul class="space-y-1">
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Организация файлов
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Простой шеринг
+                                </li>
+                                <li class="text-sm text-gray-700 flex items-start gap-2">
+                                    <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                    Поддержка больших файлов
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-600">
+                                <span class="font-medium">Лучше для:</span> Исследовательские работы, образцы письма, презентации
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основные секции портфолио -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Основные секции портфолио</h2>
+            <div class="space-y-6">
+                <!-- Проекты -->
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Проекты</h3>
+                    <p class="text-gray-700 mb-4">Покажите 2-5 ваших лучших проектов, демонстрирующих ваши навыки и креативность</p>
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="text-sm font-medium mb-2">💡 Советы:</p>
+                        <ul class="space-y-2">
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Включите описание проекта и вашу роль
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Объясните проблему, которую решили, и ваш подход
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Покажите работу "до/после" или процесс
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Включите измеримые результаты, если возможно
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Академическая работа -->
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Академическая работа</h3>
+                    <p class="text-gray-700 mb-4">Выделите соответствующие курсовые работы, исследования и академические достижения</p>
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="text-sm font-medium mb-2">💡 Советы:</p>
+                        <ul class="space-y-2">
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Включите исследовательские работы или презентации
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Покажите улучшения оценок или академические награды
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Продемонстрируйте междисциплинарную работу
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Включите дипломные или выпускные проекты
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Внеучебная деятельность -->
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Внеучебная деятельность</h3>
+                    <p class="text-gray-700 mb-4">Покажите лидерские роли, участие в клубах и волонтерскую деятельность</p>
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="text-sm font-medium mb-2">💡 Советы:</p>
+                        <ul class="space-y-2">
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Покажите лидерские позиции и обязанности
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Документируйте организацию мероприятий или инициатив
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Включите волонтерскую работу и социальное влияние
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Выделите командную работу и коллаборацию
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Сертификаты и курсы -->
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Сертификаты и курсы</h3>
+                    <p class="text-gray-700 mb-4">Перечислите соответствующие онлайн-курсы, сертификаты и профессиональное развитие</p>
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="text-sm font-medium mb-2">💡 Советы:</p>
+                        <ul class="space-y-2">
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Включите сертификаты об окончании
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Покажите непрерывное обучение
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Выделите релевантные индустрии навыки
+                            </li>
+                            <li class="text-sm text-gray-700 flex items-start gap-2">
+                                <span class="text-[#0F4C81] mt-1">&bull;</span>
+                                Добавьте ссылки для верификации сертификатов
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Примеры по направлениям -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Примеры портфолио по направлениям</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Computer Science / IT -->
+                <div class="card p-6">
+                    <h3 class="mb-3 text-lg font-bold text-[#0F4C81]">Computer Science / IT</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            GitHub репозитории с чистым кодом
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Веб/мобильные приложения
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Проекты по анализу данных
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Модели машинного обучения
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Контрибьюции в open source
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Дизайн и искусство -->
+                <div class="card p-6">
+                    <h3 class="mb-3 text-lg font-bold text-[#0F4C81]">Дизайн и искусство</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Behance портфолио с кейс-стади
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Документация дизайн-процесса
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Лого и брендинг проекты
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            UI/UX прототипы
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Художественные работы и иллюстрации
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Бизнес / Экономика -->
+                <div class="card p-6">
+                    <h3 class="mb-3 text-lg font-bold text-[#0F4C81]">Бизнес / Экономика</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Отчеты по исследованию рынка
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Бизнес-планы
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Проекты по визуализации данных
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Анализы кейс-стади
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Финансовое моделирование
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Инженерия -->
+                <div class="card p-6">
+                    <h3 class="mb-3 text-lg font-bold text-[#0F4C81]">Инженерия</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Технические чертежи и CAD файлы
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Прототипы проектов
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Исследовательские работы
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Лабораторные отчеты
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Проекты конкурсов
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Архитектура -->
+                <div class="card p-6">
+                    <h3 class="mb-3 text-lg font-bold text-[#0F4C81]">Архитектура</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Дизайн-портфолио с рендерами
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            3D модели и планы
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Концепт-скетчи
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Построенные проекты (если есть)
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Концепты городского планирования
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Писательство / Журналистика -->
+                <div class="card p-6">
+                    <h3 class="mb-3 text-lg font-bold text-[#0F4C81]">Писательство / Журналистика</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Опубликованные статьи или посты в блоге
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Образцы письма в разных стилях
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Исследовательские работы
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Креативные письменные работы
+                        </li>
+                        <li class="text-sm text-gray-700 flex items-start gap-2">
+                            <span class="text-[#0F4C81] mt-1">&bull;</span>
+                            Редакторское портфолио
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Общие рекомендации -->
+        <div class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Общие рекомендации по портфолио</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-3 text-green-700">Что делать</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-green-600 mt-1">&check;</span>
+                            Включите минимум 2-3 ваших лучших работы
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-green-600 mt-1">&check;</span>
+                            Предоставьте контекст и описания для каждого проекта
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-green-600 mt-1">&check;</span>
+                            Регулярно обновляйте свежими работами
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-green-600 mt-1">&check;</span>
+                            Сделайте навигацию простой и профессиональной
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-green-600 mt-1">&check;</span>
+                            Включите контактную информацию
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-3 text-red-700">Чего избегать</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-red-600 mt-1">&times;</span>
+                            Включать слишком много посредственных проектов
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-red-600 mt-1">&times;</span>
+                            Использовать низкокачественные изображения или видео
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-red-600 mt-1">&times;</span>
+                            Копировать чужие работы без указания авторства
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-red-600 mt-1">&times;</span>
+                            Делать портфолио перегруженным или сложным для навигации
+                        </li>
+                        <li class="flex items-start gap-2 text-gray-700">
+                            <span class="text-red-600 mt-1">&times;</span>
+                            Забывать проверять описания на ошибки
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="hero-gradient rounded-lg shadow-md p-8 text-white text-center mb-8">
+            <i class="fas fa-briefcase text-5xl mx-auto mb-4"></i>
+            <h2 class="text-3xl font-bold mb-4">Нужна консультация по портфолио?</h2>
+            <p class="mb-6 text-gray-100 max-w-2xl mx-auto text-lg">
+                Получите персонализированные рекомендации по созданию портфолио для вашей конкретной области и целевых программ через нашего Telegram Bot.
+            </p>
+            <button onclick="openTelegramBot()"
+               class="inline-block px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-[#0F4C81] transition-colors text-center font-medium">
+                <i class="fab fa-telegram mr-2"></i>Получить консультацию по портфолио
+            </button>
+        </div>
+
+        <!-- Ресурсы -->
+        <div class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg">
+            <h3 class="text-xl font-bold mb-3 text-gray-800">Полезные ресурсы</h3>
+            <div class="space-y-2">
+                <a href="#" class="flex items-center gap-2 text-[#0F4C81] hover:underline font-medium">
+                    <i class="fas fa-external-link-alt"></i>
+                    Шаблоны и примеры портфолио
+                </a>
+                <a href="#" class="flex items-center gap-2 text-[#0F4C81] hover:underline font-medium">
+                    <i class="fas fa-external-link-alt"></i>
+                    Бесплатные платформы для хостинга портфолио
+                </a>
+                <a href="#" class="flex items-center gap-2 text-[#0F4C81] hover:underline font-medium">
+                    <i class="fas fa-external-link-alt"></i>
+                    Чеклист для ревью портфолио
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- О нас -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Study Without Fear</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Помогаем казахстанским студентам найти международные программы обучения и стипендии
+                    </p>
+                </div>
+                
+                <!-- Быстрые ссылки -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html" class="text-gray-300 hover:text-white">Программы</a></li>
+                        <li><a href="universities.html" class="text-gray-300 hover:text-white">Университеты</a></li>
+                        <li><a href="documents.html" class="text-gray-300 hover:text-white">Документы</a></li>
+                        <li><a href="portfolio.html" class="text-white font-medium">Портфолио</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Поддержка -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white">Контакты</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Связаться с нами</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@studywithoutfear.com</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (777) 123-45-67</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fab fa-telegram"></i>
+                            <a href="https://t.me/studywithoutfearbot" class="text-gray-300 hover:text-white" target="_blank">
+                                @studywithoutfearbot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-8 border-gray-700">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Study Without Fear. Все права защищены.</p>
+                <p class="mt-2 text-sm">Платформа для казахстанских студентов</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Telegram Bot функция
+        function openTelegramBot() {
+            window.open('https://t.me/studywithoutfearbot', '_blank');
+        }
+        
+        // Мобильное меню
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        
+        // Переключение языка
+        const langRu = document.getElementById('lang-ru');
+        const langEn = document.getElementById('lang-en');
+        
+        if (langRu && langEn) {
+            langRu.addEventListener('click', function() {
+                setLanguage('ru');
+            });
+            
+            langEn.addEventListener('click', function() {
+                setLanguage('en');
+            });
+        }
+        
+        // Функция установки языка
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            
+            if (lang === 'ru') {
+                document.getElementById('lang-ru').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-ru').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-en').classList.remove('bg-[#0F4C81]', 'text-white');
+            } else {
+                document.getElementById('lang-en').classList.add('bg-[#0F4C81]', 'text-white');
+                document.getElementById('lang-en').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('lang-ru').classList.remove('bg-[#0F4C81]', 'text-white');
+            }
+            
+            console.log('Language changed to:', lang);
+        }
+    </script>
+</body>
+</html>

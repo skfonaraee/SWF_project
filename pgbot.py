@@ -2,8 +2,9 @@ import json
 import telebot
 from telebot.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 from telebot import types
-import openai
-from functools import partial
+from openai import OpenAI
+import time
+from database import db  # Импортируем нашу базу данных
 
 
 # -----------------------------
@@ -15,7 +16,11 @@ with open("app/tgbot_token.txt", "r", encoding="utf-8") as f:
 with open("app/data/openrouter.txt", "r", encoding="utf-8") as f:
     openrouter_key = f.read().strip()
 
-openai.api_key = openrouter_key
+# Инициализация OpenAI клиента для OpenRouter
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=openrouter_key,
+)
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -28,14 +33,11 @@ user_directions = {}    # chat_id → направление
 user_states = {}        # chat_id → текущее состояние (для ИИ и т.д.)
 expanded_sections_uni = {}  # chat_id -> {"uni_name": str, "expanded": set()}
 user_navigation = {}    # chat_id -> список предыдущих состояний для кнопки "Назад"
+last_ai_request = {}    # chat_id -> timestamp последнего запроса к ИИ
 
 # -----------------------------
-# Чтение данных из JSON
-# -----------------------------
-with open("universities.json", "r", encoding="utf-8") as f:
-    university_data = json.load(f)
-
 # Направления для выбора
+# -----------------------------
 DIRECTIONS = {
     "business": "Бизнес / Финансы",
     "it": "IT / Инженерия / Наука", 
@@ -43,26 +45,40 @@ DIRECTIONS = {
     "art": "Искусство / Дизайн / Медиа"
 }
 
+
+
 # -----------------------------
 # Функция для общения с ИИ
 # -----------------------------
 def ask_ai(prompt, role_context=""):
     try:
+        # Проверяем rate limiting
+        current_time = time.time()
+        if role_context and current_time - last_ai_request.get(role_context, 0) < 2:
+            time.sleep(2)
+        
+        last_ai_request[role_context] = current_time
+        
         system_prompt = """Ты консультант по поступлению и профориентации. Помогай пользователям с вопросами о поступлении в университеты, выборе направлений, подготовке документов, поиске грантов и стипендий. Отвечай подробно и поддерживающе."""
         
         if role_context:
             system_prompt += f"\n\nПользователь: {role_context}"
         
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="deepseek/deepseek-chat-v3-0324:free",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            max_tokens=1500,
+            timeout=30
         )
-        return response.choices[0].message['content']
+        return response.choices[0].message.content
     except Exception as e:
-        return f"❗ Ошибка при обращении к ИИ: {str(e)}"
+        if "rate-limited" in str(e) or "429" in str(e):
+            return "⚠️ Слишком много запросов к ИИ. Пожалуйста, подождите немного перед следующим вопросом."
+        else:
+            return f"❌ Временная проблема с ИИ-помощником. Пожалуйста, попробуйте позже или используйте другие функции бота."
 
 # -----------------------------
 # Навигационные функции
@@ -80,20 +96,11 @@ def get_previous_state(chat_id):
     return None
 
 # -----------------------------
-# Главное меню
+# Главное меню (без справочника)
 # -----------------------------
 def main_menu():
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add("📚 Категория", "💬 ИИ-помощник", "🗂 Справочник")
-    return markup
-
-def reference_menu():
-    markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton("Направления", callback_data="ref_directions"))
-    markup.add(InlineKeyboardButton("Страны", callback_data="ref_countries"))
-    markup.add(InlineKeyboardButton("Университеты", callback_data="ref_universities"))
-    markup.add(InlineKeyboardButton("Гранты", callback_data="ref_grants"))
-    markup.add(InlineKeyboardButton("Документы и дедлайны", callback_data="ref_documents"))
+    markup.add("📚 Категория", "💬 ИИ-помощник")
     return markup
 
 # -----------------------------
@@ -129,7 +136,7 @@ def start(message):
 # -----------------------------
 # Обработка текстовых сообщений (главное меню)
 # -----------------------------
-@bot.message_handler(func=lambda message: message.text in ["📚 Категория", "💬 ИИ-помощник", "🗂 Справочник"])
+@bot.message_handler(func=lambda message: message.text in ["📚 Категория", "💬 ИИ-помощник"])
 def handle_main_menu(message):
     chat_id = message.chat.id
     
@@ -149,17 +156,10 @@ def handle_main_menu(message):
             f"🤖 Режим ИИ-помощника\n\n"
             f"Я здесь, чтобы помочь с вопросами о поступлении, выборе направления, "
             f"подготовке документов и поиске грантов.\n\n"
+            f"*Ваша категория:* {role}\n\n"
             f"Задайте ваш вопрос:",
+            parse_mode="Markdown",
             reply_markup=main_menu()
-        )
-        
-    elif message.text == "🗂 Справочник":
-        add_navigation(chat_id, "main_menu")
-        bot.send_message(
-            chat_id,
-            "📚 Справочник:\n\n"
-            "Здесь вы можете найти информацию по различным аспектам поступления:",
-            reply_markup=reference_menu()
         )
 
 # -----------------------------
@@ -170,11 +170,14 @@ def handle_ai_message(message):
     chat_id = message.chat.id
     role = user_roles.get(chat_id, "пользователь")
     
-    bot.send_message(chat_id, "🤔 Думаю над ответом...")
+    # Показываем, что бот "печатает"
+    bot.send_chat_action(chat_id, 'typing')
     
-    response = ask_ai(message.text, f"Категория пользователя: {role}")
-    
-    bot.send_message(chat_id, f"💡 {response}")
+    try:
+        response = ask_ai(message.text, f"Категория пользователя: {role}")
+        bot.send_message(chat_id, f"💡 {response}")
+    except Exception as e:
+        bot.send_message(chat_id, "❌ Произошла ошибка при обращении к ИИ. Попробуйте позже.")
 
 # -----------------------------
 # Выбор роли
@@ -258,18 +261,11 @@ def show_universities_by_direction(call):
     # Добавляем в навигацию
     add_navigation(chat_id, "universities_by_direction")
     
-    # Поиск университетов по направлению
-    found_universities = []
+    # Получаем ключевые слова для поиска
+    keywords = get_direction_keywords(direction_key)
     
-    for country, universities in university_data.items():
-        for uni_name, uni_info in universities.items():
-            # Проверяем программы университета на соответствие направлению
-            programs = uni_info.get("programs", "").lower()
-            card = uni_info.get("card", "").lower()
-            
-            # Ищем ключевые слова в программах и карточке университета
-            if any(keyword in programs or keyword in card for keyword in get_direction_keywords(direction_key)):
-                found_universities.append((country, uni_name, uni_info))
+    # Ищем университеты в базе данных
+    found_universities = db.search_universities_by_direction(keywords)
     
     if not found_universities:
         markup = InlineKeyboardMarkup()
@@ -285,18 +281,18 @@ def show_universities_by_direction(call):
     # Отправляем список университетов
     text = f"🏛️ Университеты по направлению '{direction_name}':\n\n"
     
-    for i, (country, uni_name, uni_info) in enumerate(found_universities[:10], 1):  # Ограничиваем 10 университетами
-        text += f"{i}. {uni_name} ({country})\n"
+    for i, university in enumerate(found_universities[:10], 1):  # Ограничиваем 10 университетами
+        text += f"{i}. {university['name']} ({university['country_name']})\n"
     
     if len(found_universities) > 10:
         text += f"\n... и еще {len(found_universities) - 10} университетов"
     
     # Кнопки для выбора конкретного университета
     markup = InlineKeyboardMarkup()
-    for country, uni_name, uni_info in found_universities[:5]:  # Ограничиваем 5 кнопками
+    for university in found_universities[:5]:  # Ограничиваем 5 кнопками
         markup.add(InlineKeyboardButton(
-            f"{uni_name} ({country})", 
-            callback_data=f"uni_{country}_{uni_name}"
+            f"{university['name']} ({university['country_name']})", 
+            callback_data=f"uni_{university['country_name']}_{university['name']}"
         ))
     
     markup.add(InlineKeyboardButton("Выбрать страну", callback_data="choose_country"))
@@ -312,10 +308,10 @@ def show_universities_by_direction(call):
 def get_direction_keywords(direction_key):
     """Возвращает ключевые слова для поиска по направлениям"""
     keywords_map = {
-        "business": ["бизнес", "финанс", "менеджмент", "экономик", "маркетинг", "предпринимательство", "business", "finance", "management", "economics"],
-        "it": ["информацион", "компьютер", "программир", "it", "инженер", "техническ", "наука", "технолог", "computer", "engineering", "technology", "science"],
-        "medicine": ["медицин", "биолог", "здоровь", "фармацевт", "хирург", "врач", "анатом", "medicine", "biology", "health", "medical"],
-        "art": ["искусств", "дизайн", "медиа", "арт", "творчеств", "худож", "музык", "кино", "art", "design", "media", "creative"]
+        "business": ["бизнес", "финанс", "менеджмент", "экономик", "маркетинг", "предпринимательство", "business", "finance", "management", "economics", "бизнес", "финансы", "экономика"],
+        "it": ["информацион", "компьютер", "программир", "it", "инженер", "техническ", "наука", "технолог", "computer", "engineering", "technology", "science", "программирование", "инженерия"],
+        "medicine": ["медицин", "биолог", "здоровь", "фармацевт", "хирург", "врач", "анатом", "medicine", "biology", "health", "medical", "биология", "медицина", "здоровье"],
+        "art": ["искусств", "дизайн", "медиа", "арт", "творчеств", "худож", "музык", "кино", "art", "design", "media", "creative", "творчество", "дизайн", "искусство"]
     }
     return keywords_map.get(direction_key, [])
 
@@ -327,10 +323,16 @@ def choose_country(call):
     chat_id = call.message.chat.id
     add_navigation(chat_id, "country_selection")
     
+    # Получаем страны из базы данных
+    countries = db.get_countries()
+    
+    if not countries:
+        bot.send_message(chat_id, "Страны не найдены в базе данных.")
+        return
+    
     markup = InlineKeyboardMarkup()
-    countries = list(university_data.keys())
-    for c in countries:
-        markup.add(InlineKeyboardButton(c, callback_data=f"country_{c}"))
+    for country in countries:
+        markup.add(InlineKeyboardButton(country['name'], callback_data=f"country_{country['name']}"))
     markup.add(InlineKeyboardButton("← Назад", callback_data="back_to_direction"))
     
     bot.edit_message_text(
@@ -346,10 +348,12 @@ def choose_country(call):
 @bot.callback_query_handler(func=lambda call: call.data.startswith("country_"))
 def country_selected(call):
     chat_id = call.message.chat.id
-    country = call.data.replace("country_", "")
-    user_countries[chat_id] = country
+    country_name = call.data.replace("country_", "")
+    user_countries[chat_id] = country_name
 
-    universities = university_data.get(country, {})
+    # Получаем университеты из базы данных
+    universities = db.get_universities_by_country(country_name)
+    
     if not universities:
         markup = InlineKeyboardMarkup()
         markup.add(InlineKeyboardButton("← Назад", callback_data="back_to_countries"))
@@ -359,14 +363,14 @@ def country_selected(call):
     add_navigation(chat_id, "universities_list")
 
     markup = InlineKeyboardMarkup()
-    for uni_name in universities.keys():
-        markup.add(InlineKeyboardButton(uni_name, callback_data=f"uni_{country}_{uni_name}"))
+    for university in universities:
+        markup.add(InlineKeyboardButton(university['name'], callback_data=f"uni_{country_name}_{university['name']}"))
     markup.add(InlineKeyboardButton("← Назад", callback_data="back_to_countries"))
     
     bot.edit_message_text(
         chat_id=chat_id,
         message_id=call.message.message_id,
-        text=f"Выберите университет в {country}:", 
+        text=f"Выберите университет в {country_name}:", 
         reply_markup=markup
     )
 
@@ -384,30 +388,42 @@ def uni_selected(call):
         bot.send_message(chat_id, "Ошибка при выборе университета")
         return
         
-    if country not in university_data or uni_name not in university_data[country]:
+    # Получаем полную информацию об университете из базы данных
+    uni_info = db.get_university_by_name(country, uni_name)
+    
+    if not uni_info:
         bot.send_message(chat_id, "Информация об университете не найдена")
         return
-        
-    uni_info = university_data[country][uni_name]
-
+    
     expanded_sections_uni[chat_id] = {"uni_name": uni_name, "expanded": set()}
     add_navigation(chat_id, "university_view")
 
     text = uni_info.get("card", "Информация о университете недоступна")
     markup = InlineKeyboardMarkup()
 
-    # кнопки раскрытия разделов
-    for section in ["documents", "scholarships", "deadlines", "process", "programs"]:
-        if section in uni_info:
-            markup.add(InlineKeyboardButton(section.capitalize(), callback_data=f"uni_section_{section}"))
+    # кнопки раскрытия разделов (только если есть данные)
+    if uni_info.get("documents"):
+        markup.add(InlineKeyboardButton("📄 Документы", callback_data=f"uni_section_documents"))
+    if uni_info.get("scholarships"):
+        markup.add(InlineKeyboardButton("💰 Стипендии", callback_data=f"uni_section_scholarships"))
+    if uni_info.get("deadlines"):
+        markup.add(InlineKeyboardButton("🕒 Дедлайны", callback_data=f"uni_section_deadlines"))
+    if uni_info.get("process"):
+        markup.add(InlineKeyboardButton("🧭 Процесс", callback_data=f"uni_section_process"))
+    if uni_info.get("programs"):
+        markup.add(InlineKeyboardButton("📚 Программы", callback_data=f"uni_section_programs"))
 
     # кнопки ссылок
     links = uni_info.get("links", {})
-    for name, url in links.items():
-        markup.add(InlineKeyboardButton(name.capitalize(), url=url))
+    if links.get("website"):
+        markup.add(InlineKeyboardButton("🌐 Сайт", url=links["website"]))
+    if links.get("admissions"):
+        markup.add(InlineKeyboardButton("📝 Поступление", url=links["admissions"]))
+    if links.get("scholarships"):
+        markup.add(InlineKeyboardButton("💳 Стипендии", url=links["scholarships"]))
 
     # кнопка возврата
-    markup.add(InlineKeyboardButton("← Назад к университету", callback_data=f"back_to_university_{country}"))
+    markup.add(InlineKeyboardButton("← Назад к списку университетов", callback_data=f"back_to_university_{country}"))
 
     bot.edit_message_text(
         chat_id=chat_id,
@@ -428,46 +444,72 @@ def uni_section_toggle(call):
         return
 
     uni_name = expanded_sections_uni[chat_id]["uni_name"]
-
-    # находим страну
+    
+    # Получаем информацию об университете для текущей страны
     country = None
-    for c, unis in university_data.items():
-        if uni_name in unis:
-            country = c
+    for c in db.get_countries():
+        uni_info = db.get_university_by_name(c['name'], uni_name)
+        if uni_info:
+            country = c['name']
             break
+    
     if not country:
         return
 
-    uni_info = university_data[country][uni_name]
+    uni_info = db.get_university_by_name(country, uni_name)
+    
+    if not uni_info:
+        return
 
-    # Тоггл секции: если открыта — закрыть, если закрыта — открыть
+    # Если секция уже раскрыта - сворачиваем (возвращаем к основной карточке)
     if section in expanded_sections_uni[chat_id]["expanded"]:
         expanded_sections_uni[chat_id]["expanded"].remove(section)
+        # Возвращаем к основной карточке
+        text = uni_info.get("card", "Информация о университете недоступна")
+        markup = InlineKeyboardMarkup()
+
+        # кнопки раскрытия разделов
+        if uni_info.get("documents"):
+            markup.add(InlineKeyboardButton("📄 Документы", callback_data=f"uni_section_documents"))
+        if uni_info.get("scholarships"):
+            markup.add(InlineKeyboardButton("💰 Стипендии", callback_data=f"uni_section_scholarships"))
+        if uni_info.get("deadlines"):
+            markup.add(InlineKeyboardButton("🕒 Дедлайны", callback_data=f"uni_section_deadlines"))
+        if uni_info.get("process"):
+            markup.add(InlineKeyboardButton("🧭 Процесс", callback_data=f"uni_section_process"))
+        if uni_info.get("programs"):
+            markup.add(InlineKeyboardButton("📚 Программы", callback_data=f"uni_section_programs"))
+
+        # кнопки ссылок
+        links = uni_info.get("links", {})
+        if links.get("website"):
+            markup.add(InlineKeyboardButton("🌐 Сайт", url=links["website"]))
+        if links.get("admissions"):
+            markup.add(InlineKeyboardButton("📝 Поступление", url=links["admissions"]))
+        if links.get("scholarships"):
+            markup.add(InlineKeyboardButton("💳 Стипендии", url=links["scholarships"]))
+
+        # кнопка возврата
+        markup.add(InlineKeyboardButton("← Назад к списку университетов", callback_data=f"back_to_university_{country}"))
+
     else:
+        # Раскрываем секцию - показываем только её содержимое
         expanded_sections_uni[chat_id]["expanded"].add(section)
-
-    # Формируем текст
-    text = uni_info.get("card", "")
-    for sec in ["documents", "scholarships", "deadlines", "process", "programs"]:
-        if sec in expanded_sections_uni[chat_id]["expanded"] and sec in uni_info:
-            text += f"\n\n*{sec.capitalize()}:*\n{uni_info[sec]}"
-
-    # Формируем кнопки
-    markup = InlineKeyboardMarkup()
-    for sec in ["documents", "scholarships", "deadlines", "process", "programs"]:
-        if sec in uni_info:
-            if sec in expanded_sections_uni[chat_id]["expanded"]:
-                btn_text = f"✅ {sec.capitalize()}"  # отмечаем, что секция открыта
-            else:
-                btn_text = sec.capitalize()
-            markup.add(InlineKeyboardButton(btn_text, callback_data=f"uni_section_{sec}"))
-
-    links = uni_info.get("links", {})
-    for name, url in links.items():
-        markup.add(InlineKeyboardButton(name.capitalize(), url=url))
-
-    # кнопка возврата
-    markup.add(InlineKeyboardButton("← Назад к университету", callback_data=f"back_to_university_{country}"))
+        
+        # Получаем текст для выбранной секции
+        section_texts = {
+            "documents": uni_info.get("documents", "Информация о документах недоступна"),
+            "scholarships": uni_info.get("scholarships", "Информация о стипендиях недоступна"),
+            "deadlines": uni_info.get("deadlines", "Информация о дедлайнах недоступна"),
+            "process": uni_info.get("process", "Информация о процессе поступления недоступна"),
+            "programs": uni_info.get("programs", "Информация о программах недоступна")
+        }
+        
+        text = section_texts.get(section, "Информация недоступна")
+        
+        markup = InlineKeyboardMarkup()
+        # Кнопка для сворачивания (возврата к карточке)
+        markup.add(InlineKeyboardButton("← Назад к карточке университета", callback_data=f"uni_{country}_{uni_name}"))
 
     bot.edit_message_text(
         chat_id=chat_id,
@@ -527,9 +569,9 @@ def handle_back(call):
     elif back_action == "back_to_countries":
         # Возврат к выбору страны
         markup = InlineKeyboardMarkup()
-        countries = list(university_data.keys())
-        for c in countries:
-            markup.add(InlineKeyboardButton(c, callback_data=f"country_{c}"))
+        countries = db.get_countries()
+        for country in countries:
+            markup.add(InlineKeyboardButton(country['name'], callback_data=f"country_{country['name']}"))
         markup.add(InlineKeyboardButton("← Назад", callback_data="back_to_direction"))
         
         bot.edit_message_text(
@@ -546,10 +588,10 @@ def handle_back(call):
             user_countries[chat_id] = country
             
         # Повторно показываем список университетов страны
-        universities = university_data.get(country, {})
+        universities = db.get_universities_by_country(country)
         markup = InlineKeyboardMarkup()
-        for uni_name in universities.keys():
-            markup.add(InlineKeyboardButton(uni_name, callback_data=f"uni_{country}_{uni_name}"))
+        for university in universities:
+            markup.add(InlineKeyboardButton(university['name'], callback_data=f"uni_{country}_{university['name']}"))
         markup.add(InlineKeyboardButton("← Назад", callback_data="back_to_countries"))
         
         bot.edit_message_text(
@@ -558,28 +600,26 @@ def handle_back(call):
             text=f"Выберите университет в {country}:", 
             reply_markup=markup
         )
+        
+@bot.message_handler(commands=['run_db_tasks'])
+def run_db_tasks(message):
+    chat_id = message.chat.id
+    if chat_id != YOUR_ADMIN_CHAT_ID:
+        bot.send_message(chat_id, "У вас нет прав на выполнение этой команды.")
+        return
 
-# -----------------------------
-# Обработка справочника
-# -----------------------------
-@bot.callback_query_handler(func=lambda call: call.data.startswith("ref_"))
-def handle_reference(call):
-    chat_id = call.message.chat.id
-    ref_type = call.data.replace("ref_", "")
-    ref_texts = {
-        "directions": "🎯 Направления:\n\n• Бизнес / Финансы\n• IT / Инженерия / Наука\n• Медицина / Биология / Здоровье\n• Искусство / Дизайн / Медиа",
-        "countries": "🌍 Страны:\n\nДоступные для поступления страны с университетами в нашей базе данных.",
-        "universities": "🏛️ Университеты:\n\nИнформация о различных университетах, их программах и требованиях.",
-        "grants": "💰 Гранты:\n\nИнформация о доступных стипендиях и грантах для международных студентов.",
-        "documents": "📄 Документы и дедлайны:\n\nСписок необходимых документов и сроки подачи заявок."
-    }
-    
-    text = ref_texts.get(ref_type, "Информация не найдена")
-    bot.send_message(chat_id, text, reply_markup=reference_menu())
+    bot.send_message(chat_id, "⏳ Выполняются SQL-запросы и резервное копирование...")
+    try:
+        import db_tasks
+        db_tasks.run_queries()
+        db_tasks.backup_database(full=True)
+        bot.send_message(chat_id, "✅ Задачи выполнены успешно!")
+    except Exception as e:
+        bot.send_message(chat_id, f"❌ Ошибка: {e}")
 
 # -----------------------------
 # Запуск бота
-# -----------------------------      
+# -----------------------------
 if __name__ == "__main__":
     print("Бот запущен...")
     bot.infinity_polling()
