@@ -998,572 +998,588 @@
         </div>
     </div>
 
+    <script src="../js/dashboard.js" type="module"></script>
     <script>
-        // Mock Data
-        const mockData = {
-            users: [
-                { id: '1', username: 'student_001', email: 'student1@email.com', role: 'student', joined: '2025-01-01', status: 'active' },
-                { id: '2', username: 'student_002', email: 'student2@email.com', role: 'student', joined: '2025-01-02', status: 'active' },
-                { id: '3', username: 'moderator', email: 'moderator@studywithoutfear.com', role: 'moderator', joined: '2024-12-01', status: 'active' },
-                { id: '4', username: 'admin', email: 'admin@studywithoutfear.com', role: 'admin', joined: '2024-11-15', status: 'active' },
-                { id: '5', username: 'student_003', email: 'student3@email.com', role: 'student', joined: '2024-12-30', status: 'active' },
-                { id: '6', username: 'student_004', email: 'student4@email.com', role: 'student', joined: '2024-12-29', status: 'pending' },
-                { id: '7', username: 'student_005', email: 'student5@email.com', role: 'student', joined: '2024-12-28', status: 'active' },
-                { id: '8', username: 'moderator2', email: 'moderator2@studywithoutfear.com', role: 'moderator', joined: '2024-12-20', status: 'inactive' },
-            ],
-            programs: [
-                { id: '1', name: 'Computer Science - MIT', university: 'MIT', country: 'USA', type: 'Full Scholarship', level: 'Master', discipline: 'Computer Science', status: 'active', applications: 45 },
-                { id: '2', name: 'Engineering - ETH Zurich', university: 'ETH Zurich', country: 'Switzerland', type: 'Partial Scholarship', level: 'PhD', discipline: 'Engineering', status: 'active', applications: 32 },
-                { id: '3', name: 'Business - Oxford', university: 'University of Oxford', country: 'UK', type: 'Full Scholarship', level: 'Master', discipline: 'Business', status: 'pending', applications: 28 },
-                { id: '4', name: 'Medicine - Harvard', university: 'Harvard University', country: 'USA', type: 'Partial Scholarship', level: 'Bachelor', discipline: 'Medicine', status: 'active', applications: 56 },
-                { id: '5', name: 'Computer Science - Stanford', university: 'Stanford University', country: 'USA', type: 'Full Scholarship', level: 'PhD', discipline: 'Computer Science', status: 'active', applications: 41 },
-                { id: '6', name: 'Engineering - Cambridge', university: 'University of Cambridge', country: 'UK', type: 'Partial Scholarship', level: 'Master', discipline: 'Engineering', status: 'active', applications: 38 },
-                { id: '7', name: 'Arts - Sorbonne', university: 'Sorbonne University', country: 'France', type: 'Full Scholarship', level: 'Bachelor', discipline: 'Arts', status: 'pending', applications: 22 },
-                { id: '8', name: 'Science - Max Planck', university: 'Max Planck Institute', country: 'Germany', type: 'Full Scholarship', level: 'PhD', discipline: 'Science', status: 'active', applications: 19 },
-            ],
-            aiLogs: [
-                { id: '1', user: 'student_001', query: 'What are requirements for MIT?', timestamp: '2025-01-08 14:30', tokens: 450 },
-                { id: '2', user: 'student_002', query: 'Best scholarships for engineering', timestamp: '2025-01-08 13:15', tokens: 380 },
-                { id: '3', user: 'student_001', query: 'How to prepare motivation letter?', timestamp: '2025-01-08 10:20', tokens: 520 },
-                { id: '4', user: 'student_003', query: 'Deadlines for European universities', timestamp: '2025-01-07 16:45', tokens: 290 },
-                { id: '5', user: 'student_004', query: 'TOEFL requirements for USA', timestamp: '2025-01-07 11:30', tokens: 320 },
-                { id: '6', user: 'student_005', query: 'Scholarships for Asian students', timestamp: '2025-01-06 09:15', tokens: 410 },
-                { id: '7', user: 'moderator', query: 'Update program information', timestamp: '2025-01-05 14:20', tokens: 180 },
-                { id: '8', user: 'student_001', query: 'Visa requirements for Germany', timestamp: '2025-01-05 10:45', tokens: 370 },
-                { id: '9', user: 'student_002', query: 'Cost of living in Switzerland', timestamp: '2025-01-04 15:30', tokens: 280 },
-                { id: '10', user: 'student_003', query: 'How to get recommendation letters', timestamp: '2025-01-04 12:10', tokens: 340 },
-            ],
-            stats: {
-                totalUsers: 1247,
-                activeApplications: 3456,
-                totalPrograms: 789,
-                totalScholarships: 234,
-                aiQueriesThisMonth: 5678,
-                newUsersThisWeek: 89,
-            }
-        };
-
-        // Current State
-        let currentTab = 'statistics';
-        let currentLanguage = 'ru';
-        let currentPage = {
-            users: 1,
-            programs: 1,
-            aiLogs: 1
-        };
-        let itemsPerPage = 10;
-
-        // DOM Elements
-        const elements = {
-            langSwitch: document.getElementById('lang-switch'),
-            langText: document.getElementById('lang-text'),
-            username: document.getElementById('username'),
-            userEmail: document.getElementById('user-email'),
-            userInitial: document.getElementById('user-initial'),
-            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
-            mobileNav: document.getElementById('mobile-nav'),
-            mobileOverlay: document.getElementById('mobile-overlay'),
-            mobileCloseBtn: document.getElementById('mobile-close-btn'),
-            logoutBtn: document.getElementById('logout-btn'),
-            logoutBtnMobile: document.getElementById('logout-btn-mobile'),
-            userMenuBtn: document.getElementById('user-menu-btn'),
-            userDropdown: document.getElementById('user-dropdown'),
-            
-            // Modals
-            addUserModal: document.getElementById('add-user-modal'),
-            addProgramModal: document.getElementById('add-program-modal'),
-            
-            // Quick actions
-            quickAddUser: document.getElementById('quick-add-user'),
-            quickAddProgram: document.getElementById('quick-add-program'),
-            quickAddScholarship: document.getElementById('quick-add-scholarship'),
-            quickExport: document.getElementById('quick-export'),
-            
-            // Add buttons
-            addUserBtn: document.getElementById('add-user-btn'),
-            addProgramBtn: document.getElementById('add-program-btn'),
-            exportAiLogs: document.getElementById('export-ai-logs'),
-            
-            // Forms
-            addUserForm: document.getElementById('add-user-form'),
-            closeUserModal: document.getElementById('close-user-modal'),
-            cancelUserModal: document.getElementById('cancel-user-modal'),
-            
-            addProgramForm: document.getElementById('add-program-form'),
-            closeProgramModal: document.getElementById('close-program-modal'),
-            cancelProgramModal: document.getElementById('cancel-program-modal'),
-            
-            // Pagination
-            prevPage: document.getElementById('prev-page'),
-            nextPage: document.getElementById('next-page'),
-            programsPrev: document.getElementById('programs-prev'),
-            programsNext: document.getElementById('programs-next'),
-            aiPrev: document.getElementById('ai-prev'),
-            aiNext: document.getElementById('ai-next')
-        };
-
-        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // 1. Инициализация дашборда и проверка авторизации
+            const user = initDashboard();
+            if (!user) return; // Если нет авторизации, функция уже выполнила редирект
+            
+            // 2. Проверка роли администратора
+            if (user.role !== 'admin') {
+                alert('У вас нет прав для доступа к панели администратора');
+                window.location.href = 'student.html';
+                return;
+            }
+            
+            // 3. Обновление информации о пользователе в интерфейсе
+            if (document.getElementById('username')) {
+                document.getElementById('username').textContent = user.username || user.email;
+            }
+            if (document.getElementById('user-email')) {
+                document.getElementById('user-email').textContent = user.email;
+            }
+            if (document.getElementById('user-initial')) {
+                document.getElementById('user-initial').textContent = user.username ? user.username.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase();
+            }
+            
+            // 4. Продолжаем ваш существующий код
+            // Mock Data
+            const mockData = {
+                users: [
+                    { id: '1', username: 'student_001', email: 'student1@email.com', role: 'student', joined: '2025-01-01', status: 'active' },
+                    { id: '2', username: 'student_002', email: 'student2@email.com', role: 'student', joined: '2025-01-02', status: 'active' },
+                    { id: '3', username: 'moderator', email: 'moderator@studywithoutfear.com', role: 'moderator', joined: '2024-12-01', status: 'active' },
+                    { id: '4', username: 'admin', email: 'admin@studywithoutfear.com', role: 'admin', joined: '2024-11-15', status: 'active' },
+                    { id: '5', username: 'student_003', email: 'student3@email.com', role: 'student', joined: '2024-12-30', status: 'active' },
+                    { id: '6', username: 'student_004', email: 'student4@email.com', role: 'student', joined: '2024-12-29', status: 'pending' },
+                    { id: '7', username: 'student_005', email: 'student5@email.com', role: 'student', joined: '2024-12-28', status: 'active' },
+                    { id: '8', username: 'moderator2', email: 'moderator2@studywithoutfear.com', role: 'moderator', joined: '2024-12-20', status: 'inactive' },
+                ],
+                programs: [
+                    { id: '1', name: 'Computer Science - MIT', university: 'MIT', country: 'USA', type: 'Full Scholarship', level: 'Master', discipline: 'Computer Science', status: 'active', applications: 45 },
+                    { id: '2', name: 'Engineering - ETH Zurich', university: 'ETH Zurich', country: 'Switzerland', type: 'Partial Scholarship', level: 'PhD', discipline: 'Engineering', status: 'active', applications: 32 },
+                    { id: '3', name: 'Business - Oxford', university: 'University of Oxford', country: 'UK', type: 'Full Scholarship', level: 'Master', discipline: 'Business', status: 'pending', applications: 28 },
+                    { id: '4', name: 'Medicine - Harvard', university: 'Harvard University', country: 'USA', type: 'Partial Scholarship', level: 'Bachelor', discipline: 'Medicine', status: 'active', applications: 56 },
+                    { id: '5', name: 'Computer Science - Stanford', university: 'Stanford University', country: 'USA', type: 'Full Scholarship', level: 'PhD', discipline: 'Computer Science', status: 'active', applications: 41 },
+                    { id: '6', name: 'Engineering - Cambridge', university: 'University of Cambridge', country: 'UK', type: 'Partial Scholarship', level: 'Master', discipline: 'Engineering', status: 'active', applications: 38 },
+                    { id: '7', name: 'Arts - Sorbonne', university: 'Sorbonne University', country: 'France', type: 'Full Scholarship', level: 'Bachelor', discipline: 'Arts', status: 'pending', applications: 22 },
+                    { id: '8', name: 'Science - Max Planck', university: 'Max Planck Institute', country: 'Germany', type: 'Full Scholarship', level: 'PhD', discipline: 'Science', status: 'active', applications: 19 },
+                ],
+                aiLogs: [
+                    { id: '1', user: 'student_001', query: 'What are requirements for MIT?', timestamp: '2025-01-08 14:30', tokens: 450 },
+                    { id: '2', user: 'student_002', query: 'Best scholarships for engineering', timestamp: '2025-01-08 13:15', tokens: 380 },
+                    { id: '3', user: 'student_001', query: 'How to prepare motivation letter?', timestamp: '2025-01-08 10:20', tokens: 520 },
+                    { id: '4', user: 'student_003', query: 'Deadlines for European universities', timestamp: '2025-01-07 16:45', tokens: 290 },
+                    { id: '5', user: 'student_004', query: 'TOEFL requirements for USA', timestamp: '2025-01-07 11:30', tokens: 320 },
+                    { id: '6', user: 'student_005', query: 'Scholarships for Asian students', timestamp: '2025-01-06 09:15', tokens: 410 },
+                    { id: '7', user: 'moderator', query: 'Update program information', timestamp: '2025-01-05 14:20', tokens: 180 },
+                    { id: '8', user: 'student_001', query: 'Visa requirements for Germany', timestamp: '2025-01-05 10:45', tokens: 370 },
+                    { id: '9', user: 'student_002', query: 'Cost of living in Switzerland', timestamp: '2025-01-04 15:30', tokens: 280 },
+                    { id: '10', user: 'student_003', query: 'How to get recommendation letters', timestamp: '2025-01-04 12:10', tokens: 340 },
+                ],
+                stats: {
+                    totalUsers: 1247,
+                    activeApplications: 3456,
+                    totalPrograms: 789,
+                    totalScholarships: 234,
+                    aiQueriesThisMonth: 5678,
+                    newUsersThisWeek: 89,
+                }
+            };
+
+            // Current State
+            let currentTab = 'statistics';
+            let currentLanguage = 'ru';
+            let currentPage = {
+                users: 1,
+                programs: 1,
+                aiLogs: 1
+            };
+            let itemsPerPage = 10;
+
+            // DOM Elements
+            const elements = {
+                langSwitch: document.getElementById('lang-switch'),
+                langText: document.getElementById('lang-text'),
+                username: document.getElementById('username'),
+                userEmail: document.getElementById('user-email'),
+                userInitial: document.getElementById('user-initial'),
+                mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+                mobileNav: document.getElementById('mobile-nav'),
+                mobileOverlay: document.getElementById('mobile-overlay'),
+                mobileCloseBtn: document.getElementById('mobile-close-btn'),
+                logoutBtn: document.getElementById('logout-btn'),
+                logoutBtnMobile: document.getElementById('logout-btn-mobile'),
+                userMenuBtn: document.getElementById('user-menu-btn'),
+                userDropdown: document.getElementById('user-dropdown'),
+                
+                // Modals
+                addUserModal: document.getElementById('add-user-modal'),
+                addProgramModal: document.getElementById('add-program-modal'),
+                
+                // Quick actions
+                quickAddUser: document.getElementById('quick-add-user'),
+                quickAddProgram: document.getElementById('quick-add-program'),
+                quickAddScholarship: document.getElementById('quick-add-scholarship'),
+                quickExport: document.getElementById('quick-export'),
+                
+                // Add buttons
+                addUserBtn: document.getElementById('add-user-btn'),
+                addProgramBtn: document.getElementById('add-program-btn'),
+                exportAiLogs: document.getElementById('export-ai-logs'),
+                
+                // Forms
+                addUserForm: document.getElementById('add-user-form'),
+                closeUserModal: document.getElementById('close-user-modal'),
+                cancelUserModal: document.getElementById('cancel-user-modal'),
+                
+                addProgramForm: document.getElementById('add-program-form'),
+                closeProgramModal: document.getElementById('close-program-modal'),
+                cancelProgramModal: document.getElementById('cancel-program-modal'),
+                
+                // Pagination
+                prevPage: document.getElementById('prev-page'),
+                nextPage: document.getElementById('next-page'),
+                programsPrev: document.getElementById('programs-prev'),
+                programsNext: document.getElementById('programs-next'),
+                aiPrev: document.getElementById('ai-prev'),
+                aiNext: document.getElementById('ai-next')
+            };
+
+            // Initialize
             loadData();
             setupEventListeners();
             updateUI();
-        });
 
-        // Load mock data
-        function loadData() {
-            // Load recent users
-            const recentUsers = document.getElementById('recent-users');
-            if (recentUsers) {
-                recentUsers.innerHTML = mockData.users.slice(0, 3).map(user => `
-                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-full ${getRoleColor(user.role)} flex items-center justify-center text-white">
-                                ${user.username.charAt(0).toUpperCase()}
+            // Load mock data
+            function loadData() {
+                // Load recent users
+                const recentUsers = document.getElementById('recent-users');
+                if (recentUsers) {
+                    recentUsers.innerHTML = mockData.users.slice(0, 3).map(user => `
+                        <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full ${getRoleColor(user.role)} flex items-center justify-center text-white">
+                                    ${user.username.charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                    <div class="font-medium">${user.username}</div>
+                                    <div class="text-sm text-gray-600">${user.email}</div>
+                                </div>
                             </div>
+                            <span class="${getBadgeClass(user.role)}">${getRoleName(user.role)}</span>
+                        </div>
+                    `).join('');
+                }
+
+                // Load popular programs
+                const popularPrograms = document.getElementById('popular-programs');
+                if (popularPrograms) {
+                    popularPrograms.innerHTML = mockData.programs.slice(0, 3).map(program => `
+                        <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
                             <div>
-                                <div class="font-medium">${user.username}</div>
-                                <div class="text-sm text-gray-600">${user.email}</div>
+                                <div class="font-medium">${program.name}</div>
+                                <div class="text-sm text-gray-600">${program.country} • ${program.applications} заявок</div>
                             </div>
-                        </div>
-                        <span class="${getBadgeClass(user.role)}">${getRoleName(user.role)}</span>
-                    </div>
-                `).join('');
-            }
-
-            // Load popular programs
-            const popularPrograms = document.getElementById('popular-programs');
-            if (popularPrograms) {
-                popularPrograms.innerHTML = mockData.programs.slice(0, 3).map(program => `
-                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-                        <div>
-                            <div class="font-medium">${program.name}</div>
-                            <div class="text-sm text-gray-600">${program.country} • ${program.applications} заявок</div>
-                        </div>
-                        <span class="${program.status === 'active' ? 'badge badge-status-active' : 'badge badge-status-pending'}">
-                            ${program.status === 'active' ? 'Активна' : 'На проверке'}
-                        </span>
-                    </div>
-                `).join('');
-            }
-
-            // Load users table
-            loadUsersTable();
-            
-            // Load programs table
-            loadProgramsTable();
-            
-            // Load AI logs table
-            loadAiLogsTable();
-        }
-
-        // Helper functions
-        function getRoleColor(role) {
-            switch(role) {
-                case 'admin': return 'bg-red-500';
-                case 'moderator': return 'bg-blue-500';
-                case 'student': return 'bg-green-500';
-                default: return 'bg-gray-500';
-            }
-        }
-
-        function getRoleName(role) {
-            switch(role) {
-                case 'admin': return 'Админ';
-                case 'moderator': return 'Модератор';
-                case 'student': return 'Студент';
-                default: return role;
-            }
-        }
-
-        function getBadgeClass(role) {
-            switch(role) {
-                case 'admin': return 'badge badge-admin';
-                case 'moderator': return 'badge badge-moderator';
-                case 'student': return 'badge badge-student';
-                default: return 'badge';
-            }
-        }
-
-        // Load users table with pagination
-        function loadUsersTable() {
-            const page = currentPage.users;
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const users = mockData.users.slice(start, end);
-            
-            const usersTableBody = document.getElementById('users-table-body');
-            if (usersTableBody) {
-                usersTableBody.innerHTML = users.map(user => `
-                    <tr>
-                        <td>${user.username}</td>
-                        <td>${user.email}</td>
-                        <td>${getBadgeClass(user.role)}</td>
-                        <td>${new Date(user.joined).toLocaleDateString()}</td>
-                        <td>
-                            <span class="badge ${user.status === 'active' ? 'badge-status-active' : user.status === 'pending' ? 'badge-status-pending' : 'badge-status-inactive'}">
-                                ${user.status === 'active' ? 'Активен' : user.status === 'pending' ? 'На проверке' : 'Неактивен'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editUser('${user.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteUser('${user.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-            
-            // Update pagination info
-            document.getElementById('users-start').textContent = start + 1;
-            document.getElementById('users-end').textContent = Math.min(end, mockData.users.length);
-            document.getElementById('users-total').textContent = mockData.users.length;
-        }
-
-        // Load programs table with pagination
-        function loadProgramsTable() {
-            const page = currentPage.programs;
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const programs = mockData.programs.slice(start, end);
-            
-            const programsTableBody = document.getElementById('programs-table-body');
-            if (programsTableBody) {
-                programsTableBody.innerHTML = programs.map(program => `
-                    <tr>
-                        <td>${program.name}</td>
-                        <td>${program.university}</td>
-                        <td>${program.country}</td>
-                        <td>${program.type}</td>
-                        <td>${program.level}</td>
-                        <td>${program.applications}</td>
-                        <td>
-                            <span class="badge ${program.status === 'active' ? 'badge-status-active' : 'badge-status-pending'}">
+                            <span class="${program.status === 'active' ? 'badge badge-status-active' : 'badge badge-status-pending'}">
                                 ${program.status === 'active' ? 'Активна' : 'На проверке'}
                             </span>
-                        </td>
-                        <td>
-                            <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editProgram('${program.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteProgram('${program.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-            
-            // Update pagination info
-            document.getElementById('programs-start').textContent = start + 1;
-            document.getElementById('programs-end').textContent = Math.min(end, mockData.programs.length);
-            document.getElementById('programs-total').textContent = mockData.programs.length;
-        }
-
-        // Load AI logs table with pagination
-        function loadAiLogsTable() {
-            const page = currentPage.aiLogs;
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const logs = mockData.aiLogs.slice(start, end);
-            
-            const aiLogsTableBody = document.getElementById('ai-logs-table-body');
-            if (aiLogsTableBody) {
-                aiLogsTableBody.innerHTML = logs.map(log => `
-                    <tr>
-                        <td>${log.user}</td>
-                        <td class="max-w-xs truncate">${log.query}</td>
-                        <td>${log.timestamp}</td>
-                        <td>${log.tokens}</td>
-                        <td>
-                            <button class="p-1 text-gray-600 hover:text-gray-800" onclick="viewAILog('${log.id}')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-            
-            // Update pagination info
-            document.getElementById('ai-start').textContent = start + 1;
-            document.getElementById('ai-end').textContent = Math.min(end, mockData.aiLogs.length);
-            document.getElementById('ai-total').textContent = mockData.aiLogs.length;
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Language switch
-            elements.langSwitch?.addEventListener('click', toggleLanguage);
-            
-            // Mobile menu
-            elements.mobileMenuBtn?.addEventListener('click', openMobileMenu);
-            elements.mobileCloseBtn?.addEventListener('click', closeMobileMenu);
-            elements.mobileOverlay?.addEventListener('click', closeMobileMenu);
-            
-            // User dropdown
-            elements.userMenuBtn?.addEventListener('click', toggleUserDropdown);
-            document.addEventListener('click', closeUserDropdown);
-            
-            // Logout
-            elements.logoutBtn?.addEventListener('click', logout);
-            elements.logoutBtnMobile?.addEventListener('click', logout);
-            
-            // Tab switching
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tab = this.dataset.tab;
-                    switchTab(tab);
-                });
-            });
-            
-            // Quick actions
-            elements.quickAddUser?.addEventListener('click', openAddUserModal);
-            elements.quickAddProgram?.addEventListener('click', openAddProgramModal);
-            elements.quickAddScholarship?.addEventListener('click', () => showToast('Добавление стипендии', 'Открыт интерфейс добавления стипендии'));
-            elements.quickExport?.addEventListener('click', () => showToast('Экспорт данных', 'Начата подготовка отчета для экспорта'));
-            
-            // User modal
-            elements.addUserBtn?.addEventListener('click', openAddUserModal);
-            elements.closeUserModal?.addEventListener('click', closeAddUserModal);
-            elements.cancelUserModal?.addEventListener('click', closeAddUserModal);
-            elements.addUserForm?.addEventListener('submit', addUser);
-            
-            // Program modal
-            elements.addProgramBtn?.addEventListener('click', openAddProgramModal);
-            elements.closeProgramModal?.addEventListener('click', closeAddProgramModal);
-            elements.cancelProgramModal?.addEventListener('click', closeAddProgramModal);
-            elements.addProgramForm?.addEventListener('submit', addProgram);
-            
-            // Export AI logs
-            elements.exportAiLogs?.addEventListener('click', () => showToast('Экспорт логов', 'Логи AI ассистента экспортированы'));
-            
-            // Pagination
-            elements.prevPage?.addEventListener('click', () => changePage('users', -1));
-            elements.nextPage?.addEventListener('click', () => changePage('users', 1));
-            elements.programsPrev?.addEventListener('click', () => changePage('programs', -1));
-            elements.programsNext?.addEventListener('click', () => changePage('programs', 1));
-            elements.aiPrev?.addEventListener('click', () => changePage('aiLogs', -1));
-            elements.aiNext?.addEventListener('click', () => changePage('aiLogs', 1));
-            
-            // Filters
-            document.getElementById('user-role-filter')?.addEventListener('change', filterUsers);
-            document.getElementById('user-status-filter')?.addEventListener('change', filterUsers);
-            document.getElementById('user-sort')?.addEventListener('change', sortUsers);
-            
-            document.getElementById('country-filter')?.addEventListener('change', filterPrograms);
-            document.getElementById('level-filter')?.addEventListener('change', filterPrograms);
-            document.getElementById('discipline-filter')?.addEventListener('change', filterPrograms);
-            document.getElementById('program-status-filter')?.addEventListener('change', filterPrograms);
-            
-            document.getElementById('ai-user-filter')?.addEventListener('change', filterAiLogs);
-            document.getElementById('ai-date-filter')?.addEventListener('change', filterAiLogs);
-            document.getElementById('ai-start-date')?.addEventListener('change', filterAiLogs);
-            document.getElementById('ai-end-date')?.addEventListener('change', filterAiLogs);
-            
-            // Close modals on outside click
-            elements.addUserModal?.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeAddUserModal();
+                        </div>
+                    `).join('');
                 }
-            });
-            
-            elements.addProgramModal?.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeAddProgramModal();
+
+                // Load users table
+                loadUsersTable();
+                
+                // Load programs table
+                loadProgramsTable();
+                
+                // Load AI logs table
+                loadAiLogsTable();
+            }
+
+            // Helper functions
+            function getRoleColor(role) {
+                switch(role) {
+                    case 'admin': return 'bg-red-500';
+                    case 'moderator': return 'bg-blue-500';
+                    case 'student': return 'bg-green-500';
+                    default: return 'bg-gray-500';
                 }
-            });
-        }
-
-        // Toggle language
-        function toggleLanguage() {
-            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
-            elements.langText.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
-            showToast('Язык изменен', `Язык интерфейса изменен на ${currentLanguage === 'ru' ? 'русский' : 'английский'}`);
-        }
-
-        // Mobile menu functions
-        function openMobileMenu() {
-            elements.mobileNav.classList.add('active');
-            elements.mobileOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMobileMenu() {
-            elements.mobileNav.classList.remove('active');
-            elements.mobileOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // User dropdown functions
-        function toggleUserDropdown(e) {
-            e.stopPropagation();
-            elements.userDropdown.classList.toggle('hidden');
-        }
-
-        function closeUserDropdown(e) {
-            if (!elements.userMenuBtn.contains(e.target) && !elements.userDropdown.contains(e.target)) {
-                elements.userDropdown.classList.add('hidden');
             }
-        }
 
-        // Switch tab
-        function switchTab(tab) {
-            currentTab = tab;
-            updateTabs();
-        }
-
-        // Update tabs visibility and active state
-        function updateTabs() {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Remove active class from all tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Set active tab button
-            const activeTabBtn = document.querySelector(`.tab-btn[data-tab="${currentTab}"]`);
-            if (activeTabBtn) {
-                activeTabBtn.classList.add('active');
+            function getRoleName(role) {
+                switch(role) {
+                    case 'admin': return 'Админ';
+                    case 'moderator': return 'Модератор';
+                    case 'student': return 'Студент';
+                    default: return role;
+                }
             }
-            
-            // Show current tab content
-            const tabContent = document.getElementById(`tab-${currentTab}`);
-            if (tabContent) {
-                tabContent.classList.add('active');
+
+            function getBadgeClass(role) {
+                switch(role) {
+                    case 'admin': return 'badge badge-admin';
+                    case 'moderator': return 'badge badge-moderator';
+                    case 'student': return 'badge badge-student';
+                    default: return 'badge';
+                }
             }
-        }
 
-        // Modal functions
-        function openAddUserModal() {
-            elements.addUserModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAddUserModal() {
-            elements.addUserModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function openAddProgramModal() {
-            elements.addProgramModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAddProgramModal() {
-            elements.addProgramModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Form submission functions
-        function addUser(e) {
-            e.preventDefault();
-            showToast('Пользователь добавлен', 'Новый пользователь успешно добавлен в систему');
-            closeAddUserModal();
-            // In real app, reload data from backend
-        }
-
-        function addProgram(e) {
-            e.preventDefault();
-            showToast('Программа добавлена', 'Новая программа успешно добавлена в базу данных');
-            closeAddProgramModal();
-            // In real app, reload data from backend
-        }
-
-        // Pagination functions
-        function changePage(type, direction) {
-            const maxPage = Math.ceil(mockData[type].length / itemsPerPage);
-            
-            currentPage[type] += direction;
-            
-            if (currentPage[type] < 1) currentPage[type] = 1;
-            if (currentPage[type] > maxPage) currentPage[type] = maxPage;
-            
-            if (type === 'users') loadUsersTable();
-            if (type === 'programs') loadProgramsTable();
-            if (type === 'aiLogs') loadAiLogsTable();
-        }
-
-        // Filter functions
-        function filterUsers() {
-            // In real app, this would filter the data
-            showToast('Фильтр применен', 'Фильтры пользователей применены');
-        }
-
-        function filterPrograms() {
-            // In real app, this would filter the data
-            showToast('Фильтр применен', 'Фильтры программ применены');
-        }
-
-        function sortUsers() {
-            // In real app, this would sort the data
-            showToast('Сортировка', 'Пользователи отсортированы');
-        }
-
-        function filterAiLogs() {
-            // In real app, this would filter the data
-            showToast('Фильтр применен', 'Фильтры AI логов применены');
-        }
-
-        // Global functions for table actions
-        window.editUser = function(id) {
-            showToast('Редактирование пользователя', `Редактирование пользователя с ID: ${id}`);
-            // In real app, open edit modal
-        };
-
-        window.deleteUser = function(id) {
-            if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
-                showToast('Пользователь удален', `Пользователь с ID: ${id} удален из системы`);
-                // In real app, make API call to delete
+            // Load users table with pagination
+            function loadUsersTable() {
+                const page = currentPage.users;
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const users = mockData.users.slice(start, end);
+                
+                const usersTableBody = document.getElementById('users-table-body');
+                if (usersTableBody) {
+                    usersTableBody.innerHTML = users.map(user => `
+                        <tr>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>${getBadgeClass(user.role)}</td>
+                            <td>${new Date(user.joined).toLocaleDateString()}</td>
+                            <td>
+                                <span class="badge ${user.status === 'active' ? 'badge-status-active' : user.status === 'pending' ? 'badge-status-pending' : 'badge-status-inactive'}">
+                                    ${user.status === 'active' ? 'Активен' : user.status === 'pending' ? 'На проверке' : 'Неактивен'}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editUser('${user.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteUser('${user.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                
+                // Update pagination info
+                document.getElementById('users-start').textContent = start + 1;
+                document.getElementById('users-end').textContent = Math.min(end, mockData.users.length);
+                document.getElementById('users-total').textContent = mockData.users.length;
             }
-        };
 
-        window.editProgram = function(id) {
-            showToast('Редактирование программы', `Редактирование программы с ID: ${id}`);
-            // In real app, open edit modal
-        };
-
-        window.deleteProgram = function(id) {
-            if (confirm('Вы уверены, что хотите удалить эту программу?')) {
-                showToast('Программа удалена', `Программа с ID: ${id} удалена из системы`);
-                // In real app, make API call to delete
+            // Load programs table with pagination
+            function loadProgramsTable() {
+                const page = currentPage.programs;
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const programs = mockData.programs.slice(start, end);
+                
+                const programsTableBody = document.getElementById('programs-table-body');
+                if (programsTableBody) {
+                    programsTableBody.innerHTML = programs.map(program => `
+                        <tr>
+                            <td>${program.name}</td>
+                            <td>${program.university}</td>
+                            <td>${program.country}</td>
+                            <td>${program.type}</td>
+                            <td>${program.level}</td>
+                            <td>${program.applications}</td>
+                            <td>
+                                <span class="badge ${program.status === 'active' ? 'badge-status-active' : 'badge-status-pending'}">
+                                    ${program.status === 'active' ? 'Активна' : 'На проверке'}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="p-1 text-blue-600 hover:text-blue-800 mr-2" onclick="editProgram('${program.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="p-1 text-red-600 hover:text-red-800" onclick="deleteProgram('${program.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                
+                // Update pagination info
+                document.getElementById('programs-start').textContent = start + 1;
+                document.getElementById('programs-end').textContent = Math.min(end, mockData.programs.length);
+                document.getElementById('programs-total').textContent = mockData.programs.length;
             }
-        };
 
-        window.viewAILog = function(id) {
-            showToast('Просмотр AI лога', `Просмотр лога с ID: ${id}`);
-            // In real app, open modal with full log details
-        };
+            // Load AI logs table with pagination
+            function loadAiLogsTable() {
+                const page = currentPage.aiLogs;
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const logs = mockData.aiLogs.slice(start, end);
+                
+                const aiLogsTableBody = document.getElementById('ai-logs-table-body');
+                if (aiLogsTableBody) {
+                    aiLogsTableBody.innerHTML = logs.map(log => `
+                        <tr>
+                            <td>${log.user}</td>
+                            <td class="max-w-xs truncate">${log.query}</td>
+                            <td>${log.timestamp}</td>
+                            <td>${log.tokens}</td>
+                            <td>
+                                <button class="p-1 text-gray-600 hover:text-gray-800" onclick="viewAILog('${log.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                
+                // Update pagination info
+                document.getElementById('ai-start').textContent = start + 1;
+                document.getElementById('ai-end').textContent = Math.min(end, mockData.aiLogs.length);
+                document.getElementById('ai-total').textContent = mockData.aiLogs.length;
+            }
 
-        // Toast notification
-        function showToast(title, description) {
-            if (window.sonner) {
-                window.sonner.toast(title, {
-                    description: description,
-                    duration: 4000,
+            // Setup event listeners
+            function setupEventListeners() {
+                // Language switch
+                elements.langSwitch?.addEventListener('click', toggleLanguage);
+                
+                // Mobile menu
+                elements.mobileMenuBtn?.addEventListener('click', openMobileMenu);
+                elements.mobileCloseBtn?.addEventListener('click', closeMobileMenu);
+                elements.mobileOverlay?.addEventListener('click', closeMobileMenu);
+                
+                // User dropdown
+                elements.userMenuBtn?.addEventListener('click', toggleUserDropdown);
+                document.addEventListener('click', closeUserDropdown);
+                
+                // Logout
+                elements.logoutBtn?.addEventListener('click', logout);
+                elements.logoutBtnMobile?.addEventListener('click', logout);
+                
+                // Tab switching
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tab = this.dataset.tab;
+                        switchTab(tab);
+                    });
                 });
-            } else {
-                alert(`${title}: ${description}`);
+                
+                // Quick actions
+                elements.quickAddUser?.addEventListener('click', openAddUserModal);
+                elements.quickAddProgram?.addEventListener('click', openAddProgramModal);
+                elements.quickAddScholarship?.addEventListener('click', () => showToast('Добавление стипендии', 'Открыт интерфейс добавления стипендии'));
+                elements.quickExport?.addEventListener('click', () => showToast('Экспорт данных', 'Начата подготовка отчета для экспорта'));
+                
+                // User modal
+                elements.addUserBtn?.addEventListener('click', openAddUserModal);
+                elements.closeUserModal?.addEventListener('click', closeAddUserModal);
+                elements.cancelUserModal?.addEventListener('click', closeAddUserModal);
+                elements.addUserForm?.addEventListener('submit', addUser);
+                
+                // Program modal
+                elements.addProgramBtn?.addEventListener('click', openAddProgramModal);
+                elements.closeProgramModal?.addEventListener('click', closeAddProgramModal);
+                elements.cancelProgramModal?.addEventListener('click', closeAddProgramModal);
+                elements.addProgramForm?.addEventListener('submit', addProgram);
+                
+                // Export AI logs
+                elements.exportAiLogs?.addEventListener('click', () => showToast('Экспорт логов', 'Логи AI ассистента экспортированы'));
+                
+                // Pagination
+                elements.prevPage?.addEventListener('click', () => changePage('users', -1));
+                elements.nextPage?.addEventListener('click', () => changePage('users', 1));
+                elements.programsPrev?.addEventListener('click', () => changePage('programs', -1));
+                elements.programsNext?.addEventListener('click', () => changePage('programs', 1));
+                elements.aiPrev?.addEventListener('click', () => changePage('aiLogs', -1));
+                elements.aiNext?.addEventListener('click', () => changePage('aiLogs', 1));
+                
+                // Filters
+                document.getElementById('user-role-filter')?.addEventListener('change', filterUsers);
+                document.getElementById('user-status-filter')?.addEventListener('change', filterUsers);
+                document.getElementById('user-sort')?.addEventListener('change', sortUsers);
+                
+                document.getElementById('country-filter')?.addEventListener('change', filterPrograms);
+                document.getElementById('level-filter')?.addEventListener('change', filterPrograms);
+                document.getElementById('discipline-filter')?.addEventListener('change', filterPrograms);
+                document.getElementById('program-status-filter')?.addEventListener('change', filterPrograms);
+                
+                document.getElementById('ai-user-filter')?.addEventListener('change', filterAiLogs);
+                document.getElementById('ai-date-filter')?.addEventListener('change', filterAiLogs);
+                document.getElementById('ai-start-date')?.addEventListener('change', filterAiLogs);
+                document.getElementById('ai-end-date')?.addEventListener('change', filterAiLogs);
+                
+                // Close modals on outside click
+                elements.addUserModal?.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeAddUserModal();
+                    }
+                });
+                
+                elements.addProgramModal?.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeAddProgramModal();
+                    }
+                });
             }
-        }
 
-        // Logout function
-        function logout() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                // In real app, this would clear auth tokens
-                window.location.href = 'index.html';
+            // Toggle language
+            function toggleLanguage() {
+                currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+                elements.langText.textContent = currentLanguage === 'ru' ? 'РУС' : 'ENG';
+                showToast('Язык изменен', `Язык интерфейса изменен на ${currentLanguage === 'ru' ? 'русский' : 'английский'}`);
             }
-        }
 
-        // Update UI
-        function updateUI() {
-            updateTabs();
-        }
+            // Mobile menu functions
+            function openMobileMenu() {
+                elements.mobileNav.classList.add('active');
+                elements.mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileMenu() {
+                elements.mobileNav.classList.remove('active');
+                elements.mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // User dropdown functions
+            function toggleUserDropdown(e) {
+                e.stopPropagation();
+                elements.userDropdown.classList.toggle('hidden');
+            }
+
+            function closeUserDropdown(e) {
+                if (!elements.userMenuBtn.contains(e.target) && !elements.userDropdown.contains(e.target)) {
+                    elements.userDropdown.classList.add('hidden');
+                }
+            }
+
+            // Switch tab
+            function switchTab(tab) {
+                currentTab = tab;
+                updateTabs();
+            }
+
+            // Update tabs visibility and active state
+            function updateTabs() {
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Remove active class from all tab buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Set active tab button
+                const activeTabBtn = document.querySelector(`.tab-btn[data-tab="${currentTab}"]`);
+                if (activeTabBtn) {
+                    activeTabBtn.classList.add('active');
+                }
+                
+                // Show current tab content
+                const tabContent = document.getElementById(`tab-${currentTab}`);
+                if (tabContent) {
+                    tabContent.classList.add('active');
+                }
+            }
+
+            // Modal functions
+            function openAddUserModal() {
+                elements.addUserModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeAddUserModal() {
+                elements.addUserModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function openAddProgramModal() {
+                elements.addProgramModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeAddProgramModal() {
+                elements.addProgramModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Form submission functions
+            function addUser(e) {
+                e.preventDefault();
+                showToast('Пользователь добавлен', 'Новый пользователь успешно добавлен в систему');
+                closeAddUserModal();
+                // In real app, reload data from backend
+            }
+
+            function addProgram(e) {
+                e.preventDefault();
+                showToast('Программа добавлена', 'Новая программа успешно добавлена в базу данных');
+                closeAddProgramModal();
+                // In real app, reload data from backend
+            }
+
+            // Pagination functions
+            function changePage(type, direction) {
+                const maxPage = Math.ceil(mockData[type].length / itemsPerPage);
+                
+                currentPage[type] += direction;
+                
+                if (currentPage[type] < 1) currentPage[type] = 1;
+                if (currentPage[type] > maxPage) currentPage[type] = maxPage;
+                
+                if (type === 'users') loadUsersTable();
+                if (type === 'programs') loadProgramsTable();
+                if (type === 'aiLogs') loadAiLogsTable();
+            }
+
+            // Filter functions
+            function filterUsers() {
+                // In real app, this would filter the data
+                showToast('Фильтр применен', 'Фильтры пользователей применены');
+            }
+
+            function filterPrograms() {
+                // In real app, this would filter the data
+                showToast('Фильтр применен', 'Фильтры программ применены');
+            }
+
+            function sortUsers() {
+                // In real app, this would sort the data
+                showToast('Сортировка', 'Пользователи отсортированы');
+            }
+
+            function filterAiLogs() {
+                // In real app, this would filter the data
+                showToast('Фильтр применен', 'Фильтры AI логов применены');
+            }
+
+            // Global functions for table actions
+            window.editUser = function(id) {
+                showToast('Редактирование пользователя', `Редактирование пользователя с ID: ${id}`);
+                // In real app, open edit modal
+            };
+
+            window.deleteUser = function(id) {
+                if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                    showToast('Пользователь удален', `Пользователь с ID: ${id} удален из системы`);
+                    // In real app, make API call to delete
+                }
+            };
+
+            window.editProgram = function(id) {
+                showToast('Редактирование программы', `Редактирование программы с ID: ${id}`);
+                // In real app, open edit modal
+            };
+
+            window.deleteProgram = function(id) {
+                if (confirm('Вы уверены, что хотите удалить эту программу?')) {
+                    showToast('Программа удалена', `Программа с ID: ${id} удалена из системы`);
+                    // In real app, make API call to delete
+                }
+            };
+
+            window.viewAILog = function(id) {
+                showToast('Просмотр AI лога', `Просмотр лога с ID: ${id}`);
+                // In real app, open modal with full log details
+            };
+
+            // Toast notification
+            function showToast(title, description) {
+                if (window.sonner) {
+                    window.sonner.toast(title, {
+                        description: description,
+                        duration: 4000,
+                    });
+                } else {
+                    alert(`${title}: ${description}`);
+                }
+            }
+
+            // Update UI
+            function updateUI() {
+                updateTabs();
+            }
+        });
     </script>
 </body>
 </html>

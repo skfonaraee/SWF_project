@@ -205,29 +205,20 @@
                 loginLoading.classList.remove('hidden');
                 loginButton.disabled = true;
                 
-                try {
-                    // Используем функцию из auth.js
-                    const success = await login(email, password);
-                    
-                    if (!success) {
-                        document.getElementById('general-error').classList.remove('hidden');
-                        loginText.textContent = 'Войти';
-                        loginLoading.classList.add('hidden');
-                        loginButton.disabled = false;
-                    }
-                } catch (error) {
-                    console.error('Login error:', error);
-                    document.getElementById('general-error').classList.remove('hidden');
-                    loginText.textContent = 'Войти';
-                    loginLoading.classList.add('hidden');
-                    loginButton.disabled = false;
-                }
+                // Используем функцию из auth.js
+                await login(email, password);
+                
+                // Сброс состояния кнопки (если login не выполнил редирект)
+                loginText.textContent = 'Войти';
+                loginLoading.classList.add('hidden');
+                loginButton.disabled = false;
             });
             
             // Тестовые данные для быстрого входа
             const testAccounts = {
                 'admin@studywithoutfear.com': 'Admin@123',
-                'moderator@studywithoutfear.com': 'Moderator@123'
+                'moderator@studywithoutfear.com': 'Moderator@123',
+                'student@studywithoutfear.com': 'Student@123'
             };
             
             // Автозаполнение для тестирования

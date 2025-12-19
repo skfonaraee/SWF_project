@@ -18,10 +18,46 @@ function checkAuthStatus() {
         if (userAvatar) {
             userAvatar.src = user.avatar || `https://ui-avatars.com/api/?name=${user.username || 'User'}&background=0F4C81&color=fff`;
         }
+        return { user, token };
     } else {
         // Пользователь не авторизован
         if (authButtons) authButtons.style.display = 'flex';
         if (userProfile) userProfile.classList.add('hidden');
+        return null;
+    }
+}
+
+// Проверка роли и редирект на нужный дашборд
+function checkAndRedirect() {
+    const auth = checkAuthStatus();
+    if (auth) {
+        const { user } = auth;
+        if (window.location.pathname.includes('login.html') || 
+            window.location.pathname.includes('register.html')) {
+            // Если пользователь уже авторизован и находится на странице входа/регистрации
+            redirectToDashboard(user.role);
+        }
+    } else {
+        // Если пользователь не авторизован и пытается зайти на дашборд
+        if (window.location.pathname.includes('dashboard/')) {
+            window.location.href = '../login.html';
+        }
+    }
+}
+
+// Редирект на соответствующий дашборд
+function redirectToDashboard(role) {
+    switch(role) {
+        case 'admin':
+            window.location.href = 'dashboard/admin.html';
+            break;
+        case 'moderator':
+            window.location.href = 'dashboard/moderator.html';
+            break;
+        case 'student':
+        default:
+            window.location.href = 'dashboard/student.html';
+            break;
     }
 }
 
@@ -36,24 +72,23 @@ async function login(email, password) {
             body: JSON.stringify({ email, password }),
         });
         
+        const data = await response.json();
+        
         if (response.ok) {
-            const data = await response.json();
             localStorage.setItem('user', JSON.stringify(data.user));
             localStorage.setItem('token', data.access || data.token);
+            localStorage.setItem('refresh_token', data.refresh || '');
+            
+            showSuccess('Успешный вход!');
             
             // Редирект в зависимости от роли
-            if (data.user.role === 'admin') {
-                window.location.href = '/dashboard/admin.html';
-            } else if (data.user.role === 'moderator') {
-                window.location.href = '/dashboard/moderator.html';
-            } else {
-                window.location.href = '/dashboard/student.html';
-            }
+            setTimeout(() => {
+                redirectToDashboard(data.user.role);
+            }, 1000);
             
             return true;
         } else {
-            const error = await response.json();
-            showError(error.detail || 'Ошибка входа');
+            showError(data.detail || data.message || 'Ошибка входа');
             return false;
         }
     } catch (error) {
@@ -74,17 +109,26 @@ async function register(username, email, password) {
             body: JSON.stringify({ username, email, password }),
         });
         
+        const data = await response.json();
+        
         if (response.ok) {
-            const data = await response.json();
             localStorage.setItem('user', JSON.stringify(data.user));
             localStorage.setItem('token', data.access || data.token);
+            localStorage.setItem('refresh_token', data.refresh || '');
+            
+            showSuccess('Регистрация успешна!');
             
             // Все новые пользователи - студенты
-            window.location.href = '/dashboard/student.html';
+            setTimeout(() => {
+                window.location.href = 'dashboard/student.html';
+            }, 1000);
+            
             return true;
         } else {
-            const error = await response.json();
-            showError(error.detail || Object.values(error).join(', ') || 'Ошибка регистрации');
+            const errorMessage = data.detail || 
+                               (data.errors ? Object.values(data.errors).flat().join(', ') : '') ||
+                               'Ошибка регистрации';
+            showError(errorMessage);
             return false;
         }
     } catch (error) {
@@ -98,39 +142,94 @@ async function register(username, email, password) {
 function logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    window.location.href = '/index.html';
+    localStorage.removeItem('refresh_token');
+    window.location.href = '../index.html';
 }
 
 // Показать ошибку
 function showError(message) {
     // Создать уведомление
     const errorDiv = document.createElement('div');
-    errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-transform transform translate-x-full';
     errorDiv.textContent = message;
+    errorDiv.id = 'error-notification';
     
     document.body.appendChild(errorDiv);
     
+    // Анимация появления
+    setTimeout(() => {
+        errorDiv.classList.remove('translate-x-full');
+    }, 10);
+    
     // Удалить через 5 секунд
     setTimeout(() => {
-        errorDiv.remove();
+        errorDiv.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.parentNode.removeChild(errorDiv);
+            }
+        }, 300);
     }, 5000);
 }
 
 // Показать успех
 function showSuccess(message) {
     const successDiv = document.createElement('div');
-    successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-transform transform translate-x-full';
     successDiv.textContent = message;
+    successDiv.id = 'success-notification';
     
     document.body.appendChild(successDiv);
     
+    // Анимация появления
     setTimeout(() => {
-        successDiv.remove();
-    }, 5000);
+        successDiv.classList.remove('translate-x-full');
+    }, 10);
+    
+    setTimeout(() => {
+        successDiv.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (successDiv.parentNode) {
+                successDiv.parentNode.removeChild(successDiv);
+            }
+        }, 300);
+    }, 4000);
+}
+
+// Обновить токен
+async function refreshToken() {
+    try {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (!refreshToken) {
+            return false;
+        }
+        
+        const response = await fetch(`${API_BASE}/auth/token/refresh/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ refresh: refreshToken }),
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('token', data.access);
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Token refresh error:', error);
+        return false;
+    }
 }
 
 // Проверка на странице входа
 document.addEventListener('DOMContentLoaded', function() {
+    // Проверка авторизации и редирект если нужно
+    checkAndRedirect();
+    
+    // Обработка кнопки выхода
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
@@ -139,7 +238,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    checkAuthStatus();
+    // Обработка мобильной кнопки выхода
+    const logoutBtnMobile = document.getElementById('logout-btn-mobile');
+    if (logoutBtnMobile) {
+        logoutBtnMobile.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
 });
-
-export { login, register, logout, checkAuthStatus }; 
