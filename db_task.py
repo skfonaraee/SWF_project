@@ -8,14 +8,14 @@ def run_queries():
         with db.connection.cursor() as cursor:
 
             # -----------------------------
-            # 1️⃣ Страны
+            # 1 Страны
             # -----------------------------
             cursor.execute("SELECT id, name FROM countries ORDER BY name;")
             countries = cursor.fetchall()
             print("✅ Страны:", [c[1] for c in countries])
 
             # -----------------------------
-            # 2️⃣ Университеты по странам
+            # 2 Университеты по странам
             # -----------------------------
             for country in countries:
                 country_id, country_name = country
@@ -29,7 +29,7 @@ def run_queries():
                 print(f"✅ {country_name}, Университеты:", unis)
 
             # -----------------------------
-            # 3️⃣ Программы по университетам
+            # 3 Программы по университетам
             # -----------------------------
             cursor.execute("""
                 SELECT u.name AS university, p.name AS program, p.degree
@@ -43,7 +43,7 @@ def run_queries():
                 print(row)
 
             # -----------------------------
-            # 4️⃣ Стипендии / гранты
+            # 4 Стипендии / гранты
             # -----------------------------
             cursor.execute("""
                 SELECT u.name AS university, s.description
@@ -57,7 +57,7 @@ def run_queries():
                 print(row)
 
             # -----------------------------
-            # 5️⃣ Вопросы и ответы
+            # 5 Вопросы и ответы
             # -----------------------------
             cursor.execute("""
                 SELECT q.text AS question, a.text AS answer, u.username
@@ -72,7 +72,7 @@ def run_queries():
                 print(row)
 
             # -----------------------------
-            # 6️⃣ AI-логи
+            # 6 AI-логи
             # -----------------------------
             cursor.execute("""
                 SELECT u.username, l.prompt, l.response, l.created_at
@@ -86,7 +86,7 @@ def run_queries():
                 print(row)
 
             # -----------------------------
-            # 7️⃣ Отзывы пользователей
+            # 7 Отзывы пользователей
             # -----------------------------
             cursor.execute("""
                 SELECT u.username, f.rating, f.message
@@ -100,7 +100,7 @@ def run_queries():
                 print(row)
 
             # -----------------------------
-            # 8️⃣ Опросы пользователей
+            # 8 Опросы пользователей
             # -----------------------------
             cursor.execute("""
                 SELECT u.username, s.title, us.answer
@@ -115,7 +115,7 @@ def run_queries():
                 print(row)
 
             # -----------------------------
-            # 9️⃣ Сложные запросы с GROUP BY
+            # 9 Сложные запросы с GROUP BY
             # -----------------------------
             # Количество программ по университетам
             cursor.execute("""
@@ -144,7 +144,7 @@ def run_queries():
                 print(row)
 
             # -----------------------------
-            # 10️⃣ Создание VIEW
+            # 10 Создание VIEW
             # -----------------------------
             cursor.execute("""
                 CREATE OR REPLACE VIEW user_activity_summary AS
@@ -163,7 +163,7 @@ def run_queries():
             print("✅ VIEW user_activity_summary создан/обновлен.")
 
             # -----------------------------
-            # 11️⃣ Индексы
+            # 11 Индексы
             # -----------------------------
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_questions_user_date ON questions(user_id, created_at DESC);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_answers_question_date ON answers(question_id, created_at DESC);")
